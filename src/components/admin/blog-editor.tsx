@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { useCollection, useFirestore, useMemoFirebase } from '@/firebase';
+import { aiGenerateBlog } from '@/ai/flows/ai-blog-generator';
 import { collection, doc, serverTimestamp, setDoc, addDoc, updateDoc, query, orderBy } from 'firebase/firestore';
 import { deleteDocumentNonBlocking } from '@/firebase/non-blocking-updates';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
@@ -49,6 +50,28 @@ export function BlogEditor() {
   const [tempImageUrl, setTempImageUrl] = useState<string | null>(null);
   const { toast } = useToast();
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [aiTopic, setAiTopic] = useState('');
+  const [aiGenerating, setAiGenerating] = useState(false);
+
+  const handleAiGenerate = async () => {
+    if (!aiTopic.trim()) return;
+    setAiGenerating(true);
+    try {
+      toast({ title: "AI Pipeline Active", description: "Generating blog content..." });
+      const result = await aiGenerateBlog(aiTopic, "technical and professional", formData.category);
+      setFormData(prev => ({
+        ...prev,
+        title: result.title,
+        excerpt: result.excerpt,
+        content: result.content
+      }));
+      toast({ title: "Content Drafted", description: "AI generated fields applied." });
+    } catch (err: any) {
+      toast({ variant: "destructive", title: "AI Error", description: err.message });
+    } finally {
+      setAiGenerating(false);
+    }
+  };
   const toolInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -170,6 +193,31 @@ export function BlogEditor() {
               </div>
             </CardHeader>
             <CardContent className="p-8 space-y-8">
+              {/* AI GENERATION ASSISTANT */}
+              <div className="p-6 rounded-3xl bg-primary/5 border-2 border-dashed border-primary/20 space-y-4">
+                <div className="flex items-center gap-2">
+                  <Sparkles size={16} className="text-primary animate-pulse" />
+                  <h4 className="text-[10px] font-black uppercase tracking-widest text-primary">AI Content Architecture Generator</h4>
+                </div>
+                <div className="flex gap-4">
+                  <Input 
+                    value={aiTopic} 
+                    onChange={(e) => setAiTopic(e.target.value)} 
+                    placeholder="e.g. How custom AI agents buy back time for business..." 
+                    className="h-12 rounded-xl border-2 flex-1 bg-background text-foreground" 
+                  />
+                  <Button 
+                    onClick={handleAiGenerate} 
+                    disabled={aiGenerating || !aiTopic.trim()} 
+                    className="h-12 rounded-xl font-black uppercase tracking-widest text-[10px] bg-primary text-white"
+                  >
+                    {aiGenerating ? <Loader2 className="animate-spin h-4 w-4" /> : <Sparkles size={14} className="mr-2" />}
+                    Build Post
+                  </Button>
+                </div>
+                <p className="text-[8px] font-bold text-muted-foreground uppercase">Provide a topic and let Gemini generate a high-retention structured outline, excerpt, and content.</p>
+              </div>
+
               <div className="space-y-6">
                 <div className="space-y-2">
                   <Label className="text-[10px] font-black uppercase tracking-widest ml-1 text-primary/60">Insight Headline</Label>

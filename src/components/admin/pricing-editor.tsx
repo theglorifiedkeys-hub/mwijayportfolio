@@ -1,7 +1,7 @@
 
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useCollection, useFirestore, useMemoFirebase } from '@/firebase';
 import { collection, doc } from 'firebase/firestore';
 import { addDocumentNonBlocking, updateDocumentNonBlocking, deleteDocumentNonBlocking } from '@/firebase/non-blocking-updates';
@@ -35,13 +35,11 @@ export function PricingEditor() {
     toast({ title: "Package Deployed", description: "Pricing data updated in registry." });
   };
 
-  const handleUpdate = (id: string, field: string, value: any) => {
+  const handleUpdate = (id: string, updatedFields: any) => {
     if (!firestore) return;
     const docRef = doc(firestore, 'packages', id);
-    if (field === 'features' && typeof value === 'string') {
-      value = value.split(',').map(f => f.trim()).filter(f => f !== '');
-    }
-    updateDocumentNonBlocking(docRef, { [field]: value });
+    updateDocumentNonBlocking(docRef, updatedFields);
+    toast({ title: "Package Updated", description: "Pricing data committed to registry." });
   };
 
   const handleDelete = (id: string) => {
@@ -101,7 +99,7 @@ export function PricingEditor() {
               <Label className="text-[10px] font-black uppercase tracking-widest ml-1">Feature Nodes (Comma Separated)</Label>
               <Textarea value={newPkg.features} onChange={(e) => setNewPkg(p => ({...p, features: e.target.value}))} placeholder="Responsive, SEO, 3 Pages..." className="min-h-[80px] rounded-2xl border-2" />
             </div>
-            <Button onClick={handleAdd} className="w-full h-14 rounded-2xl font-black uppercase tracking-widest text-xs gap-2">
+            <Button onClick={handleAdd} className="w-full h-14 rounded-2xl font-black uppercase tracking-widest text-xs gap-2 mt-4">
               <Plus className="h-4 w-4" /> Deploy Package
             </Button>
           </CardContent>
@@ -110,40 +108,97 @@ export function PricingEditor() {
         {/* Display Grid */}
         <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
           {packages?.sort((a,b) => a.displayOrder - b.displayOrder).map((pkg) => (
-            <Card key={pkg.id} className="border-2 rounded-[2rem] bg-card hover:shadow-xl transition-all flex flex-col group">
-              <CardHeader className="p-6 pb-2">
-                <div className="flex justify-between items-start mb-2">
-                  <span className="text-[10px] font-black uppercase tracking-widest px-2 py-1 bg-primary/5 rounded-full text-primary border border-primary/10">
-                    {pkg.category}
-                  </span>
-                  <Button variant="ghost" size="icon" onClick={() => handleDelete(pkg.id)} className="h-8 w-8 text-destructive rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
-                </div>
-                <Input value={pkg.title} onChange={(e) => handleUpdate(pkg.id, 'title', e.target.value)} className="font-black font-headline text-lg border-none p-0 focus-visible:ring-0 bg-transparent" />
-              </CardHeader>
-              <CardContent className="p-6 pt-0 space-y-4 flex-1">
-                <div className="flex items-center gap-2 text-primary font-black">
-                  <DollarSign className="h-4 w-4" />
-                  <Input value={pkg.price} onChange={(e) => handleUpdate(pkg.id, 'price', e.target.value)} className="border-none p-0 focus-visible:ring-0 bg-transparent text-xl font-headline" />
-                </div>
-                <div className="flex items-center gap-2 text-muted-foreground text-xs font-bold">
-                  <Target className="h-3 w-3" />
-                  <Input value={pkg.bestFor} onChange={(e) => handleUpdate(pkg.id, 'bestFor', e.target.value)} className="border-none p-0 focus-visible:ring-0 bg-transparent text-[10px]" />
-                </div>
-                <div className="space-y-2 border-t pt-4">
-                  <Label className="text-[9px] font-black uppercase tracking-[0.2em] text-muted-foreground">Expertise Nodes</Label>
-                  <Textarea 
-                    defaultValue={pkg.features?.join(', ')} 
-                    onBlur={(e) => handleUpdate(pkg.id, 'features', e.target.value)}
-                    className="text-xs min-h-[100px] rounded-xl border-dashed resize-none"
-                  />
-                </div>
-              </CardContent>
-            </Card>
+            <PackageCard key={pkg.id} pkg={pkg} onUpdate={handleUpdate} onDelete={handleDelete} />
           ))}
         </div>
       </div>
     </div>
+  );
+}
+
+function PackageCard({ pkg, onUpdate, onDelete }: { pkg: any, onUpdate: (id: string, updatedFields: any) => void, onDelete: (id: string) => void }) {
+  const [title, setTitle] = useState(pkg.title || '');
+  const [price, setPrice] = useState(pkg.price || '');
+  const [bestFor, setBestFor] = useState(pkg.bestFor || '');
+  const [features, setFeatures] = useState(pkg.features?.join(', ') || '');
+  const [saving, setSaving] = useState(false);
+
+  // Sync with prop updates
+  useEffect(() => {
+    setTitle(pkg.title || '');
+    setPrice(pkg.price || '');
+    setBestFor(pkg.bestFor || '');
+    setFeatures(pkg.features?.join(', ') || '');
+  }, [pkg]);
+
+  const hasChanges = title !== (pkg.title || '') || 
+                     price !== (pkg.price || '') || 
+                     bestFor !== (pkg.bestFor || '') || 
+                     features !== (pkg.features?.join(', ') || '');
+
+  const handleSave = async () => {
+    setSaving(true);
+    try {
+      const parsedFeatures = features.split(',').map((f: string) => f.trim()).filter((f: string) => f !== '');
+      await onUpdate(pkg.id, {
+        title,
+        price,
+        bestFor,
+        features: parsedFeatures
+      });
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  return (
+    <Card className="border-2 rounded-[2rem] bg-card hover:shadow-xl transition-all flex flex-col group border-border/50">
+      <CardHeader className="p-6 pb-2">
+        <div className="flex justify-between items-start mb-2">
+          <span className="text-[10px] font-black uppercase tracking-widest px-2 py-1 bg-primary/5 rounded-full text-primary border border-primary/10">
+            {pkg.category}
+          </span>
+          <Button variant="ghost" size="icon" onClick={() => onDelete(pkg.id)} className="h-8 w-8 text-destructive rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
+            <Trash2 className="h-4 w-4" />
+          </Button>
+        </div>
+        <div className="space-y-1">
+          <Label className="text-[8px] font-black uppercase tracking-widest text-muted-foreground ml-1">Title</Label>
+          <Input value={title} onChange={(e) => setTitle(e.target.value)} className="font-black font-headline text-lg border rounded-xl px-3 py-1.5 h-10 bg-background text-slate-900 dark:text-foreground focus-visible:ring-primary" />
+        </div>
+      </CardHeader>
+      <CardContent className="p-6 pt-0 space-y-4 flex-1">
+        <div className="space-y-1">
+          <Label className="text-[8px] font-black uppercase tracking-widest text-muted-foreground ml-1">Price (TZS)</Label>
+          <div className="flex items-center gap-2 text-primary font-black relative">
+            <DollarSign className="h-4 w-4 absolute left-3 top-1/2 -translate-y-1/2 text-primary" />
+            <Input value={price} onChange={(e) => setPrice(e.target.value)} className="pl-9 border rounded-xl h-10 bg-background text-slate-900 dark:text-foreground text-sm font-headline focus-visible:ring-primary" />
+          </div>
+        </div>
+        <div className="space-y-1">
+          <Label className="text-[8px] font-black uppercase tracking-widest text-muted-foreground ml-1">Best For</Label>
+          <div className="flex items-center gap-2 text-muted-foreground text-xs font-bold relative">
+            <Target className="h-3 w-3 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+            <Input value={bestFor} onChange={(e) => setBestFor(e.target.value)} className="pl-9 border rounded-xl h-10 bg-background text-slate-900 dark:text-foreground text-xs font-bold focus-visible:ring-primary" />
+          </div>
+        </div>
+        <div className="space-y-2 border-t pt-4">
+          <Label className="text-[9px] font-black uppercase tracking-[0.2em] text-muted-foreground">Expertise Nodes (Comma Separated)</Label>
+          <Textarea 
+            value={features} 
+            onChange={(e) => setFeatures(e.target.value)}
+            className="text-xs min-h-[100px] rounded-xl border resize-none p-3 bg-background text-slate-900 dark:text-foreground focus-visible:ring-primary"
+          />
+        </div>
+      </CardContent>
+      <CardFooter className="p-6 pt-0 flex justify-end min-h-[56px]">
+        {hasChanges && (
+          <Button onClick={handleSave} disabled={saving} size="sm" className="rounded-xl h-10 px-4 text-xs font-black gap-2 uppercase tracking-wider bg-primary text-white shadow-md shadow-primary/10">
+            {saving ? <Loader2 className="h-3 w-3 animate-spin" /> : <Save className="h-3.5 w-3.5" />}
+            Save Tier
+          </Button>
+        )}
+      </CardFooter>
+    </Card>
   );
 }
