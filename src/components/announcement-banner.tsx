@@ -44,6 +44,17 @@ export function AnnouncementBanner() {
       })[0];
   }, [rawAlerts]);
 
+  React.useEffect(() => {
+    if (alert && !closed) {
+      document.documentElement.style.setProperty('--banner-height', '44px');
+    } else {
+      document.documentElement.style.setProperty('--banner-height', '0px');
+    }
+    return () => {
+      document.documentElement.style.setProperty('--banner-height', '0px');
+    };
+  }, [alert, closed]);
+
   // Hide in Admin/Login dashboards for cleaner UI.
   const isProtectedPath = pathname?.startsWith('/admin') || pathname?.startsWith('/login') || pathname?.startsWith('/client-portal');
   if (isProtectedPath) return null;
@@ -56,7 +67,7 @@ export function AnnouncementBanner() {
         initial={{ height: 0, opacity: 0 }}
         animate={{ height: 'auto', opacity: 1 }}
         exit={{ height: 0, opacity: 0 }}
-        className={`relative w-full z-[110] text-white py-3 px-10 flex items-center justify-center gap-4 overflow-hidden ${
+        className={`fixed top-0 left-0 w-full z-[5100] text-white py-3 px-10 flex items-center justify-center gap-4 overflow-hidden ${
           alert.type === 'discount' ? 'bg-gradient-to-r from-yellow-600 to-amber-500' :
           alert.type === 'urgent' ? 'bg-gradient-to-r from-red-600 to-rose-500' :
           'bg-gradient-to-r from-[#1e3a5f] to-[#3182ce]'

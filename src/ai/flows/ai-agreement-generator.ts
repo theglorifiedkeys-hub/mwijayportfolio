@@ -49,5 +49,15 @@ const aiAgreementGeneratorFlow = ai.defineFlow(
 );
 
 export async function aiGenerateAgreement(projectTitle: string, description = "", serviceType = "") {
-  return aiAgreementGeneratorFlow({ projectTitle, description, serviceType });
+  try {
+    const data = await aiAgreementGeneratorFlow({ projectTitle, description, serviceType });
+    return { success: true, data };
+  } catch (err: any) {
+    console.error("Genkit Agreement Generation Error:", err);
+    let errMsg = err.message || "An unknown error occurred during agreement generation.";
+    if (errMsg.includes("API key") || errMsg.includes("API_KEY") || errMsg.includes("credentials") || errMsg.includes("authorized") || errMsg.includes("key")) {
+      errMsg += " Please ensure your GEMINI_API_KEY environment variable is correctly configured in your Vercel project settings.";
+    }
+    return { success: false, error: errMsg };
+  }
 }

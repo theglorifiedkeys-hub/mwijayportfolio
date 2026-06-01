@@ -101,7 +101,8 @@ export function Navbar() {
   return (
     <nav 
       ref={navRef}
-      className="fixed top-6 left-1/2 -translate-x-1/2 z-[5000] flex items-center justify-between px-6 py-2.5 bg-background/60 backdrop-blur-2xl border border-border/50 rounded-full shadow-2xl w-[95%] max-w-7xl group transition-all duration-500 hover:shadow-primary/5 hover:border-primary/20"
+      style={{ top: 'calc(1.5rem + var(--banner-height, 0px))' }}
+      className="fixed left-1/2 -translate-x-1/2 z-[5000] flex items-center justify-between px-6 py-2.5 bg-background/60 backdrop-blur-2xl border border-border/50 rounded-full shadow-2xl w-[95%] max-w-7xl group transition-all duration-500 hover:shadow-primary/5 hover:border-primary/20"
     >
       <Link href="/" aria-label="Return to Home Base" className="flex items-center gap-3 hover:opacity-80 transition-opacity shrink-0 relative z-10">
         {profile?.logoUrl ? (

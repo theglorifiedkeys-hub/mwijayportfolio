@@ -690,11 +690,15 @@ export default function AdminAgreements() {
                         setAiGeneratingSpec(true);
                         toast({ title: "AI Blueprint Active", description: "Architecting specifications..." });
                         try {
-                          const result = await aiGenerateAgreement(
+                          const res = await aiGenerateAgreement(
                             creatingDoc.projectTitle, 
                             creatingDoc.description, 
                             creatingDoc.serviceType
                           );
+                          if (!res.success || !res.data) {
+                            throw new Error(res.error || "Failed to generate spec blueprint.");
+                          }
+                          const result = res.data;
                           setCreatingDoc(prev => ({
                             ...prev,
                             projectMission: result.projectMission,

@@ -58,7 +58,11 @@ export function BlogEditor() {
     setAiGenerating(true);
     try {
       toast({ title: "AI Pipeline Active", description: "Generating blog content..." });
-      const result = await aiGenerateBlog(aiTopic, "technical and professional", formData.category);
+      const res = await aiGenerateBlog(aiTopic, "technical and professional", formData.category);
+      if (!res.success || !res.data) {
+        throw new Error(res.error || "Failed to generate blog content.");
+      }
+      const result = res.data;
       setFormData(prev => ({
         ...prev,
         title: result.title,

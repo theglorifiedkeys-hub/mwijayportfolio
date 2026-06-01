@@ -48,5 +48,15 @@ const aiBlogGeneratorFlow = ai.defineFlow(
 );
 
 export async function aiGenerateBlog(topic: string, tone = "technical and professional", category = "Tech Strategy") {
-  return aiBlogGeneratorFlow({ topic, tone, category });
+  try {
+    const data = await aiBlogGeneratorFlow({ topic, tone, category });
+    return { success: true, data };
+  } catch (err: any) {
+    console.error("Genkit Blog Generation Error:", err);
+    let errMsg = err.message || "An unknown error occurred during blog post generation.";
+    if (errMsg.includes("API key") || errMsg.includes("API_KEY") || errMsg.includes("credentials") || errMsg.includes("authorized") || errMsg.includes("key")) {
+      errMsg += " Please ensure your GEMINI_API_KEY environment variable is correctly configured in your Vercel project settings.";
+    }
+    return { success: false, error: errMsg };
+  }
 }
