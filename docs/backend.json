@@ -1,0 +1,182 @@
+
+{
+  "entities": {
+    "UserProfile": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "UserProfile",
+      "type": "object",
+      "description": "Represents the personal and professional profile information of David Erick Mwijage.",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "program": { "type": "string" },
+        "heroTitle": { "type": "string" },
+        "heroTagline": { "type": "string" },
+        "aboutBio": { "type": "string" },
+        "location": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "whatsapp": { "type": "string" },
+        "profileImageUrl": { "type": "string", "format": "uri" },
+        "logoUrl": { "type": "string", "format": "uri" },
+        "loginHeroImageUrl": { "type": "string", "format": "uri" },
+        "cvUrl": { "type": "string", "format": "uri" }
+      }
+    },
+    "Service": {
+      "title": "Service",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "imageUrl": { "type": "string", "format": "uri" }
+      }
+    },
+    "Recognition": {
+      "title": "Recognition",
+      "type": "object",
+      "description": "Awards and certifications from entities like Google, HP, etc.",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "organization": { "type": "string" },
+        "imageUrl": { "type": "string", "format": "uri" },
+        "credentialUrl": { "type": "string", "format": "uri" },
+        "issueDate": { "type": "string" },
+        "displayOrder": { "type": "number" }
+      }
+    },
+    "BlogPost": {
+      "title": "BlogPost",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "excerpt": { "type": "string" },
+        "content": { "type": "string" },
+        "imageUrl": { "type": "string", "format": "uri" },
+        "category": { "type": "string" },
+        "publishedAt": { "type": "object" },
+        "isPublished": { "type": "boolean" }
+      }
+    },
+    "Package": {
+      "title": "PricingPackage",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "price": { "type": "string" },
+        "category": { "type": "string" },
+        "bestFor": { "type": "string" },
+        "features": { "type": "array", "items": { "type": "string" } },
+        "displayOrder": { "type": "number" }
+      }
+    },
+    "DigitalProduct": {
+      "title": "DigitalProduct",
+      "type": "object",
+      "description": "Digital assets for sale including art, PDFs, and stickers.",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "price": { "type": "string" },
+        "description": { "type": "string" },
+        "imageUrl": { "type": "string", "format": "uri" },
+        "category": { "type": "string", "enum": ["art", "pdf", "stickers", "bundle"] },
+        "isAvailable": { "type": "boolean" },
+        "createdAt": { "type": "object" }
+      }
+    },
+    "Announcement": {
+      "title": "Announcement",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "text": { "type": "string" },
+        "type": { "type": "string" },
+        "link": { "type": "string" },
+        "isActive": { "type": "boolean" },
+        "createdAt": { "type": "object" }
+      }
+    },
+    "Inquiry": {
+      "title": "Inquiry",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "subject": { "type": "string" },
+        "message": { "type": "string" },
+        "createdAt": { "type": "object" },
+        "status": { "type": "string" }
+      }
+    },
+    "AnalyticsEvent": {
+      "title": "AnalyticsEvent",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "type": { "type": "string", "enum": ["page_view", "click", "chat_start"] },
+        "page": { "type": "string" },
+        "timestamp": { "type": "object" },
+        "device": { "type": "string" },
+        "country": { "type": "string" },
+        "city": { "type": "string" },
+        "referrer": { "type": "string" },
+        "label": { "type": "string" }
+      }
+    }
+  },
+  "auth": {
+    "providers": [
+      "password",
+      "anonymous"
+    ]
+  },
+  "firestore": {
+    "structure": [
+      {
+        "path": "/users/{userId}",
+        "definition": {
+          "entityName": "UserProfile",
+          "schema": { "$ref": "#/backend/entities/UserProfile" },
+          "description": "User profile data."
+        }
+      },
+      {
+        "path": "/products/{id}",
+        "definition": {
+          "entityName": "DigitalProduct",
+          "schema": { "$ref": "#/backend/entities/DigitalProduct" },
+          "description": "Marketplace items."
+        }
+      },
+      {
+        "path": "/blogs/{id}",
+        "definition": {
+          "entityName": "BlogPost",
+          "schema": { "$ref": "#/backend/entities/BlogPost" },
+          "description": "Educational insights."
+        }
+      },
+      {
+        "path": "/inquiries/{id}",
+        "definition": {
+          "entityName": "Inquiry",
+          "schema": { "$ref": "#/backend/entities/Inquiry" },
+          "description": "Contact form submissions."
+        }
+      },
+      {
+        "path": "/analytics_events/{id}",
+        "definition": {
+          "entityName": "AnalyticsEvent",
+          "schema": { "$ref": "#/backend/entities/AnalyticsEvent" },
+          "description": "Visitor metrics."
+        }
+      }
+    ]
+  }
+}

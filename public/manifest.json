@@ -1,0 +1,46 @@
+{
+  "name": "Mwijay Services",
+  "short_name": "Mwijay",
+  "description": "Web Developer & AI Specialist in Dar es Salaam, Tanzania",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#07080c",
+  "theme_color": "#07080c",
+  "icons": [
+    {
+      "src": "https://picsum.photos/seed/mwijay/192/192",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "https://picsum.photos/seed/mwijay/512/512",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable any"
+    }
+  ],
+  "categories": [
+    "business", 
+    "productivity",
+    "utilities"
+  ],
+  "shortcuts": [
+    {
+      "name": "Start a Project",
+      "url": "/agreement",
+      "description": "Begin a new service agreement"
+    },
+    {
+      "name": "Client Portal",
+      "url": "/client-portal",
+      "description": "Access your purchased assets"
+    },
+    {
+      "name": "View Projects",
+      "url": "/projects",
+      "description": "See portfolio work"
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+
+{
+  "name": "Mwijay Services",
+  "short_name": "Mwijay",
+  "description": "Professional Tech Solutions by David Erick Mwijage",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#07080c",
+  "theme_color": "#2563eb",
+  "icons": [
+    {
+      "src": "https://picsum.photos/seed/mwijay/192/192",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://picsum.photos/seed/mwijay/512/512",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
