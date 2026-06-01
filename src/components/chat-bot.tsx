@@ -35,7 +35,7 @@ export function ChatBot() {
                 </div>
                 <h4 className="font-headline font-black text-xs uppercase tracking-widest">AI Assistant</h4>
               </div>
-              <button onClick={() => setIsOpen(false)} className="text-muted-foreground hover:text-foreground">
+              <button onClick={() => setIsOpen(false)} aria-label="Close AI assistant" className="text-muted-foreground hover:text-foreground">
                 <X size={16} />
               </button>
             </div>
@@ -51,6 +51,7 @@ export function ChatBot() {
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
         onClick={() => setIsOpen(!isOpen)}
+        aria-label="Toggle AI assistant"
         className="h-14 w-14 md:h-16 md:w-16 rounded-[1.5rem] bg-primary flex items-center justify-center text-white shadow-2xl border-2 border-white/10"
       >
         <Bot size={28} />

@@ -58,7 +58,7 @@ export default function CookieConsent() {
             <div className="h-12 w-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary">
               <Cookie className="h-6 w-6" />
             </div>
-            <button onClick={() => setShow(false)} className="text-muted-foreground hover:text-foreground">
+            <button onClick={() => setShow(false)} aria-label="Dismiss cookie notice" className="text-muted-foreground hover:text-foreground">
               <X size={18} />
             </button>
           </div>

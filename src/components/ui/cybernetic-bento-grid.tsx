@@ -29,7 +29,7 @@ const BentoItem = ({ className, children, bgImage }: BentoItemProps) => {
             src={bgImage} 
             alt="Expertise Node" 
             fill 
-            className="opacity-10 group-hover:opacity-30 group-hover:scale-105 transition-all duration-1000" 
+            className="opacity-10 group-hover:opacity-30 group-hover:scale-105 transition-all duration-1000 object-cover" 
           />
           <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
         </div>

@@ -78,15 +78,14 @@ export function Footer() {
             <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-primary">Registry Nodes</h3>
             <ul className="space-y-4">
               {[
-                { label: 'Work Gallery', href: '/projects', icon: LayoutGrid, aria: 'View selected project builds' },
-                { label: 'About Mwijay', href: '/about', icon: Info, aria: 'Learn more about the architect' },
-                { label: 'Insight Feed', href: '/blog', icon: Newspaper, aria: 'Read strategic technology articles' },
-                { label: 'Marketplace', href: '/pricing', icon: ShoppingBag, aria: 'Browse digital assets and plans' },
+                { label: 'Work Gallery', href: '/projects', icon: LayoutGrid },
+                { label: 'About Mwijay', href: '/about', icon: Info },
+                { label: 'Insight Feed', href: '/blog', icon: Newspaper },
+                { label: 'Marketplace', href: '/pricing', icon: ShoppingBag },
               ].map((link) => (
                 <li key={link.label}>
                   <Link 
                     href={link.href} 
-                    aria-label={link.aria}
                     className="text-sm font-bold text-muted-foreground hover:text-primary transition-colors flex items-center gap-2 group"
                   >
                     <link.icon size={14} className="opacity-40 group-hover:opacity-100 transition-opacity" /> {link.label}
@@ -128,7 +127,6 @@ export function Footer() {
             <div className="pt-4">
               <Button 
                 size="sm" 
-                aria-label="Send an instant WhatsApp message for support"
                 className="w-full h-11 rounded-xl bg-primary/10 text-primary border border-primary/20 hover:bg-primary hover:text-white font-black uppercase tracking-widest text-[9px] gap-2" 
                 asChild
               >

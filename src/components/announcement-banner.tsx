@@ -86,6 +86,7 @@ export function AnnouncementBanner() {
         </div>
         <button 
           onClick={() => setClosed(true)}
+          aria-label="Close announcement banner"
           className="absolute right-4 top-1/2 -translate-y-1/2 p-1 hover:bg-white/10 rounded-full transition-colors"
         >
           <X className="h-4 w-4" />

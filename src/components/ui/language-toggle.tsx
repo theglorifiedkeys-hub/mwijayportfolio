@@ -15,7 +15,7 @@ export default function LanguageToggle() {
     <button
       onClick={toggleLanguage}
       className="flex items-center justify-center w-10 h-10 rounded-full hover:bg-primary/10 transition-all text-[10px] font-black uppercase tracking-tight border border-border/50 bg-background/50 backdrop-blur-sm shrink-0 shadow-lg"
-      aria-label="Toggle Language"
+      aria-label={language === 'en' ? "Toggle Language (Current: EN)" : "Toggle Language (Current: SW)"}
     >
       <AnimatePresence mode="wait">
         <motion.span

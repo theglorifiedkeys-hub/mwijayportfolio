@@ -71,7 +71,7 @@ function ProjectCard({ proj, idx }: { proj: any, idx: number }) {
     <AnimatedContent direction="vertical" delay={idx * 0.1}>
       <Dialog onOpenChange={(open) => open && handleOpen()}>
         <DialogTrigger asChild>
-          <div className="h-full transition-all duration-500 ease-out cursor-pointer group text-left">
+          <button className="w-full text-left h-full transition-all duration-500 ease-out cursor-pointer group focus:outline-none block">
             <Card className="group overflow-hidden border-2 hover:border-primary/40 transition-all h-full flex flex-col rounded-[2.5rem] bg-card hover:shadow-2xl relative border-border/50 shadow-sm">
               <div className="relative aspect-video overflow-hidden bg-muted">
                 {proj.thumbnailImageUrl && (
@@ -96,7 +96,7 @@ function ProjectCard({ proj, idx }: { proj: any, idx: number }) {
                     <Zap className="h-4 w-4" />
                     <span className="text-[10px] font-black uppercase tracking-[0.2em]">{proj.type || "Technical Build"}</span>
                   </div>
-                  <h4 className="text-2xl font-headline font-black tracking-tight text-foreground group-hover:text-primary transition-colors uppercase">{proj.name}</h4>
+                  <h3 className="text-2xl font-headline font-black tracking-tight text-foreground group-hover:text-primary transition-colors uppercase">{proj.name}</h3>
                 </div>
                 
                 <p className="text-sm text-muted-foreground leading-relaxed line-clamp-3 font-medium">
@@ -108,7 +108,7 @@ function ProjectCard({ proj, idx }: { proj: any, idx: number }) {
                 </div>
               </CardContent>
             </Card>
-          </div>
+          </button>
         </DialogTrigger>
 
         <DialogContent className="fixed left-[50%] top-[50%] z-[7000] grid w-full max-w-[95vw] md:max-w-5xl translate-x-[-50%] translate-y-[-50%] h-[85vh] p-0 border-none bg-background shadow-2xl rounded-[2.5rem] overflow-hidden outline-none">
