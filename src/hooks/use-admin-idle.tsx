@@ -6,8 +6,8 @@ import { signOut } from 'firebase/auth';
 import { useAuth, useUser } from '@/firebase';
 import { useToast } from '@/hooks/use-toast';
 
-const IDLE_TIMEOUT = 80 * 1000;    // 80 seconds
-const WARNING_TIME = 10 * 1000;    // warn at 10 seconds remaining
+const IDLE_TIMEOUT = 30 * 60 * 1000;  // 30 minutes
+const WARNING_TIME = 30 * 1000;       // warn at 30 seconds remaining
 
 /**
  * useAdminIdle - Session Guard
