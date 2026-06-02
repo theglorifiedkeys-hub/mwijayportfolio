@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Globe, Palette, Bot, Server, CheckCircle, ChevronRight, 
@@ -29,7 +30,7 @@ const SERVICE_CARDS = [
   { id: 'hosting_maintenance', title: 'Maintenance', desc: 'Cloud infrastructure and site management.', icon: Server, color: 'text-green-500' }
 ];
 
-export default function BookingPage() {
+function BookingForm() {
   const [currentStep, setCurrentStep] = useState(1);
   const [inquiryId, setInquiryId] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -52,9 +53,30 @@ export default function BookingPage() {
     signatureDataUri: '',
   });
 
+  const searchParams = useSearchParams();
+
   useEffect(() => {
     setInquiryId(generateInquiryId());
-  }, []);
+
+    const servicesParam = searchParams.get('services');
+    const projectParam = searchParams.get('projectName');
+    const descParam = searchParams.get('description');
+    const budgetParam = searchParams.get('budgetRange');
+    const timelineParam = searchParams.get('timeline');
+
+    if (servicesParam || projectParam || descParam || budgetParam || timelineParam) {
+      setFormData(prev => ({
+        ...prev,
+        services: servicesParam ? servicesParam.split(',') : prev.services,
+        projectName: projectParam || prev.projectName,
+        description: descParam ? decodeURIComponent(descParam) : prev.description,
+        budgetRange: budgetParam || prev.budgetRange,
+        timeline: (timelineParam as any) || prev.timeline,
+      }));
+      // Jump directly to specifications details step
+      setCurrentStep(2);
+    }
+  }, [searchParams]);
 
   const isTrashInput = (text: string) => {
     if (text.length < 5) return false;
@@ -400,5 +422,17 @@ export default function BookingPage() {
       </main>
       <Footer />
     </div>
+  );
+}
+
+export default function BookingPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    }>
+      <BookingForm />
+    </Suspense>
   );
 }

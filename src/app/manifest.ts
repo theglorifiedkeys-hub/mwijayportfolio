@@ -23,6 +23,18 @@ export default async function manifest(): Promise<MetadataRoute.Manifest> {
         type: 'image/x-icon',
       },
     ],
+    shortcuts: [
+      {
+        name: "Client Portal",
+        url: "/client-portal",
+        description: "Access project workspace and files"
+      },
+      {
+        name: "Book a Project",
+        url: "/book",
+        description: "Launch project builder"
+      }
+    ]
   };
 
   try {
