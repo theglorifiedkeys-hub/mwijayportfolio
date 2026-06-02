@@ -56,7 +56,19 @@ async function setupAdmin() {
       role: 'admin', 
       admin: true 
     });
-    console.log("✅ Custom Claims updated (role: admin).");
+    console.log("✅ Custom Claims updated for primary admin (role: admin).");
+
+    // Also update claims for theglorifiedkeys Google account
+    const GOOGLE_ADMIN_UID = "3xyxYBDNsnermsXQeqWpVen0adE3";
+    try {
+      await auth.setCustomUserClaims(GOOGLE_ADMIN_UID, {
+        role: 'admin',
+        admin: true
+      });
+      console.log("✅ Custom Claims updated for Google admin account.");
+    } catch (e: any) {
+      console.log("⚠️ Could not update custom claims for Google admin account (user might not be created in Auth yet):", e.message);
+    }
 
     // 2. Set Admin Document in Firestore
     const userRef = db.collection('users').doc(ADMIN_UID);
@@ -69,6 +81,19 @@ async function setupAdmin() {
       createdAt: FieldValue.serverTimestamp(),
       emailVerified: false
     }, { merge: true });
+
+    // Also create admin document for the Google account
+    const googleUserRef = db.collection('users').doc(GOOGLE_ADMIN_UID);
+    await googleUserRef.set({
+      uid: GOOGLE_ADMIN_UID,
+      email: "theglorifiedkeys@gmail.com",
+      role: 'admin',
+      displayName: "Mwijay Davie",
+      updatedAt: FieldValue.serverTimestamp(),
+      createdAt: FieldValue.serverTimestamp(),
+      emailVerified: true
+    }, { merge: true });
+    console.log("✅ Firestore Google admin user document synced.");
 
     // 3. Create Public Profile Document for Landing Page access
     // Hii inafuta kero ya 'permission-denied' kwenye Landing Page
