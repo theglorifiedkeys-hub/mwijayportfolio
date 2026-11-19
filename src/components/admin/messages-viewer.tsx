@@ -22,7 +22,7 @@ export function MessagesViewer() {
     return query(inquiriesRef, orderBy('createdAt', 'desc'));
   }, [inquiriesRef]);
   
-  const { data: messages, isLoading } = useCollection(inquiriesQuery);
+  const { data: messages, isLoading,error } = useCollection(inquiriesQuery,{enabled:!!inquiriesQuery});
   const { toast } = useToast();
 
   const handleDelete = (id: string) => {
@@ -32,6 +32,7 @@ export function MessagesViewer() {
     toast({ title: "Inquiry Purged", variant: "destructive" });
   };
 
+  if (!firestore || error) return <p role="alert">Contact messages could not be loaded.</p>;
   if (isLoading) return (
     <div className="flex justify-center p-20">
       <Loader2 className="h-8 w-8 animate-spin text-primary" />
@@ -75,6 +76,7 @@ export function MessagesViewer() {
                   <CardTitle className="text-xl font-black font-headline text-primary">{msg.subject}</CardTitle>
                 </div>
                 <Button 
+                  aria-label="Delete contact message"
                   variant="ghost" 
                   size="icon" 
                   onClick={() => handleDelete(msg.id)} 

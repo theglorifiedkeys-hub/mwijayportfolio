@@ -1,13 +1,7 @@
 'use client';
-/**
- * @fileOverview Strategic Intelligence Section.
- * USES MEMORY FILTERING: Fetches all blogs and filters isPublished in JS
- * to bypass Firestore's "failed-precondition" composite index requirement.
- */
-
+import { publishedBlogs } from '@/lib/public-catalog';
 import React from 'react';
 import { useCollection, useFirestore, useMemoFirebase } from '@/firebase';
-import { collection, query, orderBy, limit } from 'firebase/firestore';
 import { Newspaper, Clock, Loader2, SignalHigh, ArrowRight, AlertCircle, Sparkles } from 'lucide-react';
 import Link from 'next/link';
 import FadeContent from '@/components/ui/fade-content';
@@ -22,28 +16,14 @@ export function InsightsSection() {
   const blogsQuery = useMemoFirebase(() => {
     if (!db) return null;
     try {
-      const blogsRef = collection(db, 'blogs');
-      // SIMPLE QUERY: No 'where' clause here to avoid index requirement
-      return query(
-        blogsRef, 
-        orderBy('publishedAt', 'desc'), 
-        limit(12) // Fetch a pool to filter in memory
-      );
+      return publishedBlogs(db,3);
     } catch (e) {
       console.error("📡 Insights Registry Logic Failed:", e);
       return null;
     }
   }, [db]);
 
-  const { data: rawPosts, isLoading, error } = useCollection(blogsQuery);
-
-  // MEMORY FILTER: Bypasses Firestore Index requirement
-  const posts = React.useMemo(() => {
-    if (!rawPosts) return [];
-    return rawPosts
-      .filter((p: any) => p.isPublished === true)
-      .slice(0, 3); // Take the most recent 3
-  }, [rawPosts]);
+  const {data:posts,isLoading,error}=useCollection(blogsQuery,{enabled:!!blogsQuery});
 
   return (
     <section className="py-24 px-6 md:px-12 bg-background border-t border-border/50 relative overflow-hidden">
@@ -82,7 +62,7 @@ export function InsightsSection() {
           </div>
         )}
 
-        {!isLoading && !error && posts.length === 0 && (
+        {!isLoading && !error && posts?.length === 0 && (
           <div className="p-20 rounded-[3rem] border-2 border-dashed border-border/50 text-center space-y-6 bg-card/30">
             <Sparkles className="h-12 w-12 text-primary/20 mx-auto" />
             <h3 className="text-2xl font-black font-headline uppercase tracking-tight opacity-40 italic">Syncing New Signals...</h3>
@@ -90,7 +70,7 @@ export function InsightsSection() {
           </div>
         )}
 
-        {!isLoading && !error && posts.length > 0 && (
+        {!isLoading && !error && posts && posts.length > 0 && (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
             {posts.map((post: any, i: number) => (
               <FadeContent key={post.id} delay={i * 150} threshold={0.1}>

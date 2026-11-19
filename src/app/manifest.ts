@@ -6,6 +6,7 @@ import { doc, getDoc } from 'firebase/firestore';
  * Dynamic manifest generator - Fetches branding data from Firestore.
  * Ensures the app "Install" experience matches the site's precision design.
  */
+export const revalidate = 60;
 export default async function manifest(): Promise<MetadataRoute.Manifest> {
   // BASE DEFAULTS
   let manifestData: MetadataRoute.Manifest = {

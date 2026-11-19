@@ -27,6 +27,7 @@ const SERVICE_CARDS = [
   { id: 'web_development', title: 'Web Systems', desc: 'Custom apps, e-commerce, and admin portals.', icon: Globe, color: 'text-blue-500' },
   { id: 'design_branding', title: 'Visual Identity', desc: 'Logos, brand guides, and UI/UX systems.', icon: Palette, color: 'text-pink-500' },
   { id: 'ai_automation', title: 'AI & Automation', desc: 'Intelligent workflows and custom chatbots.', icon: Bot, color: 'text-cyan-500' },
+  { id: 'content_production', title: 'Content production', desc: 'Video, audio and photography.', icon: MessageSquare, color: 'text-pink-500' },
   { id: 'hosting_maintenance', title: 'Maintenance', desc: 'Cloud infrastructure and site management.', icon: Server, color: 'text-green-500' }
 ];
 
@@ -64,17 +65,18 @@ function BookingForm() {
     const budgetParam = searchParams.get('budgetRange');
     const timelineParam = searchParams.get('timeline');
 
+    const validServices = SERVICE_CARDS.filter(s => servicesParam?.split(',').includes(s.id)).map(s => s.id);
     if (servicesParam || projectParam || descParam || budgetParam || timelineParam) {
       setFormData(prev => ({
         ...prev,
-        services: servicesParam ? servicesParam.split(',') : prev.services,
+        services: servicesParam ? validServices : prev.services,
         projectName: projectParam || prev.projectName,
-        description: descParam ? decodeURIComponent(descParam) : prev.description,
+        description: descParam || prev.description,
         budgetRange: budgetParam || prev.budgetRange,
         timeline: (timelineParam as any) || prev.timeline,
       }));
       // Jump directly to specifications details step
-      setCurrentStep(2);
+      setCurrentStep(validServices.length ? 2 : 1);
     }
   }, [searchParams]);
 
@@ -383,6 +385,7 @@ function BookingForm() {
                       <div className="p-8 rounded-[2rem] bg-muted/20 border-2 border-dashed border-border/50 space-y-6">
                         <div className="space-y-2">
                            <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-primary">Service Terms Summary</h4>
+                           <p className="text-sm"><Link href="/terms" target="_blank" className="underline">Read full terms ↗</Link> · <Link href="/privacy" target="_blank" className="underline">Privacy policy ↗</Link></p>
                            <ul className="text-xs space-y-3 font-medium text-muted-foreground list-disc pl-4">
                              <li>Estimates are preliminary until final scope approval.</li>
                              <li>50% deposit required to initiate the architecture build.</li>

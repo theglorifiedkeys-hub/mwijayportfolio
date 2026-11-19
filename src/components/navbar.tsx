@@ -65,7 +65,9 @@ export function Navbar() {
     { title: t('services_design_title'), href: "/services/design" },
     { title: t('services_ai_title'), href: "/services/automation" },
     { title: t('services_content_title'), href: "/services/content" },
-    { title: "Insights (Blog)", href: "/blog", icon: Newspaper, badge: "BETA" },
+    { title: "Client library", href: "/library" },
+    { title: t("nav_marketplace"), href: "/market" },
+    { title: "Insights (Blog)", href: "/blog", icon: Newspaper },
   ];
 
   useEffect(() => {
@@ -158,7 +160,6 @@ export function Navbar() {
                     <ShieldCheck size={12} className="text-primary" />
                     {s.title}
                   </div>
-                  {s.badge && <span className="text-[8px] bg-primary/10 text-primary px-2 py-0.5 rounded-full">{s.badge}</span>}
                 </Link>
               </DropdownMenuItem>
             ))}
@@ -182,7 +183,7 @@ export function Navbar() {
           className="rounded-full h-10 gap-2 font-black uppercase tracking-widest text-[10px] px-8 bg-primary shadow-xl shadow-primary/20 hover:scale-105 active:scale-95 transition-all text-white" 
           asChild
         >
-          <Link href="/agreement"><Sparkles className="h-4 w-4" aria-hidden="true" /> Start Your Project</Link>
+          <Link href="/book"><Sparkles className="h-4 w-4" aria-hidden="true" /> Start Your Project</Link>
         </Button>
       </div>
 
@@ -202,7 +203,7 @@ export function Navbar() {
             initial={{ opacity: 0, y: -20, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -20, scale: 0.95 }}
-            className="absolute top-full mt-4 left-0 right-0 p-8 flex flex-col items-center gap-6 lg:hidden shadow-2xl z-50 bg-background/95 backdrop-blur-3xl border border-border/50 rounded-[2.5rem]"
+            className="absolute max-h-[72dvh] overflow-y-auto overscroll-contain top-full mt-4 left-0 right-0 p-8 flex flex-col items-center gap-6 lg:hidden shadow-2xl z-50 bg-background/95 backdrop-blur-3xl border border-border/50 rounded-[2.5rem]"
           >
             <div className="flex flex-col items-center gap-6 w-full">
               {navLinks.map((link) => (
@@ -211,11 +212,9 @@ export function Navbar() {
                 </Link>
               ))}
               <div className="w-full h-px bg-border/50" />
-              <Link href="/about" onClick={() => setOpen(false)} className="text-xl font-black uppercase tracking-tighter">
-                {t('nav_about')}
-              </Link>
+              <details className="w-full text-center"><summary className="cursor-pointer font-semibold">Services & resources</summary><div className="mt-3 grid grid-cols-2 gap-3">{serviceLinks.map(s=><Link key={s.href} href={s.href} onClick={()=>setOpen(false)} className="text-sm py-1">{s.title}</Link>)}</div></details>
               <div className="w-full h-px bg-border/50" />
-              <Link href="/agreement" onClick={() => setOpen(false)} className="text-xl font-black uppercase tracking-tighter text-primary">
+              <Link href="/book" onClick={() => setOpen(false)} className="text-xl font-black uppercase tracking-tighter text-primary">
                 Start Your Project
               </Link>
             </div>

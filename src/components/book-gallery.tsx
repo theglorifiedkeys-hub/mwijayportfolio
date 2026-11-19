@@ -4,7 +4,7 @@ import React from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { useCollection, useFirestore, useMemoFirebase } from '@/firebase';
-import { collection, query, orderBy } from 'firebase/firestore';
+import {availableProducts} from '@/lib/public-catalog';
 import { Loader2, BookOpen } from 'lucide-react';
 
 /**
@@ -14,19 +14,8 @@ import { Loader2, BookOpen } from 'lucide-react';
  */
 export function BookGallery() {
   const db = useFirestore();
-  const productsRef = useMemoFirebase(() => {
-    if (!db) return null;
-    return collection(db, 'products');
-  }, [db]);
-
-  const allProductsQuery = useMemoFirebase(() => {
-    if (!productsRef) return null;
-    // Simple query to avoid composite index error (failed-precondition)
-    return query(productsRef, orderBy('createdAt', 'desc'));
-  }, [productsRef]);
-
-  const { data: allProducts, isLoading } = useCollection(allProductsQuery);
-
+  const ref=useMemoFirebase(()=>db?availableProducts(db):null,[db]);
+  const {data:allProducts,isLoading}=useCollection(ref,{enabled:!!ref});
   // MEMORY FILTER: Bypasses the need for manual indexing in Firebase Console
   const books = React.useMemo(() => {
     if (!allProducts) return [];

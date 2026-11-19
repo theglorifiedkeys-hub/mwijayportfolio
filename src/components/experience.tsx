@@ -51,8 +51,9 @@ function ExperienceContent({ userId }: { userId: string }) {
     return collection(firestore, 'users', userId, 'experienceItems');
   }, [firestore, userId]);
 
-  const { data: dbExperience, isLoading } = useCollection(experienceRef as any);
+  const { data: dbExperience, isLoading,error } = useCollection(experienceRef,{enabled:!!experienceRef});
 
+  if (!firestore || error) return <p className="p-6 text-center text-muted-foreground">The live timeline is unavailable right now.</p>;
   if (isLoading) return (
     <div className="py-20 flex justify-center">
       <Loader2 className="h-8 w-8 animate-spin text-primary" />

@@ -54,7 +54,7 @@ export function Footer() {
                 <WhatsAppIcon className="h-4 w-4" />
               </a>
               <a 
-                href="https://github.com/mwijay" 
+                href="https://github.com/mwijay12"
                 target="_blank" 
                 rel="noopener noreferrer"
                 aria-label="View Mwijay Davie's GitHub Repositories" 
@@ -78,10 +78,10 @@ export function Footer() {
             <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-primary">Registry Nodes</h3>
             <ul className="space-y-4">
               {[
-                { label: 'Work Gallery', href: '/projects', icon: LayoutGrid },
+                { label: 'Work Gallery', href: '/projects/gallery', icon: LayoutGrid },
                 { label: 'About Mwijay', href: '/about', icon: Info },
                 { label: 'Insight Feed', href: '/blog', icon: Newspaper },
-                { label: 'Marketplace', href: '/pricing', icon: ShoppingBag },
+                { label: 'Marketplace', href: '/market', icon: ShoppingBag },
               ].map((link) => (
                 <li key={link.label}>
                   <Link 
@@ -101,7 +101,8 @@ export function Footer() {
               {[
                 { label: 'Web Development', href: '/services/web' },
                 { label: 'AI Automation', href: '/services/automation' },
-                { label: 'Digital Products', href: '/pricing' },
+                { label: 'Service Pricing', href: '/pricing' },
+                { label: 'Content Production', href: '/services/content' },
                 { label: 'Brand Identity', href: '/services/design' }
               ].map((service) => (
                 <li key={service.label}>
@@ -120,7 +121,7 @@ export function Footer() {
             <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-primary">Fulfillment</h3>
             <ul className="space-y-4">
               <li><Link href="/client-portal" className="text-sm font-black text-primary hover:underline">Client Portal Access →</Link></li>
-              <li><Link href="/agreement" className="text-sm font-bold text-muted-foreground hover:text-primary">Start a Project</Link></li>
+              <li><Link href="/agreement" className="text-sm font-bold text-muted-foreground hover:text-primary">Project Agreement</Link></li>
               <li><Link href="/terms" className="text-sm font-bold text-muted-foreground hover:text-primary">Terms of Service</Link></li>
               <li><Link href="/privacy" className="text-sm font-bold text-muted-foreground hover:text-primary">Privacy Policy</Link></li>
             </ul>

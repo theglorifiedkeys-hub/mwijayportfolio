@@ -1,4 +1,5 @@
 'use client';
+import Link from 'next/link';
 
 import React, { useState, useRef } from 'react';
 import { useCollection, useFirestore, useMemoFirebase } from '@/firebase';
@@ -77,6 +78,7 @@ export default function LogosManager() {
 
   return (
     <div className="space-y-10 animate-in fade-in duration-500">
+      <Link href="/about#studio-logos" className="inline-flex text-sm font-semibold underline">Logos on About ↗</Link>
       <div className="flex flex-col gap-2">
         <h3 className="text-2xl font-black font-headline tracking-tight">Logo <span className="text-primary">Marquee</span></h3>
         <p className="text-sm text-muted-foreground font-medium">Manage featured technologies, tools, and partner logos.</p>

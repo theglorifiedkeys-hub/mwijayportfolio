@@ -29,6 +29,8 @@ export const dynamic = 'force-dynamic';
 export default function ClientFilesPage() {
   const { project, isLoading } = useClientPortal();
 
+  const [search,setSearch] = React.useState('');
+  const filtered = (project?.deliverables || []).filter(file=>file.name.toLowerCase().includes(search.toLowerCase().trim()));
   const getFileIcon = (type: string) => {
     const t = type.toLowerCase();
     if (t.includes('pdf')) return { icon: FileText, color: 'text-red-500', bg: 'bg-red-500/10' };
@@ -56,26 +58,26 @@ export default function ClientFilesPage() {
 
   return (
     <div className="space-y-10 animate-in fade-in duration-500">
-      <div className="flex flex-col md:grow justify-between items-start md:items-end gap-6">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
         <div>
-          <h1 className="text-3xl font-black font-headline tracking-tighter">Deliverable <span className="text-primary">Vault</span></h1>
+          <h1 className="text-3xl font-black font-headline tracking-tighter">Project <span className="text-primary">files</span></h1>
           <p className="text-muted-foreground font-medium mt-1">Official files, assets, and project documentation for your build.</p>
         </div>
         <div className="relative w-full md:w-64">
            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-           <input placeholder="Tafuta faili..." className="w-full h-11 bg-zinc-950 border-2 border-white/5 rounded-xl pl-10 text-xs font-bold text-white focus:border-primary outline-none" />
+           <input aria-label="Search project files" value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search files…" className="w-full h-11 bg-zinc-950 border-2 border-white/5 rounded-xl pl-10 text-xs font-bold text-white focus:border-primary outline-none" />
         </div>
       </div>
 
-      {project.deliverables.length === 0 ? (
-        <Card className="rounded-[3rem] border-2 border-dashed bg-zinc-950/40 p-20 flex flex-col items-center justify-center text-center opacity-30">
+      {filtered.length === 0 ? (
+        <Card className="rounded-[3rem] border-2 border-dashed bg-zinc-950/40 p-20 flex flex-col items-center justify-center text-center opacity-80">
           <FolderOpen size={64} className="mb-6 text-muted-foreground" />
-          <h3 className="text-xl font-black uppercase tracking-widest">Vault Empty</h3>
-          <p className="text-sm mt-2 max-w-xs mx-auto">Files and project assets will appear here as the architect completes project milestones.</p>
+          <h3 className="text-xl font-black uppercase tracking-widest">{search ? 'No matching files' : 'No files yet'}</h3>
+          <p className="text-sm mt-2 max-w-xs mx-auto">{search ? 'Try another file name.' : 'Files will appear here when the studio shares a deliverable.'}</p>
         </Card>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {project.deliverables.map((file, idx) => {
+          {filtered.map((file, idx) => {
             const config = getFileIcon(file.fileType);
             return (
               <motion.div 

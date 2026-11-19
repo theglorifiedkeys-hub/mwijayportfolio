@@ -67,6 +67,10 @@ const statusConfig: Record<string, {
   bgColor: string;
   desc: string;
 }> = {
+  PENDING_VERIFY:{label:'Payment under review',icon:Clock,color:'text-orange-500',bgColor:'bg-orange-500/10',desc:'Your payment reference has been submitted. The studio will verify it before granting access.'},
+  VERIFIED:{label:'Payment verified',icon:CheckCircle2,color:'text-green-500',bgColor:'bg-green-500/10',desc:'The studio has verified your payment. Contact the studio for delivery details.'},
+  REJECTED:{label:'Payment not verified',icon:XCircle,color:'text-red-500',bgColor:'bg-red-500/10',desc:'The studio could not verify the payment reference. Please contact the studio.'},
+  unknown:{label:'Contact studio',icon:Clock,color:'text-muted-foreground',bgColor:'bg-muted',desc:'Contact the studio for the current order status.'},
   pending_payment: { 
     label: 'Waiting for Payment', 
     icon: Clock, 
@@ -256,6 +260,7 @@ export default function TrackOrderPage() {
   const [error, setError] = useState<string | null>(null);
   const db = useFirestore();
 
+  React.useEffect(()=>{const id=window.location.hash.slice(1);if(/^MWJ-[0-9]{4}-[a-z0-9]+$/i.test(id))setOrderId(id)},[]);
   const handleTrack = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!orderId || !email) return;
@@ -286,7 +291,7 @@ export default function TrackOrderPage() {
     }
   };
 
-  const currentStatus = order?.status || 'pending_payment';
+  const currentStatus = Object.hasOwn(statusConfig,order?.status) ? order.status : 'unknown';
   const currentMilestone = BUILD_MILESTONES.find(m => m.id === currentStatus);
   const progress = order?.progress || currentMilestone?.progress || 10;
 
@@ -364,7 +369,7 @@ export default function TrackOrderPage() {
                         <h4 className="text-[10px] font-black uppercase tracking-widest text-foreground">Build Progress</h4>
                         <span className="text-xl font-black text-primary">{progress}%</span>
                       </div>
-                      <BuildProgressTimeline currentStatus={currentStatus} progress={progress} />
+                      {currentMilestone || currentStatus==='cancelled' ? <BuildProgressTimeline currentStatus={currentStatus} progress={progress} /> : <p>{statusConfig[currentStatus].label}</p>}
                     </div>
 
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-6">

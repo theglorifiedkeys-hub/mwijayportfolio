@@ -1,4 +1,5 @@
 'use client';
+import Link from 'next/link';
 
 import React from 'react';
 import { ProjectsEditor } from '@/components/admin/projects-editor';
@@ -18,6 +19,7 @@ export default function AdminProjectsPage() {
 
   return (
     <div className="space-y-10">
+      <Link href="/projects/gallery" className="inline-flex text-sm font-semibold underline">Project gallery ↗</Link>
       <div className="flex flex-col gap-2">
         <h1 className="text-3xl font-black font-headline tracking-tighter">Build <span className="text-primary">Registry</span></h1>
         <p className="text-muted-foreground font-medium">Architect and deploy new work gallery entries for your portfolio.</p>

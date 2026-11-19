@@ -40,21 +40,21 @@ export default function ProjectProgressPage() {
 
   const completedMilestones = project.milestones.filter(m => m.status === 'completed');
   const totalMilestones = project.milestones.length;
-  const healthPercent = Math.round((completedMilestones.length / totalMilestones) * 100);
+  const healthPercent = totalMilestones ? Math.round((completedMilestones.length / totalMilestones) * 100) : 0;
 
   return (
     <div className="space-y-10 animate-in fade-in duration-700">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
         <div className="space-y-2">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-[9px] font-black uppercase tracking-widest">
-             <Target className="h-3 w-3" /> System Roadmap
+             <Target className="h-3 w-3" /> Project timeline
           </div>
-          <h1 className="text-3xl md:text-5xl font-black font-headline tracking-tighter uppercase text-white">Build <span className="text-primary italic">Status</span></h1>
-          <p className="text-muted-foreground font-medium max-w-lg">Track the real-time architectural evolution of {project.projectName}.</p>
+          <h1 className="text-3xl md:text-5xl font-black font-headline tracking-tighter uppercase text-white">Project <span className="text-primary italic">milestones</span></h1>
+          <p className="text-muted-foreground font-medium max-w-lg">See completed and upcoming milestones for {project.projectName}.</p>
         </div>
         <div className="bg-zinc-900 border border-white/5 p-6 rounded-3xl flex items-center gap-6 shadow-xl">
            <div className="text-right">
-              <p className="text-[9px] font-black uppercase text-muted-foreground tracking-widest mb-1">Overall Health</p>
+              <p className="text-[9px] font-black uppercase text-muted-foreground tracking-widest mb-1">Milestones complete</p>
               <p className="text-2xl font-black text-white">{healthPercent}%</p>
            </div>
            <div className="h-10 w-px bg-white/10" />
@@ -69,12 +69,12 @@ export default function ProjectProgressPage() {
         <Card className="lg:col-span-8 rounded-[3rem] border-2 bg-zinc-950/40 border-white/5 overflow-hidden shadow-2xl">
           <CardHeader className="p-8 border-b border-white/5 bg-white/[0.02]">
             <CardTitle className="text-xl font-black font-headline flex items-center gap-3 text-white">
-               <GitBranch className="text-primary" /> Milestone Signal Feed
+               <GitBranch className="text-primary" /> Milestone timeline
             </CardTitle>
           </CardHeader>
           <CardContent className="p-8 md:p-12 space-y-0">
              <div className="relative border-l-2 border-white/10 ml-4 pl-10 space-y-16">
-                {project.milestones.sort((a,b) => a.order - b.order).map((m, idx) => {
+                {[...project.milestones].sort((a,b) => a.order - b.order).map((m, idx) => {
                   const isDone = m.status === 'completed';
                   const isCurrent = m.status === 'in_progress';
                   const isUpcoming = m.status === 'pending';

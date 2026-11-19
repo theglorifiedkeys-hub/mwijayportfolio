@@ -22,12 +22,13 @@ export function TeamSection() {
     return query(teamRef, orderBy('order', 'asc'));
   }, [teamRef]);
 
-  const { data: members, isLoading } = useCollection(teamQuery);
+  const { data: members, isLoading } = useCollection(teamQuery,{enabled:!!teamQuery});
 
   if (isLoading) return <div className="flex justify-center p-20"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div>;
 
+  if(!members?.length)return null;
   return (
-    <section className="relative w-full overflow-hidden bg-background py-12 md:py-24 border-t border-border/50">
+    <section id="team" className="relative w-full overflow-hidden bg-background py-12 md:py-24 border-t border-border/50">
       {/* Background Graphic */}
       <div className="absolute right-0 bottom-0 pointer-events-none opacity-10">
         <svg width="460" height="154" viewBox="0 0 460 154" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-primary">
@@ -78,31 +79,7 @@ export function TeamSection() {
           )}
         </div>
 
-        {/* Separated Testimonial Node */}
-        <div className="mx-auto max-w-4xl px-6">
-           <div className="bg-primary/5 p-10 md:p-20 rounded-[3rem] border-2 border-dashed border-primary/20 relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-48 h-48 bg-primary/5 rounded-full blur-[80px] -mr-24 -mt-24" />
-              <div className="relative z-10 text-center space-y-10">
-                 <div className="flex justify-center">
-                    <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
-                       <MessageSquareQuote size={24} />
-                    </div>
-                 </div>
-                 <p className="font-medium text-lg md:text-3xl leading-relaxed italic text-foreground/90">
-                   "The exceptional support from Mwijay's network truly impressed us. We suggested a system improvement, and they implemented it with remarkable speed!"
-                 </p>
-                 <div className="flex flex-col items-center gap-4">
-                    <div className="relative h-16 w-16 overflow-hidden rounded-full border-2 border-primary shadow-xl">
-                      <Image alt="Natalia Kara" className="h-full w-full object-cover" fill src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=200" />
-                    </div>
-                    <div className="text-center">
-                      <p className="font-black font-headline text-lg text-primary uppercase">Natalia Kara</p>
-                      <p className="text-[9px] text-muted-foreground font-black uppercase tracking-widest">CTO · Aymi Africa Strategic Partner</p>
-                    </div>
-                 </div>
-              </div>
-           </div>
-        </div>
+
       </div>
     </section>
   );

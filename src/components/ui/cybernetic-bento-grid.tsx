@@ -50,9 +50,9 @@ export const CyberneticBentoGrid = () => {
     return collection(db, 'users', OWNER_ID, 'services');
   }, [db]);
   
-  const { data: services, isLoading } = useCollectionOnce(servicesRef as any);
+  const { data: services, isLoading } = useCollectionOnce(servicesRef,{enabled:!!servicesRef});
 
-  const items = services || [];
+  const items = (services || []).filter(s=>!s.disabled);
 
   const architectWords = [
     { text: "Architecting" },
@@ -126,7 +126,7 @@ export const CyberneticBentoGrid = () => {
                         <span className="h-1.5 w-1.5 rounded-full bg-green-500 animate-pulse" />
                         SYSTEM_ACTIVE
                      </div>
-                     <Link href={`/services/${item.category || 'web'}`} className="text-[10px] font-black uppercase tracking-widest text-foreground hover:text-primary transition-colors flex items-center gap-1 group/link">
+                     <Link href={['web','design','automation','content'].includes(item.category)?`/services/${item.category}`:'/book'} className="text-[10px] font-black uppercase tracking-widest text-foreground hover:text-primary transition-colors flex items-center gap-1 group/link">
                         DECRYPT NODE <Zap size={10} className="group-hover/link:translate-x-1 transition-transform" />
                      </Link>
                   </div>

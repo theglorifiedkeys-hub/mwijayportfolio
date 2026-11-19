@@ -1,4 +1,5 @@
 'use client';
+import Link from 'next/link';
 
 import React from 'react';
 import { TestimonialsManager } from '@/components/admin/testimonials-manager';
@@ -16,6 +17,7 @@ export default function AdminTestimonialsPage() {
 
   return (
     <div className="space-y-10">
+      <Link href="/about#client-testimonials" className="inline-flex text-sm font-semibold underline">Testimonials on About ↗</Link>
       <div className="flex flex-col gap-2">
         <h1 className="text-3xl font-black font-headline tracking-tighter">Voice <span className="text-primary">Registry</span></h1>
         <p className="text-muted-foreground font-medium">Manage client endorsements and professional praise signals.</p>

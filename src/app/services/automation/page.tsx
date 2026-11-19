@@ -23,11 +23,11 @@ export default function AutomationPage() {
     return query(collection(db, 'users', OWNER_ID, 'services'));
   }, [db]);
 
-  const { data: services, isLoading } = useCollection(servicesRef);
+  const { data: services, isLoading } = useCollection(servicesRef,{enabled:!!servicesRef});
 
   const automationServices = React.useMemo(() => {
     if (!services) return [];
-    return services.filter((s: any) => s.category === 'automation');
+    return services.filter((s: any) => !s.disabled && s.category === 'automation');
   }, [services]);
 
   const words = [
@@ -60,7 +60,7 @@ export default function AutomationPage() {
               <BlurFade delay={0.7} inView>
                 <div className="flex flex-wrap justify-center lg:justify-start gap-4 pt-4 md:pt-8">
                   <Button size="lg" className="rounded-full h-12 md:h-16 px-8 md:px-10 bg-yellow-600 hover:bg-yellow-700 font-bold text-sm md:text-lg shadow-2xl shadow-yellow-600/20 text-white" asChild>
-                    <Link href="/book">Start This Project <ArrowRight className="ml-2 h-4 w-4" /></Link>
+                    <Link href="/book?services=ai_automation">Start This Project <ArrowRight className="ml-2 h-4 w-4" /></Link>
                   </Button>
                 </div>
               </BlurFade>
@@ -194,7 +194,7 @@ automation:
               </p>
               <div className="pt-4 md:pt-8">
                 <Button size="lg" variant="secondary" className="rounded-full h-12 md:h-16 px-8 md:px-12 text-sm md:text-lg font-black uppercase tracking-widest bg-white text-primary hover:bg-white/90" asChild>
-                  <Link href="/book">Start This Project <ArrowRight className="ml-2 h-4 w-4" /></Link>
+                  <Link href="/book?services=ai_automation">Start This Project <ArrowRight className="ml-2 h-4 w-4" /></Link>
                 </Button>
               </div>
             </div>

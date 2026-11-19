@@ -30,7 +30,7 @@ export function LogosMarquee() {
   // MEMORY FILTER: Bypasses the need for a composite index
   const logos = React.useMemo(() => {
     if (!rawLogos) return [];
-    return rawLogos.filter((l: any) => l.isVisible !== false);
+    return rawLogos.filter((l: any) => l.isVisible === true);
   }, [rawLogos]);
 
   if (!db || isLoading || !logos || logos.length === 0) return null;
@@ -51,7 +51,7 @@ export function LogosMarquee() {
   );
 
   return (
-    <section className="py-16 bg-[#07080c] border-y border-white/5 overflow-hidden">
+    <section id="studio-logos" className="py-16 bg-[#07080c] border-y border-white/5 overflow-hidden">
       <style dangerouslySetInnerHTML={{ __html: `
         @keyframes marquee-scroll {
           from { transform: translateX(0); }

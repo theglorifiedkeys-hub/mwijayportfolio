@@ -30,7 +30,7 @@ export default function ExperiencePage() {
 
           {/* VERIFIED CERTIFICATIONS HUB */}
           <FadeContent threshold={0.1}>
-            <div className="pt-12 border-t border-border/50">
+            <div id="awards" className="pt-12 border-t border-border/50">
                <div className="text-center space-y-4 mb-16">
                  <h2 className="text-3xl md:text-5xl font-headline font-black tracking-tighter">Recognitions <span className="text-primary italic">& Awards</span></h2>
                  <p className="text-muted-foreground text-sm md:text-lg max-w-xl mx-auto">Verified certifications and professional honors from industry leaders.</p>

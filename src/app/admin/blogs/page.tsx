@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import React from 'react';
 import { BlogEditor } from '@/components/admin/blog-editor';
 import { useUser } from '@/firebase';
@@ -19,6 +20,7 @@ export default function AdminBlogsPage() {
 
   return (
     <div className="space-y-10">
+      <Link href="/blog" className="inline-flex text-sm font-semibold underline">Open public blog ↗</Link>
       <BlogEditor />
     </div>
   );

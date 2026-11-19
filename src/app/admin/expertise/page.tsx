@@ -2,8 +2,8 @@
 
 import React, { useState } from 'react';
 import { ServicesEditor } from '@/components/admin/services-editor';
-import { useUser, useFirestore, useDoc, useMemoFirebase } from '@/firebase';
-import { doc } from 'firebase/firestore';
+import { useUser, useFirestore, useCollection, useMemoFirebase } from '@/firebase';
+import { collection } from 'firebase/firestore';
 import { Loader2, Grid3x3, Eye, EyeOff, Sparkles, Code2, Zap, Package, TrendingUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -89,16 +89,10 @@ export default function AdminExpertisePage() {
   const db = useFirestore();
   const [previewMode, setPreviewMode] = useState(false);
 
-  // Fetch profile to get services count
-  const profileRef = useMemoFirebase(() => {
-    if (!db) return null;
-    return doc(db, 'users', OWNER_ID);
-  }, [db]);
-  
-  const { data: profile } = useDoc(profileRef);
-
-  const servicesCount = profile?.services?.length || 0;
-  const activeServices = profile?.services?.filter((s: any) => !s.disabled)?.length || 0;
+  const servicesRef=useMemoFirebase(()=>db?collection(db,'users',OWNER_ID,'services'):null,[db]);
+  const {data:services}=useCollection(servicesRef,{enabled:!!servicesRef});
+  const servicesCount=services?.length ?? 0;
+  const activeServices=services?.filter(s=>!s.disabled).length ?? 0;
 
   /* ══════════════════════════════════════
      LOADING STATE
@@ -159,7 +153,7 @@ export default function AdminExpertisePage() {
             className="h-11 px-6 rounded-xl font-black uppercase tracking-wider text-[10px] gap-2 shadow-lg shadow-primary/20"
             asChild
           >
-            <Link href="/" target="_blank">
+            <Link href="/#expertise" target="_blank">
               <Code2 size={16} /> View Live Site
             </Link>
           </Button>
@@ -250,7 +244,7 @@ export default function AdminExpertisePage() {
                     className="h-12 px-8 rounded-2xl font-black uppercase tracking-widest text-xs gap-2 shadow-lg shadow-primary/20"
                     asChild
                   >
-                    <Link href="/" target="_blank">
+                    <Link href="/#expertise" target="_blank">
                       <Code2 size={16} /> Open Home Page
                     </Link>
                   </Button>

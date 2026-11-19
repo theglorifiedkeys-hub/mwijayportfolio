@@ -14,9 +14,19 @@ import {
 } from "lucide-react";
 import { gsap } from "gsap";
 import { reviewed, ventures, work } from "@/lib/portfolio";
-import "./portfolio.css";
+import {
+  Library,
+  JournalShelf,
+  Guides,
+  StudioDirectory,
+} from "@/components/resources/studio-library";
+import { AnnouncementBanner } from '@/components/announcement-banner';
+import { CyberneticBentoGrid } from '@/components/ui/cybernetic-bento-grid';
+import { LogosMarquee } from '@/components/sections/logos-marquee';
+import Testimonials from '@/components/sections/testimonials';
+import './portfolio.css';
 
-type Page = "home" | "work" | "about";
+type Page = "home" | "work" | "about" | "library" | "market";
 const art = "/portfolio/";
 const scenes = [
   { name: "Copper relief", file: "studio-relief.jpg" },
@@ -79,6 +89,8 @@ function Header({ page }: { page: Page }) {
               ["home", "Index", "/"],
               ["work", "Work", "/projects"],
               ["about", "About", "/about"],
+              ["library", "Library", "/library"],
+              ["market", "Market", "/market"],
             ] as const
           ).map(([key, label, url]) => (
             <Link
@@ -131,7 +143,11 @@ function Footer() {
         </div>
         <div className="ed-foot-base">
           <span>© 2026 Mwijay Davie</span>
+          <Link href="/agreement">Agreement</Link>
+          <Link href="/terms">Terms</Link>
+          <Link href="/privacy">Privacy</Link>
           <Link href="/login">Studio access</Link>
+          <Link href="/client-portal">Client portal</Link>
           <Link href="/about">About</Link>
           <a href="https://github.com/mwijay12">GitHub ↗</a>
           <a href="https://www.linkedin.com/in/mwijay-davie">LinkedIn ↗</a>
@@ -439,6 +455,7 @@ function About() {
             <Link href="/projects" className="ed-primary">
               See my work <ArrowUpRight size={16} />
             </Link>
+            <Link href="/experience" className="ed-text-link ml-4">Experience & awards <ArrowUpRight size={16}/></Link>
           </div>
           <figure className="ed-portrait">
             <div className="ed-print-label">
@@ -469,6 +486,8 @@ function About() {
         </p>
       </div>
       <Ventures />
+      <LogosMarquee/>
+      <Testimonials/>
     </>
   );
 }
@@ -480,7 +499,7 @@ export function Folio({ page = "home" }: { page?: Page }) {
       "(prefers-reduced-motion: no-preference)",
       () => {
         const intro = root.current?.querySelector(
-          ".ed-intro, .ed-bio-grid, .ed-subhero .ed-wrap",
+          ".ed-intro, .ed-bio-grid, .ed-subhero .ed-wrap, .rs-cover",
         );
         if (!intro) return;
         const lines = intro.querySelectorAll(".ed-title-mask > *");
@@ -510,6 +529,7 @@ export function Folio({ page = "home" }: { page?: Page }) {
   }, [page]);
   return (
     <div className="ed" ref={root}>
+      <AnnouncementBanner inline/>
       <Header page={page} />
       <main>
         {page === "home" ? (
@@ -517,7 +537,15 @@ export function Folio({ page = "home" }: { page?: Page }) {
             <Hero />
             <FeatureSection />
             <Ventures />
+            <div className="rs-library">
+              <JournalShelf />
+              <Guides />
+              <StudioDirectory />
+              <div id="expertise"><CyberneticBentoGrid/></div>
+            </div>
           </>
+        ) : page === "library" || page === "market" ? (
+          <Library market={page === "market"} />
         ) : page === "about" ? (
           <About />
         ) : (

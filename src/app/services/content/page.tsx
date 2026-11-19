@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { ServiceEditions } from '@/components/service-editions';
 import { Footer } from "@/components/footer";
 import FadeContent from "@/components/ui/fade-content";
 import { Button } from "@/components/ui/button";
@@ -58,7 +59,7 @@ export default function ContentPage() {
             <BlurFade delay={0.7}>
               <div className="flex flex-wrap justify-center gap-4 pt-8">
                 <Button size="lg" className="rounded-full h-12 md:h-16 px-10 bg-pink-600 hover:bg-pink-700 font-black uppercase tracking-widest text-xs md:text-sm text-white" asChild>
-                  <Link href="/book">Initialize Build <ArrowRight className="ml-2 h-5 w-5" /></Link>
+                  <Link href="/book?services=content_production">Initialize Build <ArrowRight className="ml-2 h-5 w-5" /></Link>
                 </Button>
               </div>
             </BlurFade>
@@ -85,12 +86,14 @@ export default function ContentPage() {
                     ))}
                   </div>
                   <Button className="w-full rounded-2xl h-14 font-black uppercase tracking-widest text-[10px] bg-pink-600 hover:bg-pink-700 mt-auto shadow-lg shadow-pink-600/20 text-white" asChild>
-                    <Link href="/book">Select Asset Build</Link>
+                    <Link href="/book?services=content_production">Select Asset Build</Link>
                   </Button>
                 </div>
               </FadeContent>
             ))}
           </div>
+
+          <ServiceEditions category="content"/>
 
           {/* Bottom CTA */}
           <section className="bg-secondary/30 rounded-[3rem] p-12 md:p-24 text-center space-y-8 relative overflow-hidden shadow-2xl border-2 border-dashed">
@@ -99,7 +102,7 @@ export default function ContentPage() {
                 <p className="text-muted-foreground max-w-2xl mx-auto text-lg font-medium">Get a custom proposal and technical roadmap for your vision within 24 hours.</p>
                 <div className="pt-8">
                    <Button size="lg" className="rounded-full h-16 px-12 text-sm md:text-lg font-black uppercase tracking-widest bg-primary text-white shadow-xl shadow-primary/20" asChild>
-                      <Link href="/book">Initialize Build <ArrowRight className="ml-2" /></Link>
+                      <Link href="/book?services=content_production">Initialize Build <ArrowRight className="ml-2" /></Link>
                    </Button>
                 </div>
              </div>

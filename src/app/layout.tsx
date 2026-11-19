@@ -60,7 +60,7 @@ export const metadata: Metadata = {
     shortcut: '/favicon-32x32.png',
     apple: '/apple-touch-icon.png',
   },
-  manifest: '/manifest.json',
+  manifest: '/manifest.webmanifest',
   openGraph: {
     title: 'Mwijay Davie — Altraware Co-founder & Creative Technologist',
     description: 'Selected software projects from Altraware and Mwijay Studio, Dar es Salaam.',

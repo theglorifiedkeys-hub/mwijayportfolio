@@ -8,6 +8,7 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import Link from 'next/link';
 import { cn } from '@/lib/utils';
 
 type Question = {
@@ -30,7 +31,7 @@ const QUESTIONS: Question[] = [
   { id: 10, category: "Architecture", q: "Explain your provider pattern (FirebaseClientProvider).", a: "The FirebaseClientProvider wraps the entire app. It ensures that the Firebase JS SDK is initialized exactly once on the client-side and provides the Auth and Firestore instances to all children via React Context." }
 ];
 
-const CATEGORIES = ["All", "Architecture", "Security", "Performance", "Professional", "Technical"];
+const CATEGORIES = ['All', ...new Set(QUESTIONS.map(q=>q.category))];
 
 export default function InterviewPrepPage() {
   const [search, setSearch] = useState('');
@@ -77,6 +78,7 @@ export default function InterviewPrepPage() {
           }
         `}} />
         
+        <Link href="/library" className="no-print text-sm underline">← Studio library</Link>
         <header className="space-y-6 text-center border-b border-white/5 pb-12">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-[10px] font-black uppercase tracking-widest border border-primary/20">
             <Shield className="h-3.5 w-3.5" /> Technical Mastery

@@ -29,8 +29,8 @@ service cloud.firestore {
     match /announcements/{docId} { allow read: if true; allow write: if isAdmin(); }
     match /logos/{docId} { allow read: if true; allow write: if isAdmin(); }
     match /projects/{docId} { allow read: if true; allow write: if isAdmin(); }
-    match /blogs/{docId} { allow read: if true; allow write: if isAdmin(); }
-    match /products/{docId} { allow read: if true; allow write: if isAdmin(); }
+    match /blogs/{docId} { allow read: if resource.data.isPublished == true || isAdmin(); allow write: if isAdmin(); }
+    match /products/{docId} { allow read: if resource.data.isAvailable == true || isAdmin(); allow write: if isAdmin(); }
     match /site_config/{docId} { allow read: if true; allow write: if isAdmin(); }
     match /testimonials/{docId} { allow read: if true; allow write: if isAdmin(); }
     match /packages/{docId} { allow read: if true; allow write: if isAdmin(); }
@@ -70,7 +70,11 @@ service cloud.firestore {
 
     // Orders Registry - GUEST ACCESSIBLE VIA ID
     match /orders/{orderId} {
-      allow create: if true;
+      allow create: if request.resource.data.orderId == orderId
+        && request.resource.data.status == 'PENDING_VERIFY'
+        && request.resource.data.accessGranted == false
+        && ((request.auth == null && request.resource.data.uid == 'anonymous')
+          || (request.auth != null && request.resource.data.uid == request.auth.uid));
       // Allow specific GET if doc ID matches orderId (provided by client)
       allow get: if true; 
       // Allow protected LIST for owners and admin

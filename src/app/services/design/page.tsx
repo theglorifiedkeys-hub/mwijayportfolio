@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { ServiceEditions } from '@/components/service-editions';
 import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -10,6 +11,7 @@ import {
 } from "lucide-react";
 import { DesignShowcase } from "@/components/design-showcase";
 import { BookGallery } from "@/components/book-gallery";
+import Testimonials from '@/components/sections/testimonials';
 import { TeamSection } from "@/components/ui/team";
 import { BlurFade } from "@/components/ui/blur-fade";
 import { TypewriterEffect } from "@/components/ui/typewriter-effect";
@@ -106,7 +108,7 @@ function DesignTierCard({ tier, index }: { tier: typeof designTiers[0]; index: n
 
           <MagneticButton className="w-full">
             <Button className="w-full rounded-2xl h-14 font-black uppercase tracking-widest text-[10px] bg-primary text-white hover:bg-primary/90 transition-all gap-2">
-              <Link href="/book" className="w-full flex items-center justify-center gap-2">
+              <Link href="/book?services=design_branding" className="w-full flex items-center justify-center gap-2">
                 Select Tier <ArrowRight size={14} />
               </Link>
             </Button>
@@ -168,7 +170,7 @@ export default function DesignPage() {
                     className="rounded-full h-16 px-12 bg-primary text-white hover:bg-primary/90 font-black uppercase tracking-widest text-xs shadow-2xl shadow-primary/20 hover:scale-105 transition-all gap-2"
                     asChild
                   >
-                    <Link href="/book">
+                    <Link href="/book?services=design_branding">
                       Initialize Build <ArrowRight size={18} />
                     </Link>
                   </Button>
@@ -227,9 +229,12 @@ export default function DesignPage() {
             </div>
           </section>
 
+          <ServiceEditions category="design"/>
+
           {/* ══ TEAM SECTION ══ */}
           <ScrollReveal direction="up">
             <TeamSection />
+            <Testimonials/>
           </ScrollReveal>
 
           {/* ══ FINAL CTA ══ */}
@@ -254,7 +259,7 @@ export default function DesignPage() {
                       className="rounded-full h-16 px-12 bg-white text-primary hover:bg-white/90 font-black uppercase tracking-widest text-xs gap-2 shadow-2xl hover:scale-105 transition-all"
                       asChild
                     >
-                      <Link href="/book">
+                      <Link href="/book?services=design_branding">
                         Start Now <ArrowRight size={18} />
                       </Link>
                     </Button>

@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import React from 'react';
 import { ProductsEditor } from '@/components/admin/products-editor';
 import { useUser } from '@/firebase';
@@ -20,6 +21,7 @@ export default function AdminMarketPage() {
         <h1 className="text-3xl font-black font-headline tracking-tighter">Marketplace <span className="text-primary">Registry</span></h1>
         <p className="text-muted-foreground font-medium">Manage digital products, bundles, and creative assets for sale.</p>
       </div>
+      <Link href="/market" className="inline-flex text-sm font-semibold underline">Open public market ↗</Link>
       <ProductsEditor />
     </div>
   );

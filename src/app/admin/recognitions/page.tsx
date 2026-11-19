@@ -1,4 +1,5 @@
 'use client';
+import Link from 'next/link';
 
 import React from 'react';
 import { RecognitionsEditor } from '@/components/admin/recognitions-editor';
@@ -18,6 +19,7 @@ export default function AdminRecognitionsPage() {
 
   return (
     <div className="space-y-10">
+      <Link href="/experience#awards" className="inline-flex text-sm font-semibold underline">Experience & awards ↗</Link>
       <div className="flex flex-col gap-2">
         <h1 className="text-3xl font-black font-headline tracking-tighter">Award <span className="text-primary">Registry</span></h1>
         <p className="text-muted-foreground font-medium">Manage your verified certifications, honors, and professional honors.</p>

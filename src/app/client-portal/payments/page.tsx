@@ -37,12 +37,12 @@ export default function ClientPaymentsPage() {
   }
 
   const balance = project.totalAmount - project.amountPaid;
-  const payPercent = Math.min((project.amountPaid / project.totalAmount) * 100, 100);
+  const payPercent = project.totalAmount > 0 ? Math.min((project.amountPaid / project.totalAmount) * 100, 100) : 0;
 
   return (
     <div className="space-y-10 animate-in fade-in duration-500">
       <div>
-        <h1 className="text-3xl font-black font-headline tracking-tighter">Finance <span className="text-primary">Registry</span></h1>
+        <h1 className="text-3xl font-black font-headline tracking-tighter">Project <span className="text-primary">payments</span></h1>
         <p className="text-muted-foreground font-medium mt-1">Hali ya malipo na maelekezo ya miamala kwa ajili ya mradi wako.</p>
       </div>
 
@@ -134,7 +134,7 @@ export default function ClientPaymentsPage() {
                 <div className="h-16 w-16 bg-white/20 rounded-[2rem] flex items-center justify-center">
                   <MessageCircle size={32} />
                 </div>
-                <h3 className="text-3xl font-black font-headline tracking-tighter leading-tight uppercase">Confirm Signal</h3>
+                <h3 className="text-3xl font-black font-headline tracking-tighter leading-tight uppercase">Confirm payment</h3>
                 <p className="text-white/70 font-medium leading-relaxed">
                   Baada ya kufanya malipo kupitia namba zozote hapo pembeni, tafadhali tuma picha (screenshot) ya muamala kule WhatsApp kwa ajili ya uhakiki wa haraka (Quick Verification).
                 </p>

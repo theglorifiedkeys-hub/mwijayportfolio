@@ -3,8 +3,8 @@
 
 import React, { useState, useRef } from 'react';
 import { useCollection, useFirestore, useMemoFirebase } from '@/firebase';
-import { collection, doc, serverTimestamp } from 'firebase/firestore';
-import { addDocumentNonBlocking, updateDocumentNonBlocking, deleteDocumentNonBlocking } from '@/firebase/non-blocking-updates';
+import { collection, doc, addDoc, updateDoc, deleteDoc, serverTimestamp } from 'firebase/firestore';
+import {listingPrice} from '@/lib/public-catalog';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -23,6 +23,7 @@ export function ProductsEditor() {
   }, [firestore]);
   const { data: products, isLoading } = useCollection(productsRef);
   const [newProduct, setNewProduct] = useState({ title: '', price: '', description: '', category: 'bundle', imageUrl: '', isAvailable: true });
+  const [saving,setSaving]=useState(false);
   const [uploading, setUploading] = useState(false);
   const { toast } = useToast();
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -43,28 +44,17 @@ export function ProductsEditor() {
     }
   };
 
-  const handleAdd = () => {
-    if (!newProduct.title || !newProduct.price || !productsRef) return;
-    addDocumentNonBlocking(productsRef, {
-      ...newProduct,
-      createdAt: serverTimestamp(),
-    });
-    setNewProduct({ title: '', price: '', description: '', category: 'bundle', imageUrl: '', isAvailable: true });
-    toast({ title: "Product Deployed", description: "Listing is now live in the marketplace." });
+  const handleAdd = async () => {
+    if (!productsRef||saving) return;
+    const price=listingPrice(newProduct.price);
+    if (!newProduct.title.trim()||price===null){toast({variant:'destructive',title:'Add a title and a positive whole TZS price.'});return}
+    setSaving(true);
+    try{await addDoc(productsRef,{...newProduct,title:newProduct.title.trim(),price,createdAt:serverTimestamp()});
+      setNewProduct({title:'',price:'',description:'',category:'bundle',imageUrl:'',isAvailable:true});toast({title:'Listing published to the market'});
+    }catch{toast({variant:'destructive',title:'Listing could not be saved'})}finally{setSaving(false)}
   };
-
-  const handleDelete = (id: string) => {
-    if (!confirm("Remove this product from store?") || !firestore) return;
-    const docRef = doc(firestore, 'products', id);
-    deleteDocumentNonBlocking(docRef);
-  };
-
-  const handleToggleAvailability = (id: string, current: boolean) => {
-    if (!firestore) return;
-    const docRef = doc(firestore, 'products', id);
-    updateDocumentNonBlocking(docRef, { isAvailable: !current });
-  };
-
+  const handleDelete=async(id:string)=>{if(!firestore||!confirm('Remove this product from the store?'))return;try{await deleteDoc(doc(firestore,'products',id))}catch{toast({variant:'destructive',title:'Product could not be removed'})}};
+  const handleToggleAvailability=async(id:string,current:boolean)=>{if(!firestore)return;try{await updateDoc(doc(firestore,'products',id),{isAvailable:!current})}catch{toast({variant:'destructive',title:'Availability could not be updated'})}};
   if (isLoading) return <div className="flex justify-center p-20"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div>;
 
   return (
@@ -119,7 +109,7 @@ export function ProductsEditor() {
                 </Button>
                 <input type="file" ref={fileInputRef} className="hidden" accept="image/*" onChange={handleFileUpload} />
               </div>
-              <Button onClick={handleAdd} className="w-full h-14 rounded-2xl font-black uppercase tracking-widest text-xs gap-2 mt-4 shadow-lg shadow-primary/20">
+              <Button disabled={saving||uploading} onClick={handleAdd} className="w-full h-14 rounded-2xl font-black uppercase tracking-widest text-xs gap-2 mt-4 shadow-lg shadow-primary/20">
                 <Save className="h-4 w-4" /> Deploy Listing
               </Button>
             </CardContent>

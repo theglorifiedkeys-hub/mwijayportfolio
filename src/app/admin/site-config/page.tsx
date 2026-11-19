@@ -1,8 +1,9 @@
 'use client';
 
+import Link from 'next/link';
 import React, { useState, useEffect, useRef } from 'react';
 import { useDoc, useFirestore, useMemoFirebase } from '@/firebase';
-import { doc, updateDoc, serverTimestamp, getDoc, setDoc } from 'firebase/firestore';
+import { doc, serverTimestamp, writeBatch } from 'firebase/firestore';
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
@@ -28,14 +29,14 @@ export default function SiteConfigPage() {
     if (!db) return null;
     return doc(db, 'site_config', 'stats');
   }, [db]);
-  const { data: stats, isLoading: isStatsLoading } = useDoc(statsRef);
+  const { data: stats, isLoading: isStatsLoading,error:statsError } = useDoc(statsRef);
 
   // Manifest Reference
   const manifestRef = useMemoFirebase(() => {
     if (!db) return null;
     return doc(db, 'site_config', 'manifest');
   }, [db]);
-  const { data: manifest, isLoading: isManifestLoading } = useDoc(manifestRef);
+  const { data: manifest, isLoading: isManifestLoading,error:manifestError } = useDoc(manifestRef);
   
   const [statsData, setStatsData] = useState<any>(null);
   const [manifestData, setManifestData] = useState<any>(null);
@@ -46,13 +47,15 @@ export default function SiteConfigPage() {
   const icon512Ref = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    if (stats) {
+    if (!isStatsLoading && !statsError) {
       setStatsData({
         ...stats,
-        brandColors: stats.brandColors || ['#1e3a5f', '#3182ce', '#7c3aed', '#10b981', '#f59e0b', '#e11d48']
+        availableForWork: stats?.availableForWork ?? false,
+        projectsCompleted: stats?.projectsCompleted ?? 0, happyClients: stats?.happyClients ?? 0,
+        brandColors: stats?.brandColors || ['#1e3a5f', '#3182ce', '#7c3aed', '#10b981', '#f59e0b', '#e11d48']
       });
     }
-  }, [stats]);
+  }, [stats,isStatsLoading,statsError]);
 
   useEffect(() => {
     if (manifest) {
@@ -73,18 +76,10 @@ export default function SiteConfigPage() {
     if (!db || !statsData || !manifestData) return;
     setSaving(true);
     try {
-      await updateDoc(statsRef!, {
-        ...statsData,
-        updatedAt: serverTimestamp()
-      });
-
-      const mSnap = await getDoc(manifestRef!);
-      if (!mSnap.exists()) {
-        await setDoc(manifestRef!, { ...manifestData, createdAt: serverTimestamp() });
-      } else {
-        await updateDoc(manifestRef!, manifestData);
-      }
-
+      const batch=writeBatch(db);
+      batch.set(statsRef!,{...statsData,updatedAt:serverTimestamp()},{merge:true});
+      batch.set(manifestRef!,manifestData,{merge:true});
+      await batch.commit();
       toast({ title: "Registry Updated", description: "Global configuration synced successfully." });
     } catch (err: any) {
       toast({ variant: "destructive", title: "Sync Failed", description: err.message });
@@ -115,6 +110,7 @@ export default function SiteConfigPage() {
     }
   };
 
+  if (statsError || manifestError || !db) return <p role="alert">Site configuration could not be loaded. Check your connection and workspace permissions.</p>;
   if (isStatsLoading || isManifestLoading || !statsData || !manifestData) return (
     <div className="flex justify-center p-20">
       <Loader2 className="h-8 w-8 animate-spin text-primary" />
@@ -128,6 +124,7 @@ export default function SiteConfigPage() {
         <p className="text-sm text-muted-foreground font-medium">Manage global visibility signals, PWA manifest, and Brand Identity colors.</p>
       </div>
 
+      <Link href="/#studio-services" className="inline-flex text-sm font-semibold underline">View public studio directory ↗</Link>
       <Tabs defaultValue="status" className="w-full">
          <TabsList className="bg-muted/50 p-1 rounded-2xl border-2 mb-10 w-fit mx-auto lg:mx-0">
             <TabsTrigger value="status" className="rounded-xl px-8 font-black uppercase text-[10px] tracking-widest gap-2">
@@ -164,11 +161,11 @@ export default function SiteConfigPage() {
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label className="text-[10px] font-black uppercase tracking-widest ml-1 text-foreground">Projects Completed</Label>
-                      <Input type="number" value={statsData.projectsCompleted} onChange={(e) => setStatsData({...statsData, projectsCompleted: parseInt(e.target.value)})} className="h-12 rounded-2xl border-2 bg-background" />
+                      <Input type="number" value={statsData.projectsCompleted} onChange={(e) => setStatsData({...statsData, projectsCompleted: Math.max(0, Number(e.target.value) || 0)})} className="h-12 rounded-2xl border-2 bg-background" />
                     </div>
                     <div className="space-y-2">
                       <Label className="text-[10px] font-black uppercase tracking-widest ml-1 text-foreground">Happy Clients</Label>
-                      <Input type="number" value={statsData.happyClients} onChange={(e) => setStatsData({...statsData, happyClients: parseInt(e.target.value)})} className="h-12 rounded-2xl border-2 bg-background" />
+                      <Input type="number" value={statsData.happyClients} onChange={(e) => setStatsData({...statsData, happyClients: Math.max(0, Number(e.target.value) || 0)})} className="h-12 rounded-2xl border-2 bg-background" />
                     </div>
                   </div>
                 </CardContent>
@@ -222,7 +219,7 @@ export default function SiteConfigPage() {
                <CardContent className="p-8 space-y-10">
                   <div className="p-6 rounded-3xl bg-primary/5 border-2 border-dashed border-primary/20">
                      <p className="text-xs font-bold text-muted-foreground uppercase leading-relaxed">
-                        These colors populate the **Expertise Matrix** and **Design Showcase**. Use high-contrast hex codes for the best industrial aesthetic.
+                        These colors populate the expertise and design showcases. Use high-contrast hex codes for the best industrial aesthetic.
                      </p>
                   </div>
 
@@ -272,7 +269,7 @@ export default function SiteConfigPage() {
                 <div className="p-5 rounded-2xl bg-amber-500/5 border border-amber-500/20 flex gap-4">
                    <Zap className="text-amber-500 h-5 w-5 shrink-0" />
                    <p className="text-[10px] font-bold text-amber-600 dark:text-amber-400 uppercase leading-relaxed">
-                      Pro Tip: The icons below update your Browser Favicon and PWA installation prompts. Use square PNGs (background transparent if needed).
+                      The icons below update your installed app’s manifest. Use square PNGs (background transparent if needed).
                    </p>
                 </div>
 
@@ -287,9 +284,10 @@ export default function SiteConfigPage() {
                    </div>
                 </div>
 
+                <div className="grid grid-cols-2 gap-6">{(['theme_color','background_color'] as const).map(key=><label key={key} className="space-y-2 text-sm font-semibold block">{key==='theme_color'?'Installed app theme':'App background'}<Input aria-label={key} type="color" value={manifestData[key] || (key==='theme_color'?'#171815':'#07080c')} onChange={e=>setManifestData({...manifestData,[key]:e.target.value})}/></label>)}</div>
                 <div className="grid grid-cols-2 gap-8 pt-8 border-t border-border/50">
                   <div className="space-y-4 text-center">
-                    <Label className="text-[9px] font-black uppercase tracking-widest block text-foreground">Primary Favicon (192x192)</Label>
+                    <Label className="text-[9px] font-black uppercase tracking-widest block text-foreground">App Icon (192x192)</Label>
                     <div className="h-32 w-32 rounded-3xl border-2 bg-muted overflow-hidden mx-auto shadow-inner relative group border-border/50">
                       {manifestData.icon192 ? <img src={manifestData.icon192} className="w-full h-full object-contain p-4" alt="192" /> : <div className="h-full w-full flex items-center justify-center opacity-20"><ImageIcon size={48} /></div>}
                       <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">

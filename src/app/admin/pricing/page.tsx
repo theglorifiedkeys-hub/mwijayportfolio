@@ -1,4 +1,5 @@
 'use client';
+import Link from 'next/link';
 
 import React from 'react';
 import { PricingEditor } from '@/components/admin/pricing-editor';
@@ -16,6 +17,7 @@ export default function AdminPricingPage() {
 
   return (
     <div className="space-y-10">
+      <Link href="/pricing" className="inline-flex text-sm font-semibold underline">Service pricing ↗</Link>
       <div className="flex flex-col gap-2">
         <h1 className="text-3xl font-black font-headline tracking-tighter">Revenue <span className="text-primary">Matrix</span></h1>
         <p className="text-muted-foreground font-medium">Configure service tiers and TZS pricing models for your business.</p>
