@@ -8,8 +8,6 @@ import Link from "next/link";
 import { Video, Music, Camera, Share2, CheckCircle2, ShieldCheck, Database, Layers, ArrowRight } from "lucide-react";
 import Image from "next/image";
 import { BlurFade } from "@/components/ui/blur-fade";
-import { TypewriterEffect } from "@/components/ui/typewriter-effect";
-import { StickyCards } from "@/components/ui/sticky-cards";
 
 const contentServices = [
   {
@@ -36,12 +34,6 @@ const contentServices = [
 ];
 
 export default function ContentPage() {
-  const words = [
-    { text: "Professional" },
-    { text: "Multimedia", className: "text-primary" },
-    { text: "Content", className: "text-primary" },
-  ];
-
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
       <main className="pt-32 pb-24">
@@ -51,15 +43,15 @@ export default function ContentPage() {
             <BlurFade>
               <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-pink-500/10 text-pink-600 text-[10px] font-black uppercase tracking-[0.3em] mb-4 border border-pink-500/20">
                 <Share2 className="h-4 w-4" />
-                Strategic Multimedia Matrix
+                Content services · Dar es Salaam
               </div>
             </BlurFade>
             
-            <TypewriterEffect words={words} className="text-3xl sm:text-5xl md:text-8xl font-headline font-black tracking-tighter leading-[0.9] text-center text-foreground" />
+            <h1 className="text-3xl sm:text-5xl md:text-8xl font-headline font-black tracking-tighter leading-[0.9] text-center text-foreground">Video, audio &amp; photography</h1>
             
             <BlurFade delay={0.5}>
               <p className="text-base md:text-xl text-muted-foreground font-medium leading-relaxed max-w-2xl mx-auto mt-6">
-                We don't just "create content." We architect high-fidelity visual and auditory experiences designed to scale your brand authority in the 2026 digital economy.
+                Video editing, original beats, sound design and product photography by Mwijay Davie in Dar es Salaam.
               </p>
             </BlurFade>
             
@@ -72,9 +64,6 @@ export default function ContentPage() {
             </BlurFade>
           </section>
 
-          <section className="py-20">
-            <StickyCards />
-          </section>
 
           {/* Service Matrix */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pt-20 border-t border-border/50">

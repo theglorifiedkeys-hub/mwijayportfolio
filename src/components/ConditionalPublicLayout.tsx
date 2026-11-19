@@ -28,7 +28,7 @@ export function ConditionalPublicLayout({ children }: { children: React.ReactNod
     pathname?.startsWith('/login') || 
     pathname?.startsWith('/client-portal');
 
-  if (isDashboardRoute) {
+  if (isDashboardRoute || pathname === '/' || pathname === '/projects') {
     return <>{children}</>;
   }
 

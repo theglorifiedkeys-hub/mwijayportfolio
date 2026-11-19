@@ -42,13 +42,10 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
   title: {
-    template: '%s | Mwijay Services',
-    default: 'Mwijay Services | Web Developer & AI Specialist in Tanzania',
+    template: '%s | Mwijay Davie',
+    default: 'Mwijay Davie — Altraware Co-founder & Creative Technologist',
   },
-  description: 'Professional web development, AI automation, and digital solutions by Mwijay Davie. Based in Dar es Salaam, Tanzania.',
-  alternates: {
-    canonical: '/',
-  },
+  description: 'Explore Mwijay Davie’s work at Altraware and Mwijay Studio: websites, business software and AI automation built in Dar es Salaam, Tanzania.',
   robots: {
     index: true,
     follow: true,
@@ -65,10 +62,10 @@ export const metadata: Metadata = {
   },
   manifest: '/manifest.json',
   openGraph: {
-    title: 'Mwijay Services | Web Developer & AI Specialist',
-    description: 'Bespoke digital architecture and AI systems built for the 2026 African business landscape.',
+    title: 'Mwijay Davie — Altraware Co-founder & Creative Technologist',
+    description: 'Selected software projects from Altraware and Mwijay Studio, Dar es Salaam.',
     url: BASE_URL,
-    siteName: 'Mwijay Services',
+    siteName: 'Mwijay Davie',
     locale: 'en_TZ',
     type: 'website',
     images: [
@@ -76,13 +73,13 @@ export const metadata: Metadata = {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'Mwijay Services — Web Developer & AI Specialist in Tanzania',
+        alt: 'Mwijay Davie — Altraware co-founder, Dar es Salaam',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Mwijay Services | Creative Technologist',
+    title: 'Mwijay Davie | Creative Technologist',
     description: 'Building high-performance web systems and AI workflows in Tanzania.',
     images: ['/og-image.png'],
   },
@@ -103,12 +100,9 @@ export default function RootLayout({
         <StructuredData />
         <link rel="preconnect" href="https://res.cloudinary.com" />
         <link rel="dns-prefetch" href="https://res.cloudinary.com" />
-        {/* LIGHTHOUSE FIX: Preconnect for fonts */}
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
         <script id="theme-initializer-script" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
-      <body className="font-body antialiased bg-background text-foreground relative overflow-x-hidden loading-lock">
+      <body className="font-body antialiased bg-background text-foreground relative overflow-x-hidden">
         <VitalsReporter />
 
         <div

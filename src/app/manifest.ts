@@ -9,18 +9,23 @@ import { doc, getDoc } from 'firebase/firestore';
 export default async function manifest(): Promise<MetadataRoute.Manifest> {
   // BASE DEFAULTS
   let manifestData: MetadataRoute.Manifest = {
-    name: 'David Erick Mwijage Portfolio',
+    name: 'Mwijay Davie — Portfolio',
     short_name: 'Mwijay',
     description: 'Professional Portfolio and Digital Solutions by Mwijay Davie.',
     start_url: '/',
     display: 'standalone',
     background_color: '#07080c',
-    theme_color: '#2563eb',
+    theme_color: '#142332',
     icons: [
       {
-        src: '/favicon.ico',
-        sizes: 'any',
-        type: 'image/x-icon',
+        src: '/portfolio/icon-512.png',
+        sizes: '512x512',
+        type: 'image/png',
+      },
+      {
+        src: '/portfolio/icon-192.png',
+        sizes: '192x192',
+        type: 'image/png',
       },
     ],
     shortcuts: [
@@ -61,12 +66,12 @@ export default async function manifest(): Promise<MetadataRoute.Manifest> {
           background_color: db.background_color || manifestData.background_color,
           icons: [
             {
-              src: db.icon192 || fallbackLogo || '/favicon.ico',
+              src: db.icon192 || fallbackLogo || '/portfolio/icon-192.png',
               sizes: '192x192',
               type: 'image/png',
             },
             {
-              src: db.icon512 || fallbackLogo || '/favicon.ico',
+              src: db.icon512 || fallbackLogo || '/portfolio/icon-512.png',
               sizes: '512x512',
               type: 'image/png',
             },

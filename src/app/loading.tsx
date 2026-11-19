@@ -81,9 +81,9 @@ export default function Loading() {
       `}} />
       
       <div className="flex flex-col items-center gap-12 w-full">
-        <h1 className="glitch-huge-splash">
+        <div aria-hidden="true" className="glitch-huge-splash">
           MWIJAY<span className="text-primary">.</span>
-        </h1>
+        </div>
         
         <div className="flex flex-col items-center gap-6 animate-in fade-in duration-1000 delay-500">
            <div className="flex items-center gap-4">

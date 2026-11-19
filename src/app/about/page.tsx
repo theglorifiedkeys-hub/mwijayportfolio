@@ -130,7 +130,7 @@ export default function AboutPage() {
               transition={{ delay: 0.2 }}
               className="text-5xl md:text-7xl font-black uppercase tracking-tighter leading-none"
             >
-              Engineering <span className="text-primary italic">Excellence</span>
+              About <span className="text-primary italic">Mwijay Davie</span>
             </motion.h1>
 
             <motion.p
@@ -139,8 +139,8 @@ export default function AboutPage() {
               transition={{ delay: 0.3 }}
               className="text-muted-foreground text-base md:text-lg font-medium max-w-2xl mx-auto leading-relaxed"
             >
-              David Erick Mwijage — Systems Architect & AI Automation Engineer, 
-              building high-performance digital infrastructure for the modern web.
+              David Erick Mwijage — co-founder of Altraware in Dar es Salaam,
+              building websites, business systems and AI automation.
             </motion.p>
           </div>
         </motion.section>
