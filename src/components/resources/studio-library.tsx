@@ -282,18 +282,10 @@ export function Library({ market = false }: { market?: boolean }) {
     </div>
   );
 }
-const routes = [
-  ["Web development", "/services/web"],
-  ["AI & automation", "/services/automation"],
-  ["Design", "/services/design"],
-  ["Content production", "/services/content"],
-  ["Service pricing", "/pricing"],
-  ["Start a project", "/book"],
-  ["Project agreement", "/agreement"],
-  ["Experience", "/experience"],
-  ["Full work gallery", "/projects/gallery"],
-  ["Track an order", "/track-order"],
-  ["Client portal", "/client-portal"],
+const directory = [
+  {title:'Services',links:[['Web development','/services/web'],['AI & automation','/services/automation'],['Design','/services/design'],['Content production','/services/content'],['Service pricing','/pricing']]},
+  {title:'Work with me',links:[['Start a project','/book'],['Project agreement','/agreement'],['Experience','/experience'],['Full work gallery','/projects/gallery']]},
+  {title:'Client desk',links:[['Client portal','/client-portal'],['Track an order','/track-order']]},
 ];
 export function StudioDirectory() {
   const db = useFirestore();
@@ -310,14 +302,7 @@ export function StudioDirectory() {
           Explore the <em>studio.</em>
         </h2>
       </div>
-      <div className="rs-routes">
-        {routes.map(([label, url]) => (
-          <Link href={url} key={url}>
-            {label}
-            <ArrowUpRight size={14} />
-          </Link>
-        ))}
-      </div>
+      <nav className="rs-directory-groups" aria-label="Studio directory">{directory.map(({title,links})=><div key={title}><h3>{title}</h3>{links.map(([label,url])=><Link key={url} href={url}>{label}<ArrowUpRight size={17} aria-hidden="true"/></Link>)}</div>)}</nav>
       {config && (
         <div className="rs-facts">
           {config.availableForWork === true && (

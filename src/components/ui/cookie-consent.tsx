@@ -6,7 +6,7 @@ import { X, Cookie } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { usePathname } from 'next/navigation';
 
-export default function CookieConsent() {
+export default function CookieConsent({ inline = false }: { inline?: boolean } = {}) {
   const [show, setShow] = useState(false);
   const pathname = usePathname();
 
@@ -45,6 +45,7 @@ export default function CookieConsent() {
 
   if (pathname?.startsWith('/admin')) return null;
 
+  if(inline) return show ? <aside aria-label="Cookie preferences" className="brief-cookies ed-wrap"><div><strong>Cookie preferences</strong><p>Allow analytics to help the studio understand how people use the site.</p></div><button onClick={()=>handleAction('accepted')}>Accept</button><button onClick={()=>handleAction('declined')}>Decline</button></aside> : null;
   return (
     <AnimatePresence>
       {show && (

@@ -24,7 +24,7 @@ export default function BasicSignaturePad({ onDrawEnd, className }: BasicSignatu
           <SignaturePad.Label className="text-[10px] font-black uppercase tracking-widest text-primary">
             Digital Identity Signature *
           </SignaturePad.Label>
-          <SignaturePad.ClearTrigger className="text-[9px] font-bold text-muted-foreground hover:text-destructive uppercase tracking-widest bg-muted px-3 py-1 rounded-full transition-colors">
+          <SignaturePad.ClearTrigger type="button" onClick={()=>onDrawEnd?.('')} className="text-[9px] font-bold text-muted-foreground hover:text-destructive uppercase tracking-widest bg-muted px-3 py-1 rounded-full transition-colors">
             Clear Pad
           </SignaturePad.ClearTrigger>
         </div>

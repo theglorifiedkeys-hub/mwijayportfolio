@@ -54,7 +54,7 @@ export function FirebaseClientProvider({ children }: FirebaseClientProviderProps
       auth={services?.auth}
       firestore={services?.firestore}
     >
-      {!isFolio && pathname !== '/login' && !pathname.startsWith('/admin') && !pathname.startsWith('/client-portal') && <PwaInstallPrompt />}
+      {!isFolio && pathname !== '/book' && pathname !== '/login' && !pathname.startsWith('/admin') && !pathname.startsWith('/client-portal') && <PwaInstallPrompt />}
       {children}
     </FirebaseProvider>
   );
