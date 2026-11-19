@@ -6,5 +6,5 @@ export const metadata = {
   alternates: { canonical: "/projects" },
 };
 export default function ProjectsPage() {
-  return <Folio archive />;
+  return <Folio page="work" />;
 }

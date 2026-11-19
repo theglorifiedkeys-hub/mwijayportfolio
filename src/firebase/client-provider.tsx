@@ -3,10 +3,10 @@
 import React, { useState, useEffect, type ReactNode } from 'react';
 import { FirebaseProvider } from '@/firebase/provider';
 import { usePathname } from 'next/navigation';
+import { isEditorialRoute } from '@/lib/folio-routes';
 import dynamic from 'next/dynamic';
 
 const PwaInstallPrompt = dynamic(() => import('@/components/pwa-install-prompt').then(m => m.PwaInstallPrompt), { ssr: false });
-const LoadingScreen = dynamic(() => import('@/components/ui/loading-screen').then(m => m.LoadingScreen), { ssr: false });
 
 interface FirebaseClientProviderProps {
   children: ReactNode;
@@ -18,7 +18,7 @@ interface FirebaseClientProviderProps {
  */
 export function FirebaseClientProvider({ children }: FirebaseClientProviderProps) {
   const pathname = usePathname();
-  const isFolio = pathname === '/' || pathname === '/projects';
+  const isFolio = isEditorialRoute(pathname);
   const [services, setServices] = useState<{
     firebaseApp: any;
     auth: any;
@@ -54,7 +54,7 @@ export function FirebaseClientProvider({ children }: FirebaseClientProviderProps
       auth={services?.auth}
       firestore={services?.firestore}
     >
-      {!isFolio && <><LoadingScreen /><PwaInstallPrompt /></>}
+      {!isFolio && pathname !== '/login' && !pathname.startsWith('/admin') && <PwaInstallPrompt />}
       {children}
     </FirebaseProvider>
   );

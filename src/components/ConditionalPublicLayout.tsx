@@ -1,11 +1,11 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
+import { isEditorialRoute } from '@/lib/folio-routes';
 import React from 'react';
 import { SmoothScrollProvider } from '@/components/providers/smooth-scroll-provider';
 import ScrollProgress from '@/components/ui/scroll-progress';
 import { CursorGlow } from '@/components/ui/cursor-glow';
-import { LoadingScreen } from '@/components/ui/loading-screen';
 import { Navbar } from '@/components/navbar';
 import { AnnouncementBanner } from '@/components/announcement-banner';
 import { ChatBot } from '@/components/chat-bot';
@@ -28,7 +28,7 @@ export function ConditionalPublicLayout({ children }: { children: React.ReactNod
     pathname?.startsWith('/login') || 
     pathname?.startsWith('/client-portal');
 
-  if (isDashboardRoute || pathname === '/' || pathname === '/projects') {
+  if (isDashboardRoute || isEditorialRoute(pathname)) {
     return <>{children}</>;
   }
 
@@ -36,7 +36,6 @@ export function ConditionalPublicLayout({ children }: { children: React.ReactNod
     <SmoothScrollProvider>
       <ScrollProgress />
       <CursorGlow />
-      <LoadingScreen />
       <Navbar />
       <AnnouncementBanner />
       <ChatBot />

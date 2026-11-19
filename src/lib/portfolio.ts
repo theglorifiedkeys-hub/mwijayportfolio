@@ -7,7 +7,6 @@ export const ventures = [
     name: "Altraware",
     url: "https://altra.tanzaniareach.com/",
     label: "Primary venture",
-    image: "altraware",
     description:
       "Practical software for retail shops, care centres and schools in Tanzania.",
   },
@@ -15,7 +14,6 @@ export const ventures = [
     name: "Mwijay Studio",
     url: "https://mwijay-studio.vercel.app/",
     label: "Independent studio",
-    image: "studio",
     description:
       "Websites, digital products and automation for ambitious businesses.",
   },
