@@ -131,7 +131,7 @@ export default function AdminExpertisePage() {
               Expertise <span className="text-primary italic">Matrix</span>
             </h1>
             <p className="text-muted-foreground font-medium text-sm mt-1.5">
-              Manage the Cybernetic Bento Grid services displayed on the home page
+              Manage the offerings listed under Studio practice on the home page
             </p>
           </div>
         </div>
@@ -178,8 +178,8 @@ export default function AdminExpertisePage() {
         />
         <StatCard
           icon={Grid3x3}
-          label="Grid Layout"
-          value="Bento"
+          label="Layout"
+          value="Index"
           color="text-purple-500"
           bgColor="bg-purple-500/10"
         />
@@ -199,7 +199,7 @@ export default function AdminExpertisePage() {
         </h4>
         <div className="space-y-2 text-[11px] text-muted-foreground font-medium leading-relaxed">
           <p>
-            <strong className="text-foreground">• Grid System:</strong> Services are displayed in a responsive Bento Grid layout (2-column on desktop, 1-column on mobile).
+            <strong className="text-foreground">• Grid System:</strong> Published offerings appear under their service category alongside the studio material study.
           </p>
           <p>
             <strong className="text-foreground">• Icon Library:</strong> Use Lucide React icons for consistency. Popular choices: <code className="px-1.5 py-0.5 rounded bg-muted text-primary text-[10px] font-bold">Code2</code>, <code className="px-1.5 py-0.5 rounded bg-muted text-primary text-[10px] font-bold">Zap</code>, <code className="px-1.5 py-0.5 rounded bg-muted text-primary text-[10px] font-bold">Rocket</code>.

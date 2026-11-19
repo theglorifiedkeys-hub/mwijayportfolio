@@ -10,20 +10,21 @@ import OptimizedImage from '@/components/ui/optimized-image';
 import { useCollection,useMemoFirebase } from '@/firebase';
 import SkeletonCard from '@/components/ui/skeleton-card';
 
-export default function Testimonials(){
+export default function Testimonials({editorial=false}:{editorial?:boolean}={}){
   const [index,setActiveIndex]=useState(0);
   const db=useFirestore();
   const ref=useMemoFirebase(()=>db?query(collection(db,'testimonials'),where('isVisible','==',true),orderBy('order','asc')):null,[db]);
   const {data,isLoading}=useCollection(ref,{enabled:!!ref});
   const testimonials=data || [];
   useEffect(() => {
-    if (testimonials.length <= 1) return;
+    if (editorial || testimonials.length <= 1) return;
     const timer = setInterval(() => {
       setActiveIndex((prev) => (prev + 1) % testimonials.length);
     }, 5000);
     return () => clearInterval(timer);
-  }, [testimonials]);
+  }, [testimonials,editorial]);
 
+  if (isLoading && editorial) return null;
   if (isLoading) return (
     <div className="py-20 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto px-6">
       {[1, 2, 3].map(i => <SkeletonCard key={i} variant="default" />)}
@@ -33,6 +34,12 @@ export default function Testimonials(){
   if (testimonials.length === 0) return null;
 
   const current = testimonials[index % testimonials.length];
+
+  if(editorial) return <section id="client-testimonials" className="ed-wrap ed-client-note">
+    <div className="ed-kicker"><i/>Notes from clients</div>
+    <figure aria-live="polite"><blockquote>“{current.quote}”</blockquote><figcaption><b>{current.clientName}</b><span>{[current.clientRole,current.clientCompany].filter(Boolean).join(' · ')}</span></figcaption></figure>
+    {testimonials.length>1 && <div className="ed-note-controls"><button aria-label="Previous testimonial" onClick={()=>setActiveIndex(i=>(i-1+testimonials.length)%testimonials.length)}><ChevronLeft size={16}/></button><span>{index%testimonials.length+1} / {testimonials.length}</span><button aria-label="Next testimonial" onClick={()=>setActiveIndex(i=>(i+1)%testimonials.length)}><ChevronRight size={16}/></button></div>}
+  </section>;
 
   const getInitialsColor = (name: string) => {
     const colors = ['bg-blue-500', 'bg-purple-500', 'bg-pink-500', 'bg-emerald-500', 'bg-orange-500'];

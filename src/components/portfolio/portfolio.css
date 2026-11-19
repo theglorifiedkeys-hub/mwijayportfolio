@@ -1027,3 +1027,49 @@
     }
   }
 }
+
+/* One paper stock, one baseline and the same rules as the project index. */
+.ed-practice, .ed-partners, .ed-client-note { border-top: 1px solid var(--rule); }
+.ed-practice .ed-practice-heading { align-items: flex-end; gap: 22px; margin-bottom: clamp(22px, 3vw, 40px); }
+.ed-practice-heading > p { max-width: 35ch; color: var(--muted); font-size: 14px; line-height: 1.6; }
+.ed-practice-spread { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: clamp(24px, 4vw, 72px); align-items: start; }
+.ed-practice-plate > div { position: relative; aspect-ratio: 1.54; border-radius: 8px; overflow: hidden; background: #26302a; }
+.ed-practice-plate img { width: 100%; height: 100%; object-fit: cover; }
+.ed-practice-plate figcaption, .ed-client-note figcaption, .ed-note-controls { display: flex; align-items: center; gap: 12px; }
+.ed-practice-plate figcaption { justify-content: space-between; padding-block: 10px; font: 10px var(--mono); text-transform: uppercase; letter-spacing: .11em; color: var(--muted); border-bottom: 1px solid var(--rule); }
+.ed-practice-index { border-bottom: 1px solid var(--rule); }
+.ed-discipline { border-top: 1px solid var(--rule); }
+.ed-discipline-link { display: grid; grid-template-columns: 1.7rem minmax(0,1fr) auto; align-items: baseline; gap: 12px; padding: clamp(14px,1.8vw,26px) 0; }
+.ed-discipline-link small { color: #8a502c; font: 11px var(--mono); }
+.ed-discipline-link h3 { font-size: clamp(22px, 2.25vw, 36px); letter-spacing: -.054em; line-height: 1.12; }
+.ed-discipline p { font-size: 14px; color: var(--muted); line-height: 1.6; margin-top: 5px; }
+.ed-discipline a { overflow-wrap: anywhere; }
+.ed-discipline a:hover :is(h3,strong), .ed-practice-admin a { text-decoration: underline; text-underline-offset: .15em; }
+.ed-offerings { list-style: none; margin: 0 0 15px 2.45rem; padding: 0; }
+.ed-offerings li { border-top: 1px solid var(--rule); }
+.ed-offerings a { display: flex; align-items: center; gap: 12px; padding: 12px 0; }
+.ed-offerings img { width: clamp(60px,6vw,92px); aspect-ratio: 4/3; object-fit: cover; border-radius: 3px; flex: none; }
+.ed-offerings strong { font-weight: 600; }
+.ed-offerings p { font-size: 13px; margin: 2px 0 0; }
+.ed-offerings svg { flex: none; margin-left: auto; }
+.ed-practice-admin { font-size: 13px; color: var(--muted); padding-bottom: 15px; }
+.ed-partners, .ed-client-note { padding: clamp(28px,4vw,64px) 0; }
+.ed-partners h2 { font-size: clamp(32px,3.8vw,55px); letter-spacing: -.06em; margin: 8px 0 20px; }
+.ed-partners ul { display:flex; gap: 20px 40px; align-items:center; flex-wrap: wrap; list-style:none; }
+.ed-partners li { display:flex; align-items:center; gap:10px; font-size:14px; }
+.ed-partners img { width: 60px; height: 40px; object-fit: contain; }
+.ed-client-note blockquote { font: italic clamp(26px,3.4vw,48px)/1.16 Editorial,Georgia,serif; max-width: 38ch; margin: 20px 0; }
+.ed-client-note figcaption { flex-wrap: wrap; font-size: 13px; color: var(--muted); }
+.ed-note-controls { margin-top:20px; font: 11px var(--mono); }
+.ed-note-controls button { display:grid; place-items:center; border-radius:50%; border:1px solid var(--rule); width:40px; height:40px; }
+@media (max-width: 700px) {
+  .ed-practice-spread { grid-template-columns: minmax(0,1fr); gap: 15px; }
+  .ed-practice .ed-practice-heading { flex-direction: column; align-items: flex-start; gap: 8px; }
+  .ed-practice-plate > div { aspect-ratio: 1.88; }
+  .ed-practice-plate figcaption { border-bottom: none; }
+  .ed-offerings { margin-left: 0; }
+}
+@media (prefers-reduced-motion:no-preference) {
+  .ed-discipline-link svg { transition: transform .25s ease; }
+  .ed-discipline-link:hover svg { transform: translate(2px,-2px); }
+}

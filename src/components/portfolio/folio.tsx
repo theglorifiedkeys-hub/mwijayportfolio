@@ -21,7 +21,7 @@ import {
   StudioDirectory,
 } from "@/components/resources/studio-library";
 import { AnnouncementBanner } from '@/components/announcement-banner';
-import { CyberneticBentoGrid } from '@/components/ui/cybernetic-bento-grid';
+import { StudioPractice } from "./studio-practice";
 import { LogosMarquee } from '@/components/sections/logos-marquee';
 import Testimonials from '@/components/sections/testimonials';
 import './portfolio.css';
@@ -487,7 +487,7 @@ function About() {
       </div>
       <Ventures />
       <LogosMarquee/>
-      <Testimonials/>
+      <Testimonials editorial/>
     </>
   );
 }
@@ -536,12 +536,12 @@ export function Folio({ page = "home" }: { page?: Page }) {
           <>
             <Hero />
             <FeatureSection />
+            <StudioPractice />
             <Ventures />
             <div className="rs-library">
               <JournalShelf />
               <Guides />
               <StudioDirectory />
-              <div id="expertise"><CyberneticBentoGrid/></div>
             </div>
           </>
         ) : page === "library" || page === "market" ? (
