@@ -14,6 +14,7 @@ import { BackToTop } from '@/components/ui/back-to-top';
 import { NotificationPermission } from '@/components/notification-permission';
 import { SwahiliSuggestion } from '@/components/ui/swahili-suggestion';
 import CookieConsent from '@/components/ui/cookie-consent';
+import { PageTransition } from '@/components/ui/page-transition';
 
 /**
  * ConditionalPublicLayout
@@ -45,7 +46,7 @@ export function ConditionalPublicLayout({ children }: { children: React.ReactNod
       <NotificationPermission />
       <SwahiliSuggestion />
       <CookieConsent />
-      {children}
+      <PageTransition>{children}</PageTransition>
     </SmoothScrollProvider>
   );
 }

@@ -26,9 +26,9 @@ export function About({ userId }: { userId: string }) {
   }, [isLoading]);
 
   const displayData = {
-    aboutBio: profile?.aboutBio || "Building intelligent applications and automated systems that solve real-world problems in the 2026 digital landscape.",
+    aboutBio: profile?.aboutBio || "Founder of Altraware Technology — a Dar es Salaam studio building Kiswahili-first business systems, offline-first POS and AI automation for Tanzanian businesses. Rooted at home. Engineered for the world.",
     profileImageUrl: profile?.profileImageUrl || "",
-    systemsBuilt: Number(profile?.systemsBuilt) || 12,
+    systemsBuilt: Number(profile?.systemsBuilt) || 11,
     webSystems: Number(profile?.webSystems) || 10
   };
 
@@ -83,10 +83,10 @@ export function About({ userId }: { userId: string }) {
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4">
                 {[
-                  "AI App Architecture",
-                  "Process Automation",
-                  "Full-Stack Web Systems",
-                  "Data-Driven Decisions"
+                  "Offline-First Systems",
+                  "M-Pesa & Mobile Money",
+                  "Kiswahili-First UX",
+                  "AI Process Automation"
                 ].map((item) => (
                   <div key={item} className="flex items-center gap-3">
                     <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center text-primary">
