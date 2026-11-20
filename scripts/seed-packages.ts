@@ -1,6 +1,6 @@
 /**
  * @fileOverview Seed Packages Script
- * Standardized: Starter Build starts at 120,000 TZS.
+ * Seeds the Altraware-aligned website packages. This replaces existing package documents.
  */
 
 import * as admin from 'firebase-admin';
@@ -8,6 +8,7 @@ import { initializeApp, cert } from 'firebase-admin/app';
 import { getFirestore, FieldValue } from 'firebase-admin/firestore';
 import * as dotenv from 'dotenv';
 import { resolve } from 'path';
+import { WEB_PACKAGES } from '../src/lib/pricing';
 
 dotenv.config({ path: resolve(process.cwd(), '.env.local') });
 
@@ -28,64 +29,21 @@ if (!admin.apps.length) {
 
 const db = getFirestore();
 
-const packages = [
-  {
-    name: "Starter",
-    price: 120000,
-    currency: "TZS",
-    billingPeriod: "one-time",
-    description: "Ideal for landing pages and simple portfolios",
-    features: [
-      "Single Page Architecture",
-      "Next.js 15 Implementation",
-      "WhatsApp Integration",
-      "3 Revision Rounds",
-      "Standard PWA Setup"
-    ],
-    isPopular: false,
-    isActive: true,
-    order: 1
-  },
-  {
-    name: "Professional",
-    price: 350000,
-    currency: "TZS", 
-    billingPeriod: "one-time",
-    description: "For growing businesses that need real systems",
-    features: [
-      "Full Web Application",
-      "Firebase Integration",
-      "Payment Flow Setup",
-      "AI Workflow Automation",
-      "Admin Dashboard",
-      "Priority Support",
-      "5 Revision Rounds"
-    ],
-    isPopular: true,
-    isActive: true,
-    order: 2
-  },
-  {
-    name: "Enterprise",
-    price: 800000,
-    currency: "TZS",
-    billingPeriod: "one-time", 
-    description: "Complete digital transformation for your business",
-    features: [
-      "Multi-System Architecture",
-      "Custom AI Integration",
-      "n8n Workflow Automation",
-      "Secure Infrastructure Setup",
-      "Analytics Dashboard",
-      "Staff Training Session",
-      "6 Months Support",
-      "Unlimited Revisions"
-    ],
-    isPopular: false,
-    isActive: true,
-    order: 3
-  }
-];
+const packages = WEB_PACKAGES.map((pkg, index) => ({
+  name: pkg.name,
+  title: pkg.name,
+  category: 'web',
+  bestFor: pkg.description,
+  displayOrder: index + 1,
+  price: pkg.price,
+  currency: 'TZS',
+  billingPeriod: 'one-time',
+  description: pkg.description,
+  features: [...pkg.features],
+  isPopular: pkg.popular,
+  isActive: true,
+  order: index + 1,
+}));
 
 async function seedPackages() {
   console.log("🌱 Seeding Pricing Packages...");

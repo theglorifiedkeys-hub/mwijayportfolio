@@ -121,7 +121,7 @@ export default function AboutPage() {
               className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-[9px] font-black uppercase tracking-[0.3em]"
             >
               <ShieldCheck size={12} />
-              Architect Profile
+              About David
             </motion.div>
 
             <motion.h1
@@ -130,7 +130,7 @@ export default function AboutPage() {
               transition={{ delay: 0.2 }}
               className="text-5xl md:text-7xl font-black uppercase tracking-tighter leading-none"
             >
-              Engineering <span className="text-primary italic">Excellence</span>
+              Built with <span className="text-primary italic">purpose</span>
             </motion.h1>
 
             <motion.p
@@ -139,8 +139,7 @@ export default function AboutPage() {
               transition={{ delay: 0.3 }}
               className="text-muted-foreground text-base md:text-lg font-medium max-w-2xl mx-auto leading-relaxed"
             >
-              David Erick Mwijage — Systems Architect & AI Automation Engineer, 
-              building high-performance digital infrastructure for the modern web.
+              I’m David Erick Mwijage, a developer in Dar es Salaam. I build websites, business systems and automation that solve practical problems.
             </motion.p>
           </div>
         </motion.section>
@@ -148,7 +147,7 @@ export default function AboutPage() {
         <About userId={PORTFOLIO_OWNER_ID} />
 
         <section className="py-20 px-6 bg-muted/20 border-y border-border/30">
-          <div className="max-w-6xl auto">
+          <div className="max-w-6xl mx-auto">
             <FadeContent threshold={0.1}>
               <div className="text-center mb-12">
                 <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-[9px] font-black uppercase tracking-[0.3em] mb-4">
@@ -176,13 +175,13 @@ export default function AboutPage() {
               <div className="text-center">
                 <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-[9px] font-black uppercase tracking-[0.3em] mb-4">
                   <Target size={12} />
-                  Core Philosophy
+                  How I work
                 </div>
-                <h2 className="text-3xl md:text-5 font-black uppercase tracking-tighter mb-4">
+                <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tighter mb-4">
                   Built on <span className="text-primary italic">Principles</span>
                 </h2>
                 <p className="text-muted-foreground text-sm md:text-lg max-w-2xl mx-auto font-medium">
-                  Every system I architect is grounded in these non-negotiable engineering pillars.
+                  A few practical principles guide how I plan, build and support each project.
                 </p>
               </div>
             </FadeContent>
@@ -191,32 +190,32 @@ export default function AboutPage() {
               <PillarCard
                 icon={Zap}
                 title="Performance First"
-                description="Every line of code is optimized for speed. No bloat. No compromise. Lightning-fast load times and instant user interactions are the baseline."
+                description="I keep pages lean and test them on real devices, with mobile networks and load times in mind."
               />
               <PillarCard
                 icon={ShieldCheck}
                 title="Security by Design"
-                description="Zero-trust architecture from day one. End-to-end encryption, role-based access control, and regular security audits are standard practice."
+                description="I consider privacy and access from the start, choosing appropriate safeguards for each project."
               />
               <PillarCard
                 icon={Rocket}
                 title="Scalable Systems"
-                description="Built to grow. Cloud-native infrastructure that scales horizontally and vertically without breaking a sweat as your user base explodes."
+                description="I choose tools that fit today’s needs and leave room for the project to grow."
               />
               <PillarCard
                 icon={Code2}
                 title="Clean Architecture"
-                description="Readable, maintainable, and testable code. Modular design patterns that allow seamless feature additions and bug fixes."
+                description="Clear, maintainable code makes it easier to fix issues and add features later."
               />
               <PillarCard
                 icon={Target}
                 title="User-Centric Design"
-                description="Every interface is crafted with the end user in mind. Accessibility, intuitive navigation, and delightful micro-interactions are baked in."
+                description="I focus on clear navigation, accessible interfaces and the people who will use them."
               />
               <PillarCard
                 icon={Sparkles}
-                title="Innovation Driven"
-                description="Staying ahead of the curve. Leveraging cutting-edge AI, automation, and modern frameworks to deliver tomorrow's solutions today."
+                title="Practical tools"
+                description="I use automation and modern tools where they make the work simpler or more useful."
               />
             </div>
           </div>
@@ -271,13 +270,13 @@ export default function AboutPage() {
               <div className="text-center space-y-4">
                 <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-[9px] font-black uppercase tracking-[0.3em]">
                   <Award size={12} />
-                  Verified Registry
+                  Learning & growth
                 </div>
                 <h2 className="text-3xl md:text-6xl font-black uppercase tracking-tighter">
-                  Academic & <span className="text-primary italic">Professional Honors</span>
+                  Academic & <span className="text-primary italic">Professional Learning</span>
                 </h2>
                 <p className="text-muted-foreground text-sm md:text-lg max-w-xl mx-auto font-medium">
-                  Verified certifications from global technology leaders and institutions.
+                  Certifications and learning milestones from my professional journey.
                 </p>
               </div>
             </FadeContent>
@@ -313,17 +312,17 @@ export default function AboutPage() {
             >
               <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
               <span className="text-[9px] font-black uppercase tracking-[0.4em] text-primary/80 drop-shadow-lg">
-                MWIJAY_SYSTEMS_ACTIVE
+                Made in Dar es Salaam
               </span>
               <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
             </motion.div>
 
             <h2 className="text-4xl md:text-7xl font-black uppercase tracking-tighter text-white [text-shadow:_0_6px_20px_rgb(0_0_0_/_80%)]">
-              Architected for <span className="text-primary italic">Precision</span>
+              Let’s build something <span className="text-primary italic">useful.</span>
             </h2>
 
             <p className="text-[10px] md:text-xs font-black uppercase tracking-[0.4em] text-primary/70 drop-shadow-lg">
-              ESTABLISHED // 2026 // DAR ES SALAAM, TANZANIA
+              WEB · SYSTEMS · AUTOMATION
             </p>
 
             <motion.div
@@ -339,7 +338,7 @@ export default function AboutPage() {
                 asChild
               >
                 <Link href="/contact">
-                  Start a Build <Rocket size={16} />
+                  Start a project <Rocket size={16} />
                 </Link>
               </Button>
             </motion.div>

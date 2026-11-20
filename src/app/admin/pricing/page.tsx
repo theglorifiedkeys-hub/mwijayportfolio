@@ -18,7 +18,7 @@ export default function AdminPricingPage() {
     <div className="space-y-10">
       <div className="flex flex-col gap-2">
         <h1 className="text-3xl font-black font-headline tracking-tighter">Revenue <span className="text-primary">Matrix</span></h1>
-        <p className="text-muted-foreground font-medium">Configure service tiers and TZS pricing models for your business.</p>
+        <p className="text-muted-foreground font-medium">Manage stored package records. The public pricing guide is maintained in <code>src/lib/pricing.ts</code> to match Altraware; changes here do not update that guide.</p>
       </div>
       <PricingEditor />
     </div>

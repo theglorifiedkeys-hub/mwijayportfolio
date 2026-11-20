@@ -18,9 +18,14 @@ export default async function manifest(): Promise<MetadataRoute.Manifest> {
     theme_color: '#2563eb',
     icons: [
       {
-        src: '/favicon.ico',
-        sizes: 'any',
-        type: 'image/x-icon',
+        src: '/icon-192.png',
+        sizes: '192x192',
+        type: 'image/png',
+      },
+      {
+        src: '/icon-512.png',
+        sizes: '512x512',
+        type: 'image/png',
       },
     ],
     shortcuts: [
@@ -61,12 +66,12 @@ export default async function manifest(): Promise<MetadataRoute.Manifest> {
           background_color: db.background_color || manifestData.background_color,
           icons: [
             {
-              src: db.icon192 || fallbackLogo || '/favicon.ico',
+              src: db.icon192 || fallbackLogo || '/icon-192.png',
               sizes: '192x192',
               type: 'image/png',
             },
             {
-              src: db.icon512 || fallbackLogo || '/favicon.ico',
+              src: db.icon512 || fallbackLogo || '/icon-512.png',
               sizes: '512x512',
               type: 'image/png',
             },
