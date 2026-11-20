@@ -55,15 +55,15 @@ export const CyberneticBentoGrid = () => {
   const items = services || [];
 
   const architectWords = [
-    { text: "Architecting" },
-    { text: "Future" },
+    { text: "Building" },
+    { text: "Useful" },
     { text: "Systems", className: "text-primary italic" }
   ];
 
   if (isLoading) return (
     <div className="flex flex-col items-center justify-center p-20 min-h-[400px] space-y-4">
       <Loader2 className="h-10 w-10 animate-spin text-primary opacity-20" />
-      <p className="text-[10px] font-black uppercase tracking-[0.4em] text-primary/40">Syncing Matrix...</p>
+      <p className="text-[10px] font-black uppercase tracking-[0.4em] text-primary/40">Loading services...</p>
     </div>
   );
 
@@ -76,13 +76,13 @@ export const CyberneticBentoGrid = () => {
         <div className="space-y-4 mb-16 md:mb-24 text-center lg:text-left">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-[10px] font-black uppercase tracking-widest mx-auto lg:mx-0 shadow-sm">
             <Sparkles size={14} />
-            Verified Capabilities Registry
+            What I do
           </div>
           <div className="flex justify-center lg:justify-start">
             <TypewriterEffect words={architectWords} className="text-4xl sm:text-5xl lg:text-7xl font-headline font-black tracking-tighter text-left" />
           </div>
           <p className="text-muted-foreground text-sm md:text-xl max-w-2xl leading-relaxed font-medium mx-auto lg:mx-0">
-            Bespoke technical architectures synchronized with your business goals. 2026 Ready.
+            Websites, systems and automation shaped around the way you work.
           </p>
         </div>
 
@@ -124,10 +124,10 @@ export const CyberneticBentoGrid = () => {
                   <div className="mt-auto pt-8 flex items-center justify-between">
                      <div className="flex items-center gap-2 text-[9px] font-mono font-black tracking-widest text-primary/60">
                         <span className="h-1.5 w-1.5 rounded-full bg-green-500 animate-pulse" />
-                        SYSTEM_ACTIVE
+                        Services
                      </div>
                      <Link href={`/services/${item.category || 'web'}`} className="text-[10px] font-black uppercase tracking-widest text-foreground hover:text-primary transition-colors flex items-center gap-1 group/link">
-                        DECRYPT NODE <Zap size={10} className="group-hover/link:translate-x-1 transition-transform" />
+                        Learn more <Zap size={10} className="group-hover/link:translate-x-1 transition-transform" />
                      </Link>
                   </div>
                 </BentoItem>

@@ -6,8 +6,7 @@
  *  - https://mwijay-studio.vercel.app/     (Mwijay Studio)
  *  - https://altra-motion-lab.vercel.app/  (Altraware Motion Lab)
  *
- * Used as the public fallback when Firestore has no projects yet, and as
- * alongside additional projects maintained through the admin.
+ * Displayed alongside additional projects maintained through the admin.
  */
 
 export interface PortfolioProject {
@@ -110,18 +109,6 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
       'https://images.pexels.com/photos/106344/pexels-photo-106344.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200&sat=-20',
   },
   {
-    id: 'caretrack-clinic',
-    name: 'CareTrack',
-    type: 'Care Centre System · Altraware',
-    status: 'Live',
-    year: '2026',
-    description:
-      'Attendance, health and meal notes, fees and guardian updates for care centres, schools and NGOs — designed for weak networks and privacy.',
-    thumbnailImageUrl:
-      'https://images.pexels.com/photos/4386467/pexels-photo-4386467.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200',
-    liveUrl: 'https://caretrack-six.vercel.app/dashboard',
-  },
-  {
     id: 'zion-church-app',
     name: 'Zion Church App',
     type: 'Mobile App',
@@ -154,3 +141,12 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
       'https://images.pexels.com/photos/89724/pexels-photo-89724.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200',
   },
 ];
+
+/** Hide retired work from public galleries without deleting the source records. */
+export function isHiddenPortfolioProject(project: { id?: unknown; name?: unknown; title?: unknown; liveUrl?: unknown }): boolean {
+  const normalize = (value: unknown) => typeof value === 'string'
+    ? value.toLowerCase().replace(/[^a-z0-9]+/g, '') : '';
+  const fields = [project.id, project.name, project.title].map(normalize);
+  return fields.some(value => value.startsWith('caretrack') || value.startsWith('tanzaniaconnectengine')) ||
+    (typeof project.liveUrl === 'string' && /^https?:\/\/caretrack-six\.vercel\.app(?:[/:?#]|$)/i.test(project.liveUrl));
+}

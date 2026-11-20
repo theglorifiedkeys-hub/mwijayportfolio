@@ -17,7 +17,7 @@ export default function ProjectsPage() {
           <div className="text-center space-y-4">
             <h1 className="text-5xl md:text-7xl font-headline font-black tracking-tighter text-foreground">Work <span className="text-primary">Gallery</span></h1>
             <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto font-medium">
-              A comprehensive showcase of my technical builds, automation workflows, and AI-powered architectures.
+              A selection of websites, apps and systems I’ve worked on.
             </p>
           </div>
           
@@ -32,8 +32,8 @@ export default function ProjectsPage() {
         <div className="max-w-7xl mx-auto px-6 py-24">
           <FadeContent threshold={0.1}>
             <div className="p-12 md:p-20 bg-primary/5 rounded-[3rem] border border-primary/10 text-center space-y-6">
-              <h2 className="text-3xl md:text-5xl font-black font-headline tracking-tighter">Ready to architect your build?</h2>
-              <p className="text-muted-foreground text-lg max-w-xl mx-auto">We handle projects of all scales, from simple landing pages to complex enterprise automation.</p>
+              <h2 className="text-3xl md:text-5xl font-black font-headline tracking-tighter">Have a project in mind?</h2>
+              <p className="text-muted-foreground text-lg max-w-xl mx-auto">From a simple website to a custom business system, let’s talk about what you need.</p>
               <div className="pt-8">
                 <ProjectsCTAButton />
               </div>
@@ -52,7 +52,7 @@ function ProjectsCTAButton() {
       href="/contact" 
       className="inline-flex items-center gap-2 px-10 py-5 rounded-full bg-primary text-white font-black uppercase tracking-widest text-sm shadow-xl shadow-primary/20 hover:scale-105 transition-all"
     >
-      Initialize Project Build
+      Start a conversation
     </a>
   );
 }

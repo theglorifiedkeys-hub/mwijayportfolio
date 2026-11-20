@@ -16,7 +16,7 @@ import { Button } from '@/components/ui/button';
 const OWNER_ID = "mwijay-davie-admin";
 
 /**
- * Footer - Brand Fulfillment Terminal
+ * Footer - Brand For clients Terminal
  * STEP 3: ACCESSIBILITY (100/100)
  * Added explicit aria-labels to all social and functional links.
  */
@@ -41,7 +41,7 @@ export function Footer() {
               <span className="font-headline font-black text-xl tracking-tighter uppercase text-foreground">Mwijay<span className="text-primary">.</span></span>
             </div>
             <p className="text-sm font-medium leading-relaxed text-muted-foreground max-w-xs">
-              Architecting precision digital systems and AI automation for the 2026 African business landscape.
+              Websites, business systems and automation, built in Dar es Salaam.
             </p>
             <div className="flex gap-4">
               <a 
@@ -75,12 +75,12 @@ export function Footer() {
           </div>
 
           <div className="space-y-6">
-            <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-primary">Registry Nodes</h3>
+            <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-primary">Explore</h3>
             <ul className="space-y-4">
               {[
                 { label: 'Work Gallery', href: '/projects', icon: LayoutGrid },
                 { label: 'About Mwijay', href: '/about', icon: Info },
-                { label: 'Insight Feed', href: '/blog', icon: Newspaper },
+                { label: 'Journal', href: '/blog', icon: Newspaper },
                 { label: 'Marketplace', href: '/pricing', icon: ShoppingBag },
               ].map((link) => (
                 <li key={link.label}>
@@ -96,7 +96,7 @@ export function Footer() {
           </div>
 
           <div className="space-y-6">
-            <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-primary">Service Stack</h3>
+            <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-primary">Services</h3>
             <ul className="space-y-4">
               {[
                 { label: 'Web Development', href: '/services/web' },
@@ -117,7 +117,7 @@ export function Footer() {
           </div>
 
           <div className="space-y-6">
-            <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-primary">Fulfillment</h3>
+            <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-primary">For clients</h3>
             <ul className="space-y-4">
               <li><Link href="/client-portal" className="text-sm font-black text-primary hover:underline">Client Portal Access →</Link></li>
               <li><Link href="/agreement" className="text-sm font-bold text-muted-foreground hover:text-primary">Start a Project</Link></li>
@@ -131,7 +131,7 @@ export function Footer() {
                 asChild
               >
                 <a href="https://wa.me/255790942616">
-                  <MessageCircle size={14} /> Instant Signal
+                  <MessageCircle size={14} /> Chat on WhatsApp
                 </a>
               </Button>
             </div>
@@ -140,14 +140,14 @@ export function Footer() {
 
         <div className="pt-12 border-t border-border/50 flex flex-col md:flex-row items-center justify-between gap-8 text-center md:text-left">
           <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/60">
-            © {currentYear} <span className="text-foreground">Mwijay Services</span>. Precision Engineered in Tanzania.
+            © {currentYear} <span className="text-foreground">Mwijay Services</span>. Made in Tanzania.
           </p>
           <div className="flex items-center gap-6">
              <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-muted/50 border border-border/50">
-                <span className="text-[8px] font-black text-muted-foreground uppercase tracking-widest">Next.js 14 Optimized</span>
+                <span className="text-[8px] font-black text-muted-foreground uppercase tracking-widest">Built with care</span>
              </div>
-             <div className="text-[10px] font-black text-primary animate-pulse tracking-widest uppercase">
-               Linked_2026
+             <div className="text-[10px] font-black text-muted-foreground tracking-widest uppercase">
+               Dar es Salaam
              </div>
           </div>
         </div>

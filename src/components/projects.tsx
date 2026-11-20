@@ -25,7 +25,7 @@ import {
 } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { trackProjectView } from '@/lib/analytics';
-import { PORTFOLIO_PROJECTS } from '@/lib/portfolio-projects';
+import { PORTFOLIO_PROJECTS, isHiddenPortfolioProject } from '@/lib/portfolio-projects';
 
 /**
  * Projects - Displays the work gallery.
@@ -46,12 +46,12 @@ export function Projects({ userId }: { userId: string }) {
   const projectsToDisplay = [
     ...PORTFOLIO_PROJECTS,
     ...(dbProjects || []).filter((project: any) =>
-      !knownIds.has(project.id) && !knownNames.has(String(project.name || '').toLowerCase())
+      !isHiddenPortfolioProject(project) && !knownIds.has(project.id) && !knownNames.has(String(project.name || '').toLowerCase())
     ),
   ];
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {[...projectsToDisplay]
         .sort((a: any, b: any) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0))
         .map((proj: any, idx: number) => (
@@ -70,26 +70,26 @@ function ProjectCard({ proj, idx }: { proj: any, idx: number }) {
     <AnimatedContent direction="vertical" delay={idx * 0.1}>
       <Dialog onOpenChange={(open) => open && handleOpen()}>
         <DialogTrigger asChild>
-          <button className="w-full text-left h-full transition-all duration-500 ease-out cursor-pointer group focus:outline-none block">
-            <Card className="group overflow-hidden border-2 hover:border-primary/40 transition-all h-full flex flex-col rounded-[2.5rem] bg-card hover:shadow-2xl relative border-border/50 shadow-sm">
+          <button className="w-full text-left h-full cursor-pointer group focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary rounded-3xl block">
+            <Card className="group overflow-hidden border hover:border-primary/40 transition-colors duration-300 h-full flex flex-col rounded-3xl bg-card relative border-border/60 shadow-sm">
               <div className="relative aspect-video overflow-hidden bg-muted">
                 {proj.thumbnailImageUrl && (
                   <Image
                     src={proj.thumbnailImageUrl}
                     alt={proj.name}
                     fill
-                    className="object-cover group-hover:scale-110 transition-transform duration-700"
+                    className="object-cover group-hover:scale-[1.03] transition-transform duration-700"
                     priority={idx < 3}
                   />
                 )}
-                <div className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-sm">
-                  <div className="bg-white/90 text-primary p-3 rounded-full shadow-xl transform scale-50 group-hover:scale-100 transition-transform duration-500">
+                <div className="absolute inset-0 bg-background/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                  <div className="bg-background/90 text-foreground p-3 rounded-full shadow-lg transform scale-95 group-hover:scale-100 transition-transform duration-300">
                     <Maximize2 className="h-6 w-6" />
                   </div>
                 </div>
               </div>
               
-              <CardContent className="p-8 flex-1 flex flex-col space-y-4 relative z-10">
+              <CardContent className="p-6 md:p-7 flex-1 flex flex-col space-y-4 relative z-10">
                 <div className="space-y-1">
                   <div className="flex items-center gap-2 text-primary">
                     <Zap className="h-4 w-4" />
@@ -106,7 +106,7 @@ function ProjectCard({ proj, idx }: { proj: any, idx: number }) {
                       </span>
                     )}
                   </div>
-                  <h3 className="text-2xl font-headline font-black tracking-tight text-foreground group-hover:text-primary transition-colors uppercase">{proj.name}</h3>
+                  <h3 className="text-2xl font-headline font-bold tracking-tight text-foreground group-hover:text-primary transition-colors">{proj.name}</h3>
                 </div>
                 
                 <p className="text-sm text-muted-foreground leading-relaxed line-clamp-3 font-medium">
@@ -114,7 +114,7 @@ function ProjectCard({ proj, idx }: { proj: any, idx: number }) {
                 </p>
 
                 <div className="pt-4 mt-auto flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-foreground group-hover:text-primary transition-colors">
-                  <span className="underline decoration-primary/30 underline-offset-4">Open System Brief</span>
+                  <span className="underline decoration-primary/30 underline-offset-4">View project</span>
                 </div>
               </CardContent>
             </Card>
@@ -126,7 +126,7 @@ function ProjectCard({ proj, idx }: { proj: any, idx: number }) {
             <div className="p-8 md:p-12 space-y-12">
               <div className="space-y-6">
                 <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-[9px] font-black uppercase tracking-widest">
-                   PROJECT_NODE_{String(idx + 1).padStart(2, '0')}
+                   Project {String(idx + 1).padStart(2, '0')}
                 </div>
                 <DialogTitle className="text-4xl md:text-6xl font-black font-headline tracking-tighter text-foreground leading-tight uppercase">
                   {proj.name}
@@ -158,23 +158,23 @@ function ProjectCard({ proj, idx }: { proj: any, idx: number }) {
 
                 <div className="lg:col-span-5 space-y-10">
                   <div className="space-y-6 bg-muted/20 p-8 rounded-3xl border border-border/50">
-                    <h5 className="text-[10px] font-black uppercase tracking-[0.4em] text-primary">Technical Narrative</h5>
+                    <h5 className="text-[10px] font-black uppercase tracking-[0.4em] text-primary">About this project</h5>
                     <p className="text-base md:text-lg text-foreground leading-relaxed font-medium whitespace-pre-wrap">
                       {proj.description}
                     </p>
                   </div>
 
                   <div className="space-y-6 pt-6 border-t border-border/50">
-                    <h5 className="text-[10px] font-black uppercase tracking-[0.4em] text-primary">System Signals</h5>
+                    <h5 className="text-[10px] font-black uppercase tracking-[0.4em] text-primary">Project links</h5>
                     <div className="flex flex-col gap-3">
                       {proj.liveUrl && (
                         <Button className="w-full h-14 rounded-2xl font-black uppercase tracking-widest text-[10px] gap-3 shadow-xl bg-primary text-primary-foreground" asChild>
-                          <a href={proj.liveUrl} target="_blank" rel="noopener"><Globe size={16} /> Live Environment</a>
+                          <a href={proj.liveUrl} target="_blank" rel="noopener"><Globe size={16} /> Visit website</a>
                         </Button>
                       )}
                       {proj.githubUrl && (
                         <Button variant="outline" className="w-full h-14 rounded-2xl font-black uppercase tracking-widest text-[10px] gap-3 border-2 text-foreground" asChild>
-                          <a href={proj.githubUrl} target="_blank" rel="noopener"><Github size={16} /> Source Repository</a>
+                          <a href={proj.githubUrl} target="_blank" rel="noopener"><Github size={16} /> View source</a>
                         </Button>
                       )}
                     </div>

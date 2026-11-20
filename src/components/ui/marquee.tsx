@@ -5,8 +5,8 @@ import React from 'react';
 const ITEMS = [
   "Next.js 15", "Google AI", "n8n Automation", "Figma Design", 
   "Python Scripts", "React Engineering", "Systems Thinking", 
-  "Tanzania Tech", "Global Delivery", "Firebase Registry",
-  "Cloud Architecture", "Bespoke Logic", "Precision UI"
+  "Tanzania Tech", "Global Delivery", "Firebase",
+  "Cloud Architecture", "Custom Software", "Thoughtful Design"
 ];
 
 /**

@@ -7,8 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { 
   Mail, Phone, Send, CheckCircle2, Sparkles, 
-  MessageCircle, ArrowRight, MapPin, Zap,
-  Shield, Clock, Loader2
+  MessageCircle, ArrowRight, MapPin, Loader2
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { LocationMap } from "@/components/ui/location-map";
@@ -73,20 +72,6 @@ function ContactInfoCard({
       </div>
       <ArrowRight size={14} className="ml-auto text-muted-foreground/40 group-hover:text-primary group-hover:translate-x-1 transition-all" />
     </motion.a>
-  );
-}
-
-/* ═══════════════════════════════════════════
-   TRUST BADGE
-═══════════════════════════════════════════ */
-function TrustBadge({ icon: Icon, label }: { icon: any; label: string }) {
-  return (
-    <div className="flex flex-col items-center gap-2 p-4 rounded-2xl bg-muted/20 border border-border/30">
-      <Icon size={16} className="text-primary" />
-      <span className="text-[8px] font-black uppercase tracking-wider text-muted-foreground text-center">
-        {label}
-      </span>
-    </div>
   );
 }
 
@@ -196,7 +181,7 @@ export function Contact() {
 
     // 1. Gibberish Protection
     if (isTrashInput(rawData.name) || isTrashInput(rawData.message)) {
-      toast({ variant: "destructive", title: "Signal Rejected", description: "Please provide valid project information." });
+      toast({ variant: "destructive", title: "Please check your details", description: "Please provide valid project information." });
       setLoading(false);
       return;
     }
@@ -290,19 +275,19 @@ export function Contact() {
               <BlurFade inView>
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-[9px] font-black uppercase tracking-[0.25em]">
                   <Sparkles className="h-3" />
-                  Registry Signal
+                  Get in touch
                 </div>
               </BlurFade>
 
               <BlurFade delay={0.1} inView>
                 <h2 className="text-3xl md:text-5xl font-headline font-black leading-tight text-left tracking-tighter">
-                  Send Your <span className="text-primary italic">Build Brief</span>
+                  Tell me about <span className="text-primary italic">your project</span>
                 </h2>
               </BlurFade>
 
               <BlurFade delay={0.2} inView>
                 <p className="text-muted-foreground text-base md:text-lg max-w-md font-medium leading-relaxed">
-                  Have a project in mind? Let us architect something extraordinary for your business.
+                  Have a question or an idea? Share a few details and let’s talk.
                 </p>
               </BlurFade>
             </div>
@@ -312,7 +297,7 @@ export function Contact() {
               <div className="space-y-4">
                 <ContactInfoCard
                   icon={Mail}
-                  label="Registry Email"
+                  label="Email"
                   value="theglorifiedkeys@gmail.com"
                   href="mailto:theglorifiedkeys@gmail.com"
                   color="text-blue-500"
@@ -321,7 +306,7 @@ export function Contact() {
                 />
                 <ContactInfoCard
                   icon={MessageCircle}
-                  label="WhatsApp Handshake"
+                  label="WhatsApp"
                   value="+255 620 641 695"
                   href="https://wa.me/255620641695"
                   color="text-green-500"
@@ -330,21 +315,13 @@ export function Contact() {
                 />
                 <ContactInfoCard
                   icon={MapPin}
-                  label="Operations Base"
+                  label="Location"
                   value="Dar es Salaam, Tanzania"
                   href="https://maps.google.com/?q=Dar+es+Salaam"
                   color="text-orange-500"
                   bgColor="bg-orange-500/10"
                   borderColor="border-orange-500/20"
                 />
-              </div>
-            </BlurFade>
-
-            <BlurFade delay={0.4} inView>
-              <div className="grid grid-cols-3 gap-3">
-                <TrustBadge icon={Shield}       label="Encrypted"   />
-                <TrustBadge icon={Clock}        label="24h Sync"    />
-                <TrustBadge icon={Zap}          label="Instant"     />
               </div>
             </BlurFade>
 
@@ -377,9 +354,9 @@ export function Contact() {
                       </motion.div>
 
                       <div className="space-y-3">
-                        <h3 className="text-2xl font-black uppercase tracking-tight text-foreground">Signal Received ✓</h3>
+                        <h3 className="text-2xl font-black uppercase tracking-tight text-foreground">Message sent ✓</h3>
                         <p className="text-muted-foreground font-medium text-sm leading-relaxed max-w-xs mx-auto">
-                          Your inquiry has been authenticated. Expect a technical proposal within 24 hours.
+                          Thanks for getting in touch. I’ll review your message and get back to you.
                         </p>
                       </div>
 
@@ -400,7 +377,7 @@ export function Contact() {
                       className="space-y-6"
                     >
                       <div className="mb-8">
-                        <h3 className="text-xl font-black uppercase tracking-tight mb-1">Compose Signal</h3>
+                        <h3 className="text-xl font-black uppercase tracking-tight mb-1">Send a message</h3>
                         <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-widest">
                           Fields marked with * are mandatory
                         </p>
@@ -419,7 +396,7 @@ export function Contact() {
                           id="email"
                           name="email"
                           label="Email Address"
-                          placeholder="amina@registry.com"
+                          placeholder="amina@example.com"
                           type="email"
                           required
                           error={formErrors.email}
@@ -435,7 +412,7 @@ export function Contact() {
                           error={formErrors.phone}
                         />
                         <div className="space-y-2 group">
-                          <Label className="text-[9px] font-black uppercase tracking-[0.2em] ml-1 text-muted-foreground">Select Build Type</Label>
+                          <Label className="text-[9px] font-black uppercase tracking-[0.2em] ml-1 text-muted-foreground">Services</Label>
                           <MultiSelect
                             options={serviceOptions}
                             placeholder="Choose services..."
@@ -446,12 +423,12 @@ export function Contact() {
 
                       <div className="space-y-2 group">
                         <Label htmlFor="message" className="text-[9px] font-black uppercase tracking-[0.2em] ml-1 text-muted-foreground flex items-center gap-1">
-                          The Narrative <span className="text-primary">*</span>
+                          Your message <span className="text-primary">*</span>
                         </Label>
                         <Textarea
                           id="message"
                           name="message"
-                          placeholder="Describe your vision and technical requirements..."
+                          placeholder="Tell me what you need..."
                           required
                           className={cn(
                             "min-h-[130px] rounded-2xl border-2 resize-none font-medium text-sm transition-all",
@@ -466,12 +443,9 @@ export function Contact() {
                         disabled={loading}
                         className="w-full h-14 rounded-2xl font-black uppercase tracking-widest text-xs gap-3 shadow-xl shadow-primary/20 bg-primary text-white"
                       >
-                        {loading ? <><Loader2 className="h-4 w-4 animate-spin" /> Transmitting...</> : <><Send size={16} /> Transmit Signal</>}
+                        {loading ? <><Loader2 className="h-4 w-4 animate-spin" /> Sending...</> : <><Send size={16} /> Send message</>}
                       </Button>
 
-                      <p className="text-center text-[9px] text-muted-foreground/60 font-medium uppercase tracking-[0.2em]">
-                        🔒 256-BIT_ENCRYPTED_HANDSHAKE
-                      </p>
                     </motion.form>
                   )}
                 </AnimatePresence>

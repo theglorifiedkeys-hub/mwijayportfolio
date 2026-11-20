@@ -53,15 +53,15 @@ export function InsightsSection() {
         <div className="flex flex-col md:flex-row justify-between items-end gap-8">
           <div className="space-y-4 text-left">
              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-[10px] font-black uppercase tracking-[0.3em] border border-primary/20">
-                <SignalHigh className="h-3.5 w-3.5" /> System Insights
+                <SignalHigh className="h-3.5 w-3.5" /> Journal
              </div>
-             <h2 className="text-3xl md:text-6xl font-black font-headline tracking-tighter text-foreground uppercase">Strategic <span className="text-primary italic">Intelligence</span></h2>
+             <h2 className="text-3xl md:text-6xl font-black font-headline tracking-tighter text-foreground uppercase">Notes & <span className="text-primary italic">ideas</span></h2>
              <p className="text-muted-foreground text-sm md:text-lg max-w-xl font-medium leading-relaxed">
-               Expert analysis of AI automation, high-performance web systems, and the digital economy.
+               Thoughts on building websites, systems and useful digital tools.
              </p>
           </div>
           <Button variant="ghost" className="font-black uppercase tracking-widest text-[10px] gap-2 text-primary hover:bg-primary/5 transition-all h-12 px-6 border-2 border-primary/10 rounded-xl" asChild>
-            <Link href="/blog">Open Insight Registry <ArrowRight size={14} /></Link>
+            <Link href="/blog">Visit the blog <ArrowRight size={14} /></Link>
           </Button>
         </div>
 
@@ -76,17 +76,17 @@ export function InsightsSection() {
         {!isLoading && error && (
           <div className="p-12 rounded-[3rem] bg-destructive/5 border-2 border-destructive/20 text-center space-y-4 animate-in fade-in duration-500">
              <AlertCircle className="h-10 w-10 text-destructive mx-auto" />
-             <h4 className="text-lg font-black uppercase tracking-tight text-foreground">Registry Signal Interrupted</h4>
-             <p className="text-muted-foreground text-sm font-medium">Failed to decrypt insights. Use Admin to publish nodes.</p>
-             <Button variant="outline" onClick={() => window.location.reload()} className="h-10 px-6 rounded-xl font-bold uppercase text-[10px]">Retry Signal</Button>
+             <h4 className="text-lg font-black uppercase tracking-tight text-foreground">Couldn’t load articles</h4>
+             <p className="text-muted-foreground text-sm font-medium">Please try again in a moment.</p>
+             <Button variant="outline" onClick={() => window.location.reload()} className="h-10 px-6 rounded-xl font-bold uppercase text-[10px]">Try again</Button>
           </div>
         )}
 
         {!isLoading && !error && posts.length === 0 && (
           <div className="p-20 rounded-[3rem] border-2 border-dashed border-border/50 text-center space-y-6 bg-card/30">
             <Sparkles className="h-12 w-12 text-primary/20 mx-auto" />
-            <h3 className="text-2xl font-black font-headline uppercase tracking-tight opacity-40 italic">Syncing New Signals...</h3>
-            <p className="text-muted-foreground max-w-sm mx-auto font-medium italic text-sm">No live insights detected in registry.</p>
+            <h3 className="text-2xl font-black font-headline uppercase tracking-tight opacity-40 italic">More stories coming soon</h3>
+            <p className="text-muted-foreground max-w-sm mx-auto font-medium italic text-sm">New articles will appear here when they are published.</p>
           </div>
         )}
 
@@ -106,7 +106,7 @@ export function InsightsSection() {
                       )}
                       <div className="absolute top-4 left-4">
                          <Badge className="bg-black/60 backdrop-blur-md text-white border-white/10 text-[8px] font-black uppercase tracking-widest px-3 py-1 rounded-full">
-                           {post.category || 'Expert Node'}
+                           {post.category || 'Article'}
                          </Badge>
                       </div>
                     </div>
@@ -119,7 +119,7 @@ export function InsightsSection() {
                       </p>
                       <div className="pt-6 mt-auto border-t border-border/50 flex items-center justify-between text-[9px] font-black uppercase tracking-widest text-muted-foreground/60">
                         <div className="flex items-center gap-2"><Clock size={12} /> {post.readTime || '5'} MIN READ</div>
-                        <span className="text-primary group-hover:translate-x-1 transition-transform">DECRYPT SIGNAL →</span>
+                        <span className="text-primary group-hover:translate-x-1 transition-transform">READ ARTICLE →</span>
                       </div>
                     </CardContent>
                   </Card>

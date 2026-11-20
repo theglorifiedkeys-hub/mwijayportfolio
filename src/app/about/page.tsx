@@ -56,40 +56,31 @@ function StatCard({
   );
 }
 
-function PillarCard({ 
-  icon: Icon, 
-  title, 
-  description 
-}: { 
-  icon: any; 
-  title: string; 
+function PillarCard({
+  icon: Icon,
+  title,
+  description,
+}: {
+  icon: React.ElementType;
+  title: string;
   description: string;
 }) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 30 }}
+      initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      transition={{ type: 'spring', stiffness: 200 }}
-      whileHover={{ y: -6, scale: 1.02 }}
-      className="group"
+      transition={{ duration: 0.5 }}
+      className="h-full"
     >
-      <div className="relative p-8 rounded-[2rem] bg-card border-2 border-border/50 hover:border-primary/30 transition-all overflow-hidden shadow-xl h-full">
-        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-primary/60 to-transparent" />
-
-        <div className="w-14 h-14 rounded-2xl bg-primary/10 border-2 border-primary/20 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all">
-          <Icon size={24} className="text-primary" />
+      <div className="h-full rounded-3xl border border-border/60 bg-card/60 p-7 md:p-8 transition-colors duration-300 hover:border-primary/30">
+        <div className="flex items-center gap-4 mb-5">
+          <div className="h-10 w-10 shrink-0 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
+            <Icon size={19} strokeWidth={1.8} />
+          </div>
+          <h3 className="text-lg font-headline font-bold tracking-tight text-foreground">{title}</h3>
         </div>
-
-        <h3 className="text-xl font-black uppercase tracking-tight mb-3 group-hover:text-primary transition-colors">
-          {title}
-        </h3>
-
-        <p className="text-sm text-muted-foreground font-medium leading-relaxed">
-          {description}
-        </p>
-
-        <div className="absolute bottom-0 right-0 w-20 h-20 bg-primary/5 rounded-tl-[3rem] opacity-0 group-hover:opacity-100 transition-opacity" />
+        <p className="text-sm md:text-base text-muted-foreground leading-relaxed">{description}</p>
       </div>
     </motion.div>
   );
@@ -162,7 +153,7 @@ export default function AboutPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               <StatCard icon={Code2} value="11+" label="Projects Shipped" />
-              <StatCard icon={Rocket} value="4" label="Platforms In Use" />
+              <StatCard icon={Rocket} value="2" label="Languages · SW / EN" />
               <StatCard icon={Award} value="0.8s" label="Faida Checkout" />
               <StatCard icon={Zap} value="30" label="Days Post-Launch Support" />
             </div>
@@ -178,7 +169,7 @@ export default function AboutPage() {
                   How I work
                 </div>
                 <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tighter mb-4">
-                  Built on <span className="text-primary italic">Principles</span>
+                  A thoughtful <span className="text-primary italic">approach</span>
                 </h2>
                 <p className="text-muted-foreground text-sm md:text-lg max-w-2xl mx-auto font-medium">
                   A few practical principles guide how I plan, build and support each project.
@@ -189,32 +180,32 @@ export default function AboutPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               <PillarCard
                 icon={Zap}
-                title="Performance First"
+                title="Built for everyday use"
                 description="I keep pages lean and test them on real devices, with mobile networks and load times in mind."
               />
               <PillarCard
                 icon={ShieldCheck}
-                title="Security by Design"
+                title="Care with your data"
                 description="I consider privacy and access from the start, choosing appropriate safeguards for each project."
               />
               <PillarCard
                 icon={Rocket}
-                title="Scalable Systems"
+                title="Room to grow"
                 description="I choose tools that fit today’s needs and leave room for the project to grow."
               />
               <PillarCard
                 icon={Code2}
-                title="Clean Architecture"
+                title="Code that lasts"
                 description="Clear, maintainable code makes it easier to fix issues and add features later."
               />
               <PillarCard
                 icon={Target}
-                title="User-Centric Design"
+                title="People before features"
                 description="I focus on clear navigation, accessible interfaces and the people who will use them."
               />
               <PillarCard
                 icon={Sparkles}
-                title="Practical tools"
+                title="Tools with a purpose"
                 description="I use automation and modern tools where they make the work simpler or more useful."
               />
             </div>
