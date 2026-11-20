@@ -35,7 +35,7 @@ export function About({ userId }: { userId: string }) {
   if (isLoading) return (
     <div className="py-32 flex flex-col items-center justify-center space-y-4 opacity-50">
        <Loader2 className="h-10 w-10 animate-spin text-primary" />
-       <p className="text-[10px] font-black uppercase tracking-[0.4em]">Decrypting Profile Node...</p>
+       <p className="text-[10px] font-black uppercase tracking-[0.4em]">Loading profile...</p>
     </div>
   );
 
@@ -69,7 +69,7 @@ export function About({ userId }: { userId: string }) {
         <div className="lg:col-span-7 space-y-8">
           <FadeContent blur={true} duration={800}>
             <div className="space-y-4">
-              <h2 className="text-3xl md:text-5xl font-headline font-bold">Based in <span className="text-primary">Kongowe</span>, Dreaming Global</h2>
+              <h2 className="text-3xl md:text-5xl font-headline font-bold">Based in <span className="text-primary">Dar es Salaam</span></h2>
               <p className="text-muted-foreground text-lg leading-relaxed font-medium">
                 {displayData.aboutBio}
               </p>
@@ -79,7 +79,7 @@ export function About({ userId }: { userId: string }) {
           <FadeContent delay={200}>
             <div className="space-y-6 text-foreground/80 leading-relaxed font-medium">
               <p>
-                My passion lies at the intersection of AI and software engineering. I focus on building applications that move beyond just consuming technology to architecting the intelligent systems of 2026.
+                I enjoy turning everyday challenges into useful, accessible software — from a business website to a system that works when the internet is unreliable.
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4">
                 {[
@@ -101,9 +101,9 @@ export function About({ userId }: { userId: string }) {
 
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 pt-8">
             {[
-              { label: "AI Builds", value: displayData.systemsBuilt, suffix: "+", icon: Cpu },
+              { label: "Projects", value: displayData.systemsBuilt, suffix: "+", icon: Cpu },
               { label: "Web Systems", value: displayData.webSystems, suffix: "+", icon: Globe },
-              { label: "Performance", value: 100, suffix: "%", icon: Rocket },
+              { label: "Days Support", value: 30, suffix: "", icon: Rocket },
               { label: "UAUT Cohort", value: 2025, suffix: "", icon: GraduationCap },
             ].map((fact, idx) => (
               <AnimatedContent key={fact.label} direction="vertical" distance={20} delay={idx * 0.1}>

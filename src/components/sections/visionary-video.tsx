@@ -17,7 +17,7 @@ const DEFAULT_POSTER = "https://images.unsplash.com/photo-1451187580459-43490279
  * Dynamically pulls background image/video from Admin Registry.
  */
 export function VisionaryVideo() {
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
   const [isVisible, setIsVisible] = useState(false);
   const db = useFirestore();
   
@@ -38,7 +38,7 @@ export function VisionaryVideo() {
       { threshold: 0.1 }
     );
 
-    if (videoRef.current) observer.observe(videoRef.current);
+    if (sectionRef.current) observer.observe(sectionRef.current);
     return () => observer.disconnect();
   }, []);
 
@@ -46,12 +46,11 @@ export function VisionaryVideo() {
   const isVideo = assetUrl.includes('.mp4') || assetUrl.includes('video/upload');
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center px-6 overflow-hidden bg-background border-y border-border/50">
+    <section ref={sectionRef} className="relative min-h-[65vh] py-24 flex items-center justify-center px-6 overflow-hidden bg-background border-y border-border/50">
       <div className="absolute inset-0 z-0 bg-zinc-950">
         {isVisible ? (
           isVideo ? (
             <video 
-              ref={videoRef}
               autoPlay muted loop playsInline 
               preload="none"
               poster={DEFAULT_POSTER}
@@ -80,16 +79,16 @@ export function VisionaryVideo() {
         <BlurFade inView>
           <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-primary/10 border border-primary/20 text-primary text-[10px] font-black uppercase tracking-[0.3em] backdrop-blur-xl mx-auto shadow-xl">
             <Sparkles className="h-4 w-4" />
-            System Intelligence
+            Built in Tanzania
           </div>
         </BlurFade>
 
         <div className="space-y-6">
-          <h2 className="text-4xl sm:text-7xl md:text-8xl font-black font-headline tracking-tighter text-white leading-[0.9] uppercase">
-            Visionary <span className="text-primary italic">Systems</span>
+          <h2 className="text-4xl sm:text-6xl md:text-7xl font-black font-headline tracking-tighter text-white leading-[0.9] uppercase">
+            Useful <span className="text-primary italic">technology</span>
           </h2>
           <p className="text-lg md:text-3xl text-white/80 font-medium max-w-3xl mx-auto leading-relaxed">
-            Transform Your Business with <span className="text-white underline decoration-primary decoration-4 underline-offset-8">Precision Tech</span>
+            Thoughtful digital tools for the work you do every day.
           </p>
         </div>
 

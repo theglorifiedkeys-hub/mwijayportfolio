@@ -35,7 +35,7 @@ export default function StatsCounter() {
     { label: "Projects Built", val: Number(displayStats.projectsCompleted) || 0, icon: Briefcase, suffix: "+", color: "text-blue-500" },
     { label: "Happy Clients", val: Number(displayStats.happyClients) || 0, icon: Users, suffix: "+", color: "text-emerald-500" },
     { label: "Lines of Code", val: Number(displayStats.linesOfCode) || 0, icon: Code2, suffix: "+", color: "text-purple-500" },
-    { label: "Years Mastery", val: Number(displayStats.yearsExperience) || 0, icon: Calendar, suffix: "+", color: "text-orange-500" },
+    { label: "Years of experience", val: Number(displayStats.yearsExperience) || 0, icon: Calendar, suffix: "+", color: "text-orange-500" },
   ];
 
   return (

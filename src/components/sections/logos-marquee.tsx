@@ -62,7 +62,7 @@ export function LogosMarquee() {
         }
       `}} />
       <div className="max-w-7xl mx-auto px-6 mb-10 text-center md:text-left">
-        <h4 className="text-[10px] font-black uppercase tracking-[0.5em] text-primary/40 italic">Verified Tools & Tech Matrix</h4>
+        <h4 className="text-[10px] font-black uppercase tracking-[0.5em] text-primary/40 italic">Tools I work with</h4>
       </div>
       <div className="relative flex overflow-hidden group">
         <div className="flex animate-marquee-slow hover:[animation-play-state:paused]">

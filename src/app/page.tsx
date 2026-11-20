@@ -81,7 +81,7 @@ export default function Home() {
               </div>
               <ScrollReveal direction="right" delay={0.2}>
                 <p className="text-muted-foreground max-w-xs text-sm font-medium leading-relaxed italic text-left md:text-right">
-                  A precision-engineered showcase of high-performance technical architectures.
+                  A selection of websites, systems and ideas built for real people and businesses.
                 </p>
               </ScrollReveal>
             </div>

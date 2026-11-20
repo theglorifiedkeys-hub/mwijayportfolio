@@ -1,6 +1,6 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, MapPin, GraduationCap, FileText } from "lucide-react";
+import { ArrowRight, MapPin, GraduationCap } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { getAdminDb } from "@/lib/firebase-admin";
@@ -44,7 +44,7 @@ export async function Hero({ userId }: { userId: string }) {
           <>
             <Image 
               src={lcpImageUrl} 
-              alt="Handshake Background" 
+              alt=""
               fill 
               priority 
               className="object-cover opacity-20 grayscale" 
@@ -86,7 +86,7 @@ export async function Hero({ userId }: { userId: string }) {
         </header>
 
         <p data-hero-item className="text-base md:text-xl lg:text-2xl text-muted-foreground max-w-2xl mx-auto leading-relaxed font-medium">
-          I build high-performance websites and intelligent AI systems to grow your business infrastructure.
+          I build websites, business systems and automation for people and businesses in Tanzania.
         </p>
 
         <div data-hero-item className="flex flex-wrap justify-center gap-6 pt-6">
@@ -94,7 +94,7 @@ export async function Hero({ userId }: { userId: string }) {
             <Link href="/book">Start Your Project <ArrowRight className="ml-2 h-5 w-5" /></Link>
           </Button>
           <Button size="lg" variant="outline" className="rounded-full px-12 h-16 text-sm font-black uppercase tracking-widest border-2 border-border/80 hover:bg-primary/10 text-foreground bg-transparent transition-all" asChild>
-            <Link href="/agreement">Sign Agreement <FileText size={20} className="ml-2" /></Link>
+            <Link href="/projects">Explore my work <ArrowRight size={20} className="ml-2" /></Link>
           </Button>
         </div>
       </GsapEntrance>
