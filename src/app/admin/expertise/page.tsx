@@ -2,8 +2,8 @@
 
 import React, { useState } from 'react';
 import { ServicesEditor } from '@/components/admin/services-editor';
-import { useUser, useFirestore, useCollection, useMemoFirebase } from '@/firebase';
-import { collection } from 'firebase/firestore';
+import { useUser, useFirestore, useDoc, useMemoFirebase } from '@/firebase';
+import { doc } from 'firebase/firestore';
 import { Loader2, Grid3x3, Eye, EyeOff, Sparkles, Code2, Zap, Package, TrendingUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -89,10 +89,16 @@ export default function AdminExpertisePage() {
   const db = useFirestore();
   const [previewMode, setPreviewMode] = useState(false);
 
-  const servicesRef=useMemoFirebase(()=>db?collection(db,'users',OWNER_ID,'services'):null,[db]);
-  const {data:services}=useCollection(servicesRef,{enabled:!!servicesRef});
-  const servicesCount=services?.length ?? 0;
-  const activeServices=services?.filter(s=>!s.disabled).length ?? 0;
+  // Fetch profile to get services count
+  const profileRef = useMemoFirebase(() => {
+    if (!db) return null;
+    return doc(db, 'users', OWNER_ID);
+  }, [db]);
+  
+  const { data: profile } = useDoc(profileRef);
+
+  const servicesCount = profile?.services?.length || 0;
+  const activeServices = profile?.services?.filter((s: any) => !s.disabled)?.length || 0;
 
   /* ══════════════════════════════════════
      LOADING STATE
@@ -131,7 +137,7 @@ export default function AdminExpertisePage() {
               Expertise <span className="text-primary italic">Matrix</span>
             </h1>
             <p className="text-muted-foreground font-medium text-sm mt-1.5">
-              Manage the offerings listed under Studio practice on the home page
+              Manage the Cybernetic Bento Grid services displayed on the home page
             </p>
           </div>
         </div>
@@ -153,7 +159,7 @@ export default function AdminExpertisePage() {
             className="h-11 px-6 rounded-xl font-black uppercase tracking-wider text-[10px] gap-2 shadow-lg shadow-primary/20"
             asChild
           >
-            <Link href="/#expertise" target="_blank">
+            <Link href="/" target="_blank">
               <Code2 size={16} /> View Live Site
             </Link>
           </Button>
@@ -178,8 +184,8 @@ export default function AdminExpertisePage() {
         />
         <StatCard
           icon={Grid3x3}
-          label="Layout"
-          value="Index"
+          label="Grid Layout"
+          value="Bento"
           color="text-purple-500"
           bgColor="bg-purple-500/10"
         />
@@ -199,7 +205,7 @@ export default function AdminExpertisePage() {
         </h4>
         <div className="space-y-2 text-[11px] text-muted-foreground font-medium leading-relaxed">
           <p>
-            <strong className="text-foreground">• Grid System:</strong> Published offerings appear under their service category alongside the studio material study.
+            <strong className="text-foreground">• Grid System:</strong> Services are displayed in a responsive Bento Grid layout (2-column on desktop, 1-column on mobile).
           </p>
           <p>
             <strong className="text-foreground">• Icon Library:</strong> Use Lucide React icons for consistency. Popular choices: <code className="px-1.5 py-0.5 rounded bg-muted text-primary text-[10px] font-bold">Code2</code>, <code className="px-1.5 py-0.5 rounded bg-muted text-primary text-[10px] font-bold">Zap</code>, <code className="px-1.5 py-0.5 rounded bg-muted text-primary text-[10px] font-bold">Rocket</code>.
@@ -244,7 +250,7 @@ export default function AdminExpertisePage() {
                     className="h-12 px-8 rounded-2xl font-black uppercase tracking-widest text-xs gap-2 shadow-lg shadow-primary/20"
                     asChild
                   >
-                    <Link href="/#expertise" target="_blank">
+                    <Link href="/" target="_blank">
                       <Code2 size={16} /> Open Home Page
                     </Link>
                   </Button>

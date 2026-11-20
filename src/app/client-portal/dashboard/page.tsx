@@ -74,7 +74,7 @@ export default function ClientDashboardPage() {
       {/* Welcome Section */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
         <div className="space-y-1">
-          <h1 className="text-3xl font-medium font-headline tracking-tighter text-white">Karibu, <span className="text-primary">{client?.name?.split(' ')[0] || 'client'}</span></h1>
+          <h1 className="text-3xl font-black font-headline tracking-tighter uppercase text-white">Karibu back, <span className="text-primary">{client?.name.split(' ')[0]}</span> 👋</h1>
           <p className="text-muted-foreground font-medium">Hapa ndipo unapoweza kuona maendeleo ya mfumo wako kwa uhalisia.</p>
         </div>
         <div className="flex flex-wrap gap-2">
@@ -88,7 +88,7 @@ export default function ClientDashboardPage() {
       </div>
 
       {/* Main Status Card */}
-      <Card className="cp-summary relative overflow-hidden">
+      <Card className="border-2 rounded-[3rem] bg-zinc-950/50 border-white/5 overflow-hidden shadow-2xl relative group">
         <div className="absolute top-0 right-0 w-80 h-80 bg-primary/10 rounded-full blur-[100px] -mr-40 -mt-40 transition-transform duration-1000 group-hover:scale-150" />
         <CardContent className="p-10 lg:p-16 relative z-10 flex flex-col lg:flex-row items-center justify-between gap-12">
           <div className="space-y-8 flex-1 text-center lg:text-left">
@@ -102,7 +102,7 @@ export default function ClientDashboardPage() {
             
             <div className="flex flex-wrap items-center justify-center lg:justify-start gap-10 pt-6">
                <div className="space-y-1">
-                  <p className="text-[9px] font-black uppercase tracking-[0.2em] text-muted-foreground">Start date</p>
+                  <p className="text-[9px] font-black uppercase tracking-[0.2em] text-muted-foreground">Genesis Date</p>
                   <p className="font-black text-base text-white flex items-center gap-2">
                     <Calendar size={14} className="text-primary" />
                     {project.startDate ? format(project.startDate.toDate ? project.startDate.toDate() : project.startDate, 'MMM dd, yyyy') : 'TBD'}
@@ -110,16 +110,16 @@ export default function ClientDashboardPage() {
                </div>
                <div className="h-10 w-px bg-white/10 hidden sm:block" />
                <div className="space-y-1">
-                  <p className="text-[9px] font-black uppercase tracking-[0.2em] text-muted-foreground">Estimated delivery</p>
+                  <p className="text-[9px] font-black uppercase tracking-[0.2em] text-muted-foreground">Est. Fulfillment</p>
                   <p className="font-black text-base text-white flex items-center gap-2">
                     <Clock size={14} className="text-primary" />
-                    {project.estimatedCompletion ? format(project.estimatedCompletion.toDate ? project.estimatedCompletion.toDate() : project.estimatedCompletion, 'MMM dd, yyyy') : 'Not scheduled'}
+                    {project.estimatedCompletion ? format(project.estimatedCompletion.toDate ? project.estimatedCompletion.toDate() : project.estimatedCompletion, 'MMM dd, yyyy') : 'Calculated Stage'}
                   </p>
                </div>
             </div>
           </div>
 
-          <div className="flex flex-col items-center gap-6 bg-white/[0.03] p-4 rounded-2xl border border-white/10">
+          <div className="flex flex-col items-center gap-6 bg-white/[0.03] p-10 rounded-[4rem] border-2 border-white/5 shadow-inner scale-110 lg:scale-125">
             <div className="relative">
               <svg width="160" height="160" className="transform -rotate-90">
                 <circle cx="80" cy="80" r={radius} fill="none" stroke="currentColor" strokeWidth="10" className="text-white/5" />
@@ -135,7 +135,7 @@ export default function ClientDashboardPage() {
               </svg>
               <div className="absolute inset-0 flex flex-col items-center justify-center transform rotate-0">
                 <span className="text-4xl font-black font-headline text-white">{project.progressPercent}%</span>
-                <span className="text-[9px] font-black uppercase tracking-[0.3em] text-primary/60">COMPLETE</span>
+                <span className="text-[9px] font-black uppercase tracking-[0.3em] text-primary/60">DEPLOYED</span>
               </div>
             </div>
             <Button variant="ghost" size="sm" onClick={() => setActiveDoc('BLUEPRINT')} className="font-black uppercase tracking-widest text-[9px] text-white/40 hover:text-primary transition-colors">
@@ -148,10 +148,10 @@ export default function ClientDashboardPage() {
       {/* Stats Row */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
         {[
-          { label: "Current milestone", val: project.currentMilestone, icon: GitBranch, color: "text-blue-500", href: "/client-portal/progress" },
-          { label: "Milestones complete", val: `${project.milestones.filter(m => m.status === 'completed').length}/${project.milestones.length}`, icon: Target, color: "text-green-500", href: "/client-portal/progress" },
-          { label: "Amount paid", val: formatTZS(project.amountPaid), icon: CreditCard, color: "text-amber-500", href: "/client-portal/payments" },
-          { label: "Deliverables", val: `${project.deliverables.length} Items`, icon: FolderOpen, color: "text-purple-500", href: "/client-portal/files" },
+          { label: "Current Logic", val: project.currentMilestone, icon: GitBranch, color: "text-blue-500", href: "/client-portal/progress" },
+          { label: "Registry Phase", val: `${project.milestones.filter(m => m.status === 'completed').length}/${project.milestones.length}`, icon: Target, color: "text-green-500", href: "/client-portal/progress" },
+          { label: "Fulfillment Log", val: formatTZS(project.amountPaid), icon: CreditCard, color: "text-amber-500", href: "/client-portal/payments" },
+          { label: "Asset Vault", val: `${project.deliverables.length} Items`, icon: FolderOpen, color: "text-purple-500", href: "/client-portal/files" },
         ].map((stat, i) => (
           <Link key={i} href={stat.href}>
             <Card className="rounded-3xl border-2 bg-zinc-950/40 hover:border-primary/40 hover:-translate-y-1 transition-all duration-300 p-8 group relative overflow-hidden h-full">
@@ -184,12 +184,12 @@ export default function ClientDashboardPage() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 pt-10">
         <section className="lg:col-span-8 space-y-6">
           <div className="flex items-center justify-between px-2">
-             <h3 className="text-xl font-black font-headline tracking-tight uppercase text-white">Milestones</h3>
+             <h3 className="text-xl font-black font-headline tracking-tight uppercase text-white">Registry Milestones</h3>
              <Link href="/client-portal/progress" className="text-[10px] font-black uppercase tracking-widest text-primary hover:underline flex items-center gap-1">Full Roadmap <ArrowRight size={12} /></Link>
           </div>
           <Card className="rounded-[3rem] border-2 bg-zinc-950/40 p-10 space-y-12">
             <div className="relative border-l-2 border-white/5 pl-10 ml-4 space-y-14">
-              {[...project.milestones].sort((a,b) => a.order - b.order).slice(0, 4).map((m, idx) => {
+              {project.milestones.sort((a,b) => a.order - b.order).slice(0, 4).map((m, idx) => {
                 const isCompleted = m.status === 'completed';
                 const isActive = m.status === 'in_progress';
                 return (
@@ -212,7 +212,7 @@ export default function ClientDashboardPage() {
                         <h4 className={cn("font-black text-lg uppercase tracking-tight", isCompleted || isActive ? "text-white" : "text-muted-foreground")}>{m.name}</h4>
                         {isCompleted && <span className="text-[8px] font-black uppercase text-green-500 bg-green-500/10 px-3 py-1 rounded-full border border-green-500/20">LOGGED ✓</span>}
                       </div>
-                      <p className="text-sm text-muted-foreground font-medium leading-relaxed italic">{m.notes || 'No notes yet.'}</p>
+                      <p className="text-sm text-muted-foreground font-medium leading-relaxed italic">{m.notes || 'Awaiting architecture sync...'}</p>
                     </div>
                   </motion.div>
                 );
@@ -224,8 +224,8 @@ export default function ClientDashboardPage() {
         <div className="lg:col-span-4 space-y-8">
           <section className="space-y-6">
              <div className="flex items-center justify-between px-2">
-                <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground">Latest files</h3>
-                <Link href="/client-portal/files" className="text-[10px] font-black text-primary uppercase hover:underline">All files →</Link>
+                <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground">Recent Signal Uploads</h3>
+                <Link href="/client-portal/files" className="text-[10px] font-black text-primary uppercase hover:underline">Vault Registry →</Link>
              </div>
              <div className="space-y-4">
                 {project.deliverables.slice(0, 4).map((file, idx) => (
@@ -253,7 +253,7 @@ export default function ClientDashboardPage() {
                 {project.deliverables.length === 0 && (
                    <div className="p-12 border-2 border-dashed rounded-[2rem] text-center opacity-20">
                       <Archive size={32} className="mx-auto mb-2" />
-                      <p className="text-[9px] font-black uppercase tracking-widest">No files shared yet</p>
+                      <p className="text-[9px] font-black uppercase tracking-widest">No Signals Synced</p>
                    </div>
                 )}
              </div>

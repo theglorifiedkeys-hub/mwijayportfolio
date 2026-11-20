@@ -34,7 +34,6 @@ export function ServicesEditor({ userId }: { userId: string }) {
       description: "Define the architecture specs...",
       imageUrl: "",
       price: "TZS 120,000+",
-      disabled:true,
       category: "web",
       complexity: "Standard"
     });
@@ -59,7 +58,7 @@ export function ServicesEditor({ userId }: { userId: string }) {
     }
   };
 
-  const handleUpdate = (serviceId: string, field: string, value: string | boolean) => {
+  const handleUpdate = (serviceId: string, field: string, value: string) => {
     const docRef = doc(firestore!, 'users', userId, 'services', serviceId);
     updateDocumentNonBlocking(docRef, { [field]: value });
   };
@@ -111,7 +110,7 @@ export function ServicesEditor({ userId }: { userId: string }) {
                 </Button>
               </div>
             </div>
-            <CardContent className="p-8 space-y-6 flex-1"><label className="flex gap-2 items-center"><input type="checkbox" checked={!service.disabled} onChange={e=>handleUpdate(service.id,"disabled",!e.target.checked)}/> Visible on website</label>
+            <CardContent className="p-8 space-y-6 flex-1">
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label className="text-[9px] font-black uppercase text-primary/60">Domain</Label>

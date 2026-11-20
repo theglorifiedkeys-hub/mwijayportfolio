@@ -37,9 +37,8 @@ export function Projects({ userId }: { userId: string }) {
     if (!firestore || !userId) return null;
     return collection(firestore, 'users', userId, 'projects');
   }, [firestore, userId]);
-  const { data: dbProjects, isLoading,error } = useCollectionOnce(projectsRef,{enabled:!!projectsRef});
+  const { data: dbProjects, isLoading } = useCollectionOnce(projectsRef);
 
-  if (!firestore || error) return <p className="p-6 text-center text-muted-foreground">The live project gallery is unavailable right now.</p>;
   if (isLoading) return (
     <div className="py-20 flex justify-center">
       <Loader2 className="h-8 w-8 animate-spin text-primary" />
@@ -56,7 +55,7 @@ export function Projects({ userId }: { userId: string }) {
       
       {projectsToDisplay.length === 0 && (
          <div className="col-span-full py-20 text-center border-2 border-dashed rounded-[3rem] opacity-30">
-            <p className="font-black uppercase tracking-widest text-sm italic">No projects have been added to this gallery yet.</p>
+            <p className="font-black uppercase tracking-widest text-sm italic">Gallery empty • Map builds in Admin Console</p>
          </div>
       )}
     </div>

@@ -2,7 +2,7 @@
 
 import React, { useState, useRef } from 'react';
 import { useCollectionOnce, useFirestore, useMemoFirebase } from '@/firebase';
-import {publishedBlogs} from '@/lib/public-catalog';
+import { collection, query, orderBy } from 'firebase/firestore';
 import { Footer } from '@/components/footer';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -105,8 +105,9 @@ function BlogHero({ totalPosts }: { totalPosts: number }) {
           className="flex flex-wrap justify-center gap-6 pt-4"
         >
           {[
-            { icon: BookOpen, value: totalPosts, suffix: '', label: 'Articles' },
-
+            { icon: BookOpen, value: totalPosts, suffix: '+', label: 'Articles' },
+            { icon: TrendingUp, value: 10, suffix: 'K+', label: 'Readers' },
+            { icon: Zap, value: 5, suffix: ' Min', label: 'Avg Read' },
           ].map(({ icon: Icon, value, suffix, label }) => (
             <div key={label} className="flex items-center gap-3 px-6 py-3 rounded-2xl bg-card border border-border/40 shadow-sm">
               <Icon size={16} className="text-primary" />
@@ -386,16 +387,15 @@ export default function BlogListingPage() {
   const blogsQuery = useMemoFirebase(() => {
     if (!db) return null;
     try {
-      return publishedBlogs(db);
+      return query(collection(db, 'blogs'), orderBy('publishedAt', 'desc'));
     } catch (e) {
       console.warn("📡 Blog Registry:", e);
       return null;
     }
   }, [db]);
 
-  const { data: rawPosts, isLoading, error: fetchError } = useCollectionOnce(blogsQuery,{enabled:!!blogsQuery});
+  const { data: rawPosts, isLoading, error } = useCollectionOnce(blogsQuery);
 
-  const error = !db || fetchError;
   const posts = React.useMemo(() => {
     if (!rawPosts) return [];
     return rawPosts.filter((p: any) => p.isPublished === true);
@@ -462,7 +462,7 @@ export default function BlogListingPage() {
           ) : error ? (
             <div className="p-20 rounded-[3rem] bg-destructive/5 border-2 border-destructive/20 text-center space-y-6">
               <Newspaper className="h-16 w-16 mx-auto opacity-20 text-destructive" />
-              <h3 className="text-2xl font-black font-headline">Live journal unavailable</h3><Link className="block underline" href="/library#client-guides">Read the client guides instead</Link>
+              <h3 className="text-2xl font-black font-headline uppercase">Signal Interrupted</h3>
               <Button
                 variant="outline"
                 onClick={() => window.location.reload()}

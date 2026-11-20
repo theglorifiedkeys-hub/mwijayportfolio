@@ -136,7 +136,7 @@ export default function ClientMessagesPage() {
     <div className="flex flex-col h-[calc(100vh-140px)] lg:h-[calc(100vh-80px)]">
       <div className="mb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div className="space-y-1">
-          <h1 className="text-2xl font-black font-headline tracking-tighter uppercase text-white">Project <span className="text-primary italic">messages</span></h1>
+          <h1 className="text-2xl font-black font-headline tracking-tighter uppercase text-white">Terminal <span className="text-primary italic">Signals</span></h1>
           <div className="flex items-center gap-2">
              <div className="h-1.5 w-1.5 rounded-full bg-green-500 animate-pulse" />
              <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Lead_Architect: BUSY (Academic)</p>

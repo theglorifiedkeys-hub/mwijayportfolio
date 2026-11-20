@@ -4,7 +4,7 @@ import React from 'react';
  * StructuredData - Server Component to render JSON-LD for SEO.
  */
 export function StructuredData() {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://mwijayportfolio.vercel.app';
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://mwijay.vercel.app';
   const whatsapp = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '+255620641695';
   const email = process.env.NEXT_PUBLIC_BUSINESS_EMAIL || 'mwijaydavie@gmail.com';
 
@@ -59,7 +59,7 @@ export function StructuredData() {
       "name": "Mwijay Davie",
       "alternateName": "David Erick Mwijage",
       "jobTitle": "Full-Stack Developer & AI Specialist",
-      "worksFor": { "@type": "Organization", "name": "Altraware", "url": "https://altra.tanzaniareach.com/" },
+      "worksFor": { "@type": "Organization", "name": "Mwijay Services" },
       "alumniOf": {
         "@type": "EducationalOrganization",
         "name": "United Africa University of Tanzania (UAUT)"
@@ -71,7 +71,7 @@ export function StructuredData() {
       },
       "url": siteUrl,
       "sameAs": [
-        "https://github.com/mwijay12",
+        "https://github.com/mwijay",
         "https://instagram.com/mwijaydavie"
       ]
     },
@@ -79,7 +79,7 @@ export function StructuredData() {
       "@context": "https://schema.org",
       "@type": "WebSite",
       "@id": `${siteUrl}/#website`,
-      "name": "Mwijay Davie",
+      "name": "Mwijay Services",
       "url": siteUrl,
       "description": "Portfolio and services of Mwijay Davie",
       "inLanguage": ["en", "sw"],

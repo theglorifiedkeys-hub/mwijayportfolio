@@ -2,11 +2,10 @@
 
 import React, { useState, useEffect, type ReactNode } from 'react';
 import { FirebaseProvider } from '@/firebase/provider';
-import { usePathname } from 'next/navigation';
-import { isEditorialRoute } from '@/lib/folio-routes';
 import dynamic from 'next/dynamic';
 
 const PwaInstallPrompt = dynamic(() => import('@/components/pwa-install-prompt').then(m => m.PwaInstallPrompt), { ssr: false });
+const LoadingScreen = dynamic(() => import('@/components/ui/loading-screen').then(m => m.LoadingScreen), { ssr: false });
 
 interface FirebaseClientProviderProps {
   children: ReactNode;
@@ -17,8 +16,6 @@ interface FirebaseClientProviderProps {
  * Deferring heavy Firebase SDK loading until after first contentful paint (FCP).
  */
 export function FirebaseClientProvider({ children }: FirebaseClientProviderProps) {
-  const pathname = usePathname();
-  const isFolio = isEditorialRoute(pathname);
   const [services, setServices] = useState<{
     firebaseApp: any;
     auth: any;
@@ -54,7 +51,8 @@ export function FirebaseClientProvider({ children }: FirebaseClientProviderProps
       auth={services?.auth}
       firestore={services?.firestore}
     >
-      {!isFolio && pathname !== '/book' && pathname !== '/login' && !pathname.startsWith('/admin') && !pathname.startsWith('/client-portal') && <PwaInstallPrompt />}
+      <LoadingScreen />
+      <PwaInstallPrompt />
       {children}
     </FirebaseProvider>
   );

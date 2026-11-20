@@ -12,7 +12,7 @@ import { usePathname } from 'next/navigation';
  * AnnouncementBanner - Strategic real-time broadcast.
  * USES MEMORY FILTERING: To ensure zero index dependencies.
  */
-export function AnnouncementBanner({ inline = false }: { inline?: boolean } = {}) {
+export function AnnouncementBanner() {
   const { firestore } = useFirebase();
   const pathname = usePathname();
   
@@ -45,7 +45,6 @@ export function AnnouncementBanner({ inline = false }: { inline?: boolean } = {}
   }, [rawAlerts]);
 
   React.useEffect(() => {
-    if (inline) return;
     if (alert && !closed) {
       document.documentElement.style.setProperty('--banner-height', '44px');
     } else {
@@ -54,7 +53,7 @@ export function AnnouncementBanner({ inline = false }: { inline?: boolean } = {}
     return () => {
       document.documentElement.style.setProperty('--banner-height', '0px');
     };
-  }, [alert, closed, inline]);
+  }, [alert, closed]);
 
   // Hide in Admin/Login dashboards for cleaner UI.
   const isProtectedPath = pathname?.startsWith('/admin') || pathname?.startsWith('/login') || pathname?.startsWith('/client-portal');
@@ -68,7 +67,7 @@ export function AnnouncementBanner({ inline = false }: { inline?: boolean } = {}
         initial={{ height: 0, opacity: 0 }}
         animate={{ height: 'auto', opacity: 1 }}
         exit={{ height: 0, opacity: 0 }}
-        className={`${inline ? "relative" : "fixed top-0 left-0"} w-full z-[5100] text-white py-3 px-10 flex items-center justify-center gap-4 overflow-hidden ${
+        className={`fixed top-0 left-0 w-full z-[5100] text-white py-3 px-10 flex items-center justify-center gap-4 overflow-hidden ${
           alert.type === 'discount' ? 'bg-gradient-to-r from-yellow-600 to-amber-500' :
           alert.type === 'urgent' ? 'bg-gradient-to-r from-red-600 to-rose-500' :
           'bg-gradient-to-r from-[#1e3a5f] to-[#3182ce]'

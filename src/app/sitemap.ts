@@ -38,17 +38,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     '',
     '/projects',
     '/blog',
-    '/library',
-    '/market',
-    '/services/web',
-    '/services/automation',
-    '/services/design',
-    '/experience',
-    '/projects/gallery',
     '/pricing',
     '/contact',
     '/about',
-    '/services/content',
     '/agreement',
     '/terms',
     '/privacy',
@@ -66,13 +58,26 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   /* ═══════════════════════════════════════
      2. DYNAMIC NODES (Resilient Fetch)
   ═══════════════════════════════════════ */
+  let projectEntries: MetadataRoute.Sitemap = [];
   let blogEntries: MetadataRoute.Sitemap = [];
 
   try {
     const db = getFirestore();
     
+    // PROJECT REGISTRY
+    const projectSnap = await db.collection('projects').get();
+    projectEntries = projectSnap.docs.map((doc) => {
+      const data = doc.data();
+      return {
+        url: `${baseUrl}/projects/${data.slug || doc.id}`,
+        lastModified: data.updatedAt?.toDate() || new Date(),
+        changeFrequency: 'monthly' as const,
+        priority: 0.9,
+      };
+    });
+
     // BLOG REGISTRY
-    const blogSnap = await db.collection('blogs').where('isPublished','==',true).get();
+    const blogSnap = await db.collection('blogs').get();
     blogEntries = blogSnap.docs.map((doc) => {
       const data = doc.data();
       return {
@@ -88,6 +93,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   return [
     ...staticEntries,
+    ...projectEntries,
     ...blogEntries,
   ];
 }
