@@ -59,14 +59,14 @@ export const metadata: Metadata = {
     },
   },
   icons: {
-    icon: '/favicon.ico',
+    icon: [{ url: '/favicon.svg', type: 'image/svg+xml' }, { url: '/favicon.ico', sizes: 'any' }],
     shortcut: '/favicon-32x32.png',
     apple: '/apple-touch-icon.png',
   },
-  manifest: '/manifest.json',
+  manifest: '/manifest.webmanifest',
   openGraph: {
     title: 'Mwijay Services | Web Developer & AI Specialist',
-    description: 'Bespoke digital architecture and AI systems built for the 2026 African business landscape.',
+    description: 'Websites, business systems and automation built in Dar es Salaam.',
     url: BASE_URL,
     siteName: 'Mwijay Services',
     locale: 'en_TZ',

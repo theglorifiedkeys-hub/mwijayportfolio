@@ -86,17 +86,17 @@ function BookingForm() {
 
   const validateStep = () => {
     const newErrors: Record<string, string> = {};
-    if (currentStep === 1 && formData.services.length === 0) newErrors.service = "Please select at least one service node.";
+    if (currentStep === 1 && formData.services.length === 0) newErrors.service = "Please select at least one service.";
     if (currentStep === 2) {
       if (!formData.projectName) newErrors.projectName = "Project name is required.";
-      if (isTrashInput(formData.projectName)) newErrors.projectName = "Invalid signal node.";
+      if (isTrashInput(formData.projectName)) newErrors.projectName = "Please enter a valid project name.";
       if (formData.description.length < 10) newErrors.description = "Please provide a short description (min 10 chars).";
-      if (!formData.budgetRange) newErrors.budgetRange = "Select a budget cluster.";
+      if (!formData.budgetRange) newErrors.budgetRange = "Please select a budget range.";
     }
     if (currentStep === 3) {
       if (!formData.clientName) newErrors.clientName = "Your name is required.";
-      if (isTrashInput(formData.clientName)) newErrors.clientName = "Invalid name signal.";
-      if (!validateEmail(formData.clientEmail)) newErrors.clientEmail = "Invalid email signal.";
+      if (isTrashInput(formData.clientName)) newErrors.clientName = "Please enter a valid name.";
+      if (!validateEmail(formData.clientEmail)) newErrors.clientEmail = "Please enter a valid email.";
       if (!validatePhone(formData.clientPhone)) newErrors.clientPhone = "Valid TZ phone required.";
     }
     if (currentStep === 4) {
@@ -158,21 +158,21 @@ function BookingForm() {
         <div className="lg:col-span-4 space-y-10 lg:sticky lg:top-32 h-fit text-left">
           <div className="space-y-6">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-[10px] font-black uppercase tracking-widest border border-primary/20">
-              <ShieldCheck className="h-3 w-3" /> SECURE INTAKE SYSTEM
+              <ShieldCheck className="h-3 w-3" /> PROJECT ENQUIRY
             </div>
             <h1 className="text-4xl md:text-5xl font-black font-headline tracking-tighter leading-tight text-foreground">
-              Initialize Your <span className="text-primary italic">Build Request</span>
+              Tell me about <span className="text-primary italic">your project</span>
             </h1>
             <p className="text-muted-foreground font-medium leading-relaxed">
-              This system captures your technical requirements to generate a precision quotation and service agreement.
+              Share what you need, your budget and timeline. We can then discuss the scope and prepare a written quote.
             </p>
           </div>
 
           <div className="space-y-6 pt-10 border-t border-border/50">
             {[
-              { t: "Custom Quote (24h)", i: Clock, c: "text-blue-500" },
-              { t: "Legal Agreement", i: ShieldCheck, c: "text-green-500" },
-              { t: "Evidence Registry", i: Target, c: "text-pink-500" }
+              { t: "Written quote", i: Clock, c: "text-blue-500" },
+              { t: "Clear agreement", i: ShieldCheck, c: "text-green-500" },
+              { t: "Project details on record", i: Target, c: "text-pink-500" }
             ].map((item, idx) => (
               <div key={idx} className="flex items-center gap-4">
                 <div className={cn("h-10 w-10 rounded-xl bg-muted flex items-center justify-center border", item.c)}>
@@ -196,9 +196,9 @@ function BookingForm() {
                   <CheckCircle size={48} className="animate-in zoom-in duration-500" />
                 </div>
                 <div className="space-y-4">
-                  <h3 className="text-3xl font-black font-headline uppercase tracking-tight text-foreground">Signal Authenticated!</h3>
+                  <h3 className="text-3xl font-black font-headline uppercase tracking-tight text-foreground">Request received!</h3>
                   <p className="text-muted-foreground text-lg max-w-sm mx-auto">
-                    Your brief <span className="text-primary font-bold">#{inquiryId}</span> has been logged in our registry.
+                    Your brief <span className="text-primary font-bold">#{inquiryId}</span> has been submitted.
                   </p>
                 </div>
                 <div className="flex flex-col sm:flex-row gap-4 w-full pt-4">
@@ -208,7 +208,7 @@ function BookingForm() {
                     </a>
                   </Button>
                   <Button variant="outline" className="flex-1 h-16 rounded-2xl font-black uppercase tracking-widest text-xs border-2" asChild>
-                    <Link href="/">Return to Genesis</Link>
+                    <Link href="/">Return home</Link>
                   </Button>
                 </div>
               </motion.div>
@@ -221,19 +221,19 @@ function BookingForm() {
                    <AlertTriangle size={40} />
                 </div>
                 <div className="space-y-2">
-                   <h3 className="text-2xl font-black font-headline uppercase text-foreground">Transmission Failed</h3>
-                   <p className="text-muted-foreground font-medium max-w-xs mx-auto">The system encountered an error while synchronizing your project signal.</p>
+                   <h3 className="text-2xl font-black font-headline uppercase text-foreground">Could not submit</h3>
+                   <p className="text-muted-foreground font-medium max-w-xs mx-auto">Something went wrong while submitting your request.</p>
                 </div>
                 <div className="p-8 rounded-[2rem] bg-muted/50 border-2 border-dashed border-border/50 space-y-6 w-full max-w-sm">
                    <div className="space-y-1">
-                      <p className="text-[10px] font-black uppercase tracking-[0.3em] text-primary">Emergency Backup Protocol</p>
-                      <p className="text-xs font-bold leading-relaxed text-foreground">Reach out directly via WhatsApp for manual registry entry:</p>
+                      <p className="text-[10px] font-black uppercase tracking-[0.3em] text-primary">Contact directly</p>
+                      <p className="text-xs font-bold leading-relaxed text-foreground">You can also reach out on WhatsApp:</p>
                    </div>
                    <Button className="w-full bg-green-600 hover:bg-green-700 h-14 rounded-2xl text-[10px] font-black uppercase tracking-widest gap-2" asChild>
                       <a href="https://wa.me/255620641695"><Smartphone size={16} /> +255 620 641 695</a>
                    </Button>
                 </div>
-                <Button variant="ghost" onClick={() => setTransmissionError(false)} className="font-black text-[10px] uppercase tracking-widest text-primary hover:bg-primary/5">Retry Build Signal</Button>
+                <Button variant="ghost" onClick={() => setTransmissionError(false)} className="font-black text-[10px] uppercase tracking-widest text-primary hover:bg-primary/5">Try again</Button>
               </motion.div>
             ) : (
               <div className="space-y-12">
@@ -257,8 +257,8 @@ function BookingForm() {
                   {currentStep === 1 && (
                     <motion.div key="s1" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-10 text-left">
                       <div className="space-y-2">
-                        <h2 className="text-2xl font-black font-headline uppercase tracking-tight text-foreground">Select Architecture Node</h2>
-                        <p className="text-sm text-muted-foreground">What domain are we building in today?</p>
+                        <h2 className="text-2xl font-black font-headline uppercase tracking-tight text-foreground">Choose your services</h2>
+                        <p className="text-sm text-muted-foreground">What would you like help with?</p>
                       </div>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         {SERVICE_CARDS.map((card) => {
@@ -309,7 +309,7 @@ function BookingForm() {
                         </div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                            <div className="space-y-4">
-                              <Label className="text-[10px] font-black uppercase tracking-widest ml-1 text-muted-foreground">Timeline Signal</Label>
+                              <Label className="text-[10px] font-black uppercase tracking-widest ml-1 text-muted-foreground">Timeline</Label>
                               <div className="flex gap-2">
                                 {['urgent', 'standard', 'flexible'].map(t => (
                                   <button key={t} onClick={() => setFormData({...formData, timeline: (t as any)})} className={cn("flex-1 py-3 rounded-xl border-2 text-[10px] font-black uppercase tracking-widest transition-all", 
@@ -334,7 +334,7 @@ function BookingForm() {
                       </div>
                       <div className="flex gap-4 pt-6">
                         <Button variant="ghost" onClick={handleBack} className="rounded-xl h-16 px-8 font-bold text-xs uppercase tracking-widest border-2">Back</Button>
-                        <Button onClick={handleNext} className="flex-1 h-16 rounded-2xl font-black uppercase tracking-widest text-xs bg-primary text-white shadow-xl shadow-primary/20">Contact Signal →</Button>
+                        <Button onClick={handleNext} className="flex-1 h-16 rounded-2xl font-black uppercase tracking-widest text-xs bg-primary text-white shadow-xl shadow-primary/20">Contact details →</Button>
                       </div>
                     </motion.div>
                   )}
@@ -342,8 +342,8 @@ function BookingForm() {
                   {currentStep === 3 && (
                     <motion.div key="s3" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-8 text-left">
                       <div className="space-y-2">
-                        <h2 className="text-2xl font-black font-headline uppercase tracking-tight text-foreground">Identity Registry</h2>
-                        <p className="text-sm text-muted-foreground">Who is architecting this project with me?</p>
+                        <h2 className="text-2xl font-black font-headline uppercase tracking-tight text-foreground">Your contact details</h2>
+                        <p className="text-sm text-muted-foreground">How can I reach you about your project?</p>
                       </div>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                         <div className="space-y-2">
@@ -352,7 +352,7 @@ function BookingForm() {
                           {errors.clientName && <p className="text-[9px] text-destructive font-bold uppercase">{errors.clientName}</p>}
                         </div>
                         <div className="space-y-2">
-                          <Label className="text-[10px] font-black uppercase tracking-widest ml-1 text-muted-foreground">Registry Email</Label>
+                          <Label className="text-[10px] font-black uppercase tracking-widest ml-1 text-muted-foreground">Email</Label>
                           <Input value={formData.clientEmail} onChange={(e) => setFormData({...formData, clientEmail: e.target.value})} placeholder="amina@email.com" className="h-12 rounded-xl border-2" />
                           {errors.clientEmail && <p className="text-[9px] text-destructive font-bold uppercase">{errors.clientEmail}</p>}
                         </div>
@@ -362,7 +362,7 @@ function BookingForm() {
                           {errors.clientPhone && <p className="text-[9px] text-destructive font-bold uppercase">{errors.clientPhone}</p>}
                         </div>
                         <div className="space-y-2">
-                          <Label className="text-[10px] font-black uppercase tracking-widest ml-1 text-muted-foreground">Organization Node</Label>
+                          <Label className="text-[10px] font-black uppercase tracking-widest ml-1 text-muted-foreground">Organisation</Label>
                           <Input value={formData.clientCompany} onChange={(e) => setFormData({...formData, clientCompany: e.target.value})} placeholder="Optional" className="h-12 rounded-xl border-2" />
                         </div>
                       </div>
@@ -376,8 +376,8 @@ function BookingForm() {
                   {currentStep === 4 && (
                     <motion.div key="s4" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-8 text-left">
                       <div className="space-y-2">
-                        <h2 className="text-2xl font-black font-headline uppercase tracking-tight text-foreground">Agreement Protocol</h2>
-                        <p className="text-sm text-muted-foreground">Verify your signal and approve the build terms.</p>
+                        <h2 className="text-2xl font-black font-headline uppercase tracking-tight text-foreground">Review the terms</h2>
+                        <p className="text-sm text-muted-foreground">Review your details and the project terms before submitting.</p>
                       </div>
                       
                       <div className="p-8 rounded-[2rem] bg-muted/20 border-2 border-dashed border-border/50 space-y-6">
@@ -385,7 +385,7 @@ function BookingForm() {
                            <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-primary">Service Terms Summary</h4>
                            <ul className="text-xs space-y-3 font-medium text-muted-foreground list-disc pl-4">
                              <li>Estimates are preliminary until final scope approval.</li>
-                             <li>50% deposit required to initiate the architecture build.</li>
+                             <li>A 50% deposit is required before work begins.</li>
                              <li>Intellectual property transfers only upon full settlement.</li>
                              <li>Domain/Hosting stays with provider until fully paid.</li>
                            </ul>
@@ -394,7 +394,7 @@ function BookingForm() {
                         <div className="pt-6 border-t border-border/50 space-y-4">
                            <div className="flex items-start gap-3">
                               <input type="checkbox" id="terms" checked={formData.agreedToTerms} onChange={(e) => setFormData({...formData, agreedToTerms: e.target.checked})} className="mt-1 h-4 w-4 rounded border-2 border-primary/20" />
-                              <Label htmlFor="terms" className="text-xs leading-relaxed font-bold text-foreground">I have read and agree to the Mwijay Services project terms & legal protocol.</Label>
+                              <Label htmlFor="terms" className="text-xs leading-relaxed font-bold text-foreground">I have read and agree to the Mwijay Services project terms.</Label>
                            </div>
                            {errors.agreedToTerms && <p className="text-[9px] text-destructive font-black uppercase">{errors.agreedToTerms}</p>}
                            

@@ -247,7 +247,7 @@ export default function AgreementPage() {
       }
 
       pdf.save(`Agreement_${agreementId}.pdf`);
-      toast({ title: "PDF Registry Sync Complete ✓" });
+      toast({ title: "PDF downloaded ✓" });
 
     } catch (err) {
       console.error(err);
@@ -266,7 +266,7 @@ export default function AgreementPage() {
   const next = () => {
     if (step === 1) {
       if (!formData.name || !formData.phone) { toast({ title: "Please fill all fields", variant: "destructive" }); return; }
-      if (isTrash(formData.name))            { toast({ title: "Invalid name signal detected", variant: "destructive" }); return; }
+      if (isTrash(formData.name))            { toast({ title: "Please enter a valid name", variant: "destructive" }); return; }
     }
     if (step === 2) {
       if (!formData.serviceType || !formData.projectTitle || !formData.description) { toast({ title: "All details required", variant: "destructive" }); return; }
@@ -360,12 +360,12 @@ export default function AgreementPage() {
             Agreement <span className="text-primary italic">Logged</span>
           </h2>
           <p className="text-muted-foreground font-medium text-sm leading-relaxed">
-            Your project handshake is verified and stored in the Mwijay Registry.
+            Your project agreement has been saved.
           </p>
         </div>
 
         <div className="relative p-6 rounded-[2rem] bg-card border-2 border-primary/20 shadow-inner overflow-hidden">
-          <p className="text-[9px] font-black uppercase tracking-[0.4em] text-muted-foreground mb-2">Registry ID</p>
+          <p className="text-[9px] font-black uppercase tracking-[0.4em] text-muted-foreground mb-2">Agreement ID</p>
           <p className="text-xl font-mono font-black text-primary">{agreementId}</p>
         </div>
 
@@ -431,7 +431,7 @@ export default function AgreementPage() {
               { label: 'STATUS',     value: 'PENDING REVIEW' },
               { label: 'SERVICE',    value: formData.serviceType },
               { label: 'CITY',       value: formData.city || '—' },
-              { label: 'GENESIS',    value: new Date().toLocaleDateString() },
+              { label: 'DATE',    value: new Date().toLocaleDateString() },
             ].map(({ label, value }, i) => (
               <React.Fragment key={label}>
                 {i > 0 && <div style={{ width: 1, height: 30, background: '#E2E8F0' }} />}
@@ -445,9 +445,9 @@ export default function AgreementPage() {
 
           <div style={{ padding: '28px 48px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
             <div style={{ padding: '20px 22px', background: '#F0F5FF', borderLeft: '4px solid #1A56DB', borderRadius: '0 10px 10px 0' }}>
-              <p style={{ fontSize: 8, fontWeight: 800, color: '#1A56DB', letterSpacing: 3, textTransform: 'uppercase', marginBottom: 12 }}>The Architect — Provider</p>
+              <p style={{ fontSize: 8, fontWeight: 800, color: '#1A56DB', letterSpacing: 3, textTransform: 'uppercase', marginBottom: 12 }}>Service Provider</p>
               <p style={{ fontSize: 16, fontWeight: 800, color: '#0D1117', marginBottom: 3 }}>David Erick Mwijage</p>
-              <p style={{ fontSize: 9, fontStyle: 'italic', color: '#64748B', marginBottom: 10 }}>Lead Systems Architect</p>
+              <p style={{ fontSize: 9, fontStyle: 'italic', color: '#64748B', marginBottom: 10 }}>Developer</p>
               {[['Company','Mwijay Services'],['Location','Dar es Salaam'],['Web','mwijay.vercel.app']].map(([k,v]) => (
                 <p key={k} style={{ fontSize: 10, color: '#475569', marginBottom: 4 }}><strong style={{ color: '#0D1117', minWidth: 60, display: 'inline-block' }}>{k}:</strong> {v}</p>
               ))}
@@ -496,11 +496,11 @@ export default function AgreementPage() {
             <div style={{ width: 60, height: 3, background: 'linear-gradient(90deg, #1A56DB, #00C896)', margin: '0 auto 32px', borderRadius: 4 }} />
             
             {[
-              { n: '01', title: 'Payment Protocol', text: 'A non-refundable advance of 50% is required before any architectural build begins. Remaining balance is due prior to deployment to production environment.' },
+              { n: '01', title: 'Payment', text: 'A non-refundable advance of 50% is required before any architectural build begins. Remaining balance is due prior to deployment to production environment.' },
               { n: '02', title: 'Build Revisions', text: 'Up to 2 standard rounds of revisions are included in the agreed build price. Additional modifications outside original brief are subject to change-order fees.' },
               { n: '03', title: 'Intellectual Property', text: 'Full ownership of custom code and visual assets transfers to the Client only upon 100% financial fulfillment. Systems remain in registry until paid.' },
-              { n: '04', title: 'Maintenance & Support', text: 'Standard delivery includes 30 days of high-priority post-launch support. Extended maintenance contracts are available as separate service nodes.' },
-              { n: '05', title: 'Termination Signal', text: 'Either party may terminate the handshake with 7 days written notice. Payment for work-completed-to-date remains a binding requirement.' },
+              { n: '04', title: 'Maintenance & Support', text: 'Standard delivery includes 30 days of high-priority post-launch support. Extended maintenance contracts are available separately.' },
+              { n: '05', title: 'Termination', text: 'Either party may terminate the agreement with 7 days written notice. Payment for work-completed-to-date remains a binding requirement.' },
             ].map(c => (
               <div key={c.n} style={{ display: 'flex', gap: 16, padding: '16px 20px', background: '#F8FAFC', borderLeft: '4px solid #1A56DB', borderRadius: '0 8px 8px 0', marginBottom: 12 }}>
                 <span style={{ fontSize: 10, fontWeight: 800, color: '#94A3B8', fontFamily: 'monospace', minWidth: 24 }}>{c.n}</span>
@@ -520,7 +520,7 @@ export default function AgreementPage() {
               )}
               <div style={{ borderTop: '2px solid #0D1117', paddingTop: 8, minWidth: 240 }}>
                 <p style={{ fontSize: 14, fontWeight: 800, color: '#0D1117', textTransform: 'uppercase' }}>{formData.name}</p>
-                <p style={{ fontSize: 9, color: '#94A3B8', letterSpacing: 1.5, marginTop: 3 }}>Digital Identity — Authorized Signal</p>
+                <p style={{ fontSize: 9, color: '#94A3B8', letterSpacing: 1.5, marginTop: 3 }}>Client signature</p>
               </div>
             </div>
             <div style={{ textAlign: 'right' }}>
@@ -528,7 +528,7 @@ export default function AgreementPage() {
                 <div style={{ width: 10, height: 10, background: '#00C896', borderRadius: '50%', boxShadow: '0 0 10px rgba(0,200,150,0.5)' }} />
                 <div style={{ textAlign: 'left' }}>
                   <p style={{ fontSize: 10, fontWeight: 800, color: '#FFFFFF', letterSpacing: 2.5, textTransform: 'uppercase' }}>MWJ Verified</p>
-                  <p style={{ fontSize: 8, color: '#475569', letterSpacing: 1 }}>Registry_Signal_Active</p>
+                  <p style={{ fontSize: 8, color: '#475569', letterSpacing: 1 }}>Agreement recorded</p>
                 </div>
               </div>
               <p style={{ fontSize: 9, color: '#94A3B8', display: 'block' }}>© 2026 Mwijay Services · Tanzania</p>
@@ -557,7 +557,7 @@ export default function AgreementPage() {
           className="text-center space-y-5"
         >
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-[9px] font-black uppercase tracking-[0.35em]">
-            <ShieldCheck size={12} /> Project Handshake Registry
+            <ShieldCheck size={12} /> Project agreement
           </div>
 
           <h1 className="text-5xl md:text-6xl font-black uppercase tracking-tighter leading-none">

@@ -116,7 +116,7 @@ function emailBase(content: string, previewText: string): string {
         <p>Mwijay Services &bull; Kongowe, Dar es Salaam, TZ</p>
         <p style="margin-top: 12px;">
           <a href="${siteUrl}">Work Gallery</a> &bull; 
-          <a href="${siteUrl}/pricing">Service Matrix</a> &bull; 
+          <a href="${siteUrl}/pricing">Pricing</a> &bull;
           <a href="${siteUrl}/contact">Contact Node</a>
         </p>
         <p style="margin-top: 24px; opacity: 0.4; font-family: monospace; font-size: 9px; letter-spacing: 0.1em;">

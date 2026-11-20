@@ -27,7 +27,7 @@ export default function ContactPage() {
              <div className="p-8 md:p-12 rounded-[3rem] border-2 border-dashed bg-primary/5 flex flex-col md:flex-row items-center justify-between gap-8 text-center md:text-left">
                 <div className="space-y-2">
                    <h3 className="text-2xl font-black font-headline">Have a specific project?</h3>
-                   <p className="text-muted-foreground font-medium">Fill out our detailed inquiry form for a precision proposal.</p>
+                   <p className="text-muted-foreground font-medium">Share your requirements using the detailed project form.</p>
                 </div>
                 <Button size="lg" className="rounded-full h-14 px-8 font-black uppercase tracking-widest text-xs gap-3 shadow-xl bg-primary text-white" asChild>
                    <Link href="/book">Start Your Project <ArrowRight size={18} /></Link>
