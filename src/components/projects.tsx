@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { 
   Zap, 
-  Loader2, 
   Maximize2, 
   X,
   Globe,
@@ -26,6 +25,7 @@ import {
 } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { trackProjectView } from '@/lib/analytics';
+import { PORTFOLIO_PROJECTS } from '@/lib/portfolio-projects';
 
 /**
  * Projects - Displays the work gallery.
@@ -37,27 +37,26 @@ export function Projects({ userId }: { userId: string }) {
     if (!firestore || !userId) return null;
     return collection(firestore, 'users', userId, 'projects');
   }, [firestore, userId]);
-  const { data: dbProjects, isLoading } = useCollectionOnce(projectsRef);
+  const { data: dbProjects } = useCollectionOnce(projectsRef);
 
-  if (isLoading) return (
-    <div className="py-20 flex justify-center">
-      <Loader2 className="h-8 w-8 animate-spin text-primary" />
-    </div>
-  );
-
-  const projectsToDisplay = dbProjects || [];
+  // Keep the current catalogue visible even when Firestore contains older
+  // entries, while retaining additional projects managed through the admin.
+  const knownNames = new Set(PORTFOLIO_PROJECTS.map((project) => project.name.toLowerCase()));
+  const knownIds = new Set(PORTFOLIO_PROJECTS.map((project) => project.id));
+  const projectsToDisplay = [
+    ...PORTFOLIO_PROJECTS,
+    ...(dbProjects || []).filter((project: any) =>
+      !knownIds.has(project.id) && !knownNames.has(String(project.name || '').toLowerCase())
+    ),
+  ];
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-      {projectsToDisplay.sort((a: any, b: any) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0)).map((proj: any, idx: number) => (
-        <ProjectCard key={proj.id} proj={proj} idx={idx} />
-      ))}
-      
-      {projectsToDisplay.length === 0 && (
-         <div className="col-span-full py-20 text-center border-2 border-dashed rounded-[3rem] opacity-30">
-            <p className="font-black uppercase tracking-widest text-sm italic">Gallery empty • Map builds in Admin Console</p>
-         </div>
-      )}
+      {[...projectsToDisplay]
+        .sort((a: any, b: any) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0))
+        .map((proj: any, idx: number) => (
+          <ProjectCard key={proj.id} proj={proj} idx={idx} />
+        ))}
     </div>
   );
 }
@@ -95,6 +94,17 @@ function ProjectCard({ proj, idx }: { proj: any, idx: number }) {
                   <div className="flex items-center gap-2 text-primary">
                     <Zap className="h-4 w-4" />
                     <span className="text-[10px] font-black uppercase tracking-[0.2em]">{proj.type || "Technical Build"}</span>
+                    {proj.status && (
+                      <span className={`ml-auto text-[8px] font-black uppercase tracking-[0.15em] px-2 py-0.5 rounded-full border ${
+                        proj.status === 'Live'
+                          ? 'border-emerald-500/40 text-emerald-500 bg-emerald-500/10'
+                          : proj.status === 'In Progress'
+                          ? 'border-amber-500/40 text-amber-500 bg-amber-500/10'
+                          : 'border-muted-foreground/30 text-muted-foreground bg-muted/20'
+                      }`}>
+                        {proj.status}
+                      </span>
+                    )}
                   </div>
                   <h3 className="text-2xl font-headline font-black tracking-tight text-foreground group-hover:text-primary transition-colors uppercase">{proj.name}</h3>
                 </div>
@@ -123,7 +133,7 @@ function ProjectCard({ proj, idx }: { proj: any, idx: number }) {
                 </DialogTitle>
                 <div className="flex wrap gap-3 pt-2">
                    <Badge variant="outline" className="rounded-full border-border/50 text-muted-foreground font-black uppercase text-[8px] px-3">{proj.type}</Badge>
-                   <Badge variant="outline" className="rounded-full border-primary/20 text-primary font-black uppercase text-[8px] px-3 bg-primary/5">2026_ARCHITECTURE</Badge>
+                   {proj.year && <Badge variant="outline" className="rounded-full border-primary/20 text-primary font-black uppercase text-[8px] px-3 bg-primary/5">{proj.year}</Badge>}
                 </div>
               </div>
 

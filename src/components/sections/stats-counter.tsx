@@ -25,7 +25,7 @@ export default function StatsCounter() {
   const { data: stats, isLoading } = useDocOnce(statsRef);
 
   const displayStats = stats || {
-    projectsCompleted: 12,
+    projectsCompleted: 11,
     happyClients: 8,
     linesOfCode: 50000,
     yearsExperience: 3

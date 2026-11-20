@@ -10,6 +10,7 @@ import { usePathname } from 'next/navigation';
  */
 export function LoadingScreen() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const finished = useRef(false);
   const pathname = usePathname();
   const [mounted, setMounted] = useState(false);
 
@@ -18,42 +19,42 @@ export function LoadingScreen() {
   }, []);
 
   useEffect(() => {
-    if (!mounted || pathname?.startsWith('/admin')) return;
+    if (!mounted) return;
+    if (pathname?.startsWith('/admin') || pathname?.startsWith('/login') || pathname?.startsWith('/client-portal')) {
+      document.body.classList.remove('loading-lock');
+      finished.current = true;
+      return;
+    }
 
-    const ctx = gsap.context(() => {
-      const exitLoading = () => {
-        if (containerRef.current) {
-          gsap.to(containerRef.current, {
-            yPercent: -100,
-            duration: 0.6,
-            ease: 'power4.inOut',
-            onComplete: () => {
-              if (containerRef.current) containerRef.current.style.display = 'none';
-              document.body.classList.remove('loading-lock');
-            }
-          });
-        }
-      };
+    const element = containerRef.current;
+    if (!element || element.style.display === 'none') return;
+    let started = false;
+    const exitLoading = () => {
+      if (started) return;
+      started = true;
+      gsap.to(element, {
+        yPercent: -100,
+        duration: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 0.6,
+        ease: 'power4.inOut',
+        onComplete: () => {
+          finished.current = true;
+          element.style.display = 'none';
+          document.body.classList.remove('loading-lock');
+        },
+      });
+    };
+    const autoExit = setTimeout(exitLoading, 800);
+    if (document.readyState === 'complete') exitLoading();
+    else window.addEventListener('load', exitLoading);
 
-      // LIGHTHOUSE FIX: Auto-exit much faster (800ms max)
-      const autoExit = setTimeout(exitLoading, 800);
-      
-      if (document.readyState === 'complete') {
-        exitLoading();
-      } else {
-        window.addEventListener('load', exitLoading);
-      }
-
-      return () => {
-        clearTimeout(autoExit);
-        window.removeEventListener('load', exitLoading);
-      };
-    }, containerRef);
-
-    return () => ctx.revert();
+    return () => {
+      clearTimeout(autoExit);
+      window.removeEventListener('load', exitLoading);
+      gsap.killTweensOf(element);
+    };
   }, [mounted, pathname]);
 
-  if (pathname?.startsWith('/admin') || pathname?.startsWith('/login') || pathname?.startsWith('/client-portal/login')) return null;
+  if (finished.current || pathname?.startsWith('/admin') || pathname?.startsWith('/login') || pathname?.startsWith('/client-portal')) return null;
 
   return (
     <div

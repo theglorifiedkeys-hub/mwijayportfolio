@@ -162,10 +162,10 @@ export default function AboutPage() {
             </FadeContent>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              <StatCard icon={Code2} value="10+" label="Projects Deployed" />
-              <StatCard icon={Rocket} value="8+" label="Active Clients" />
-              <StatCard icon={Award} value="5+" label="Certifications" />
-              <StatCard icon={Zap} value="99%" label="Client Satisfaction" />
+              <StatCard icon={Code2} value="11+" label="Projects Shipped" />
+              <StatCard icon={Rocket} value="4" label="Platforms In Use" />
+              <StatCard icon={Award} value="0.8s" label="Faida Checkout" />
+              <StatCard icon={Zap} value="30" label="Days Post-Launch Support" />
             </div>
           </div>
         </section>

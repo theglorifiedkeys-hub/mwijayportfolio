@@ -5,7 +5,6 @@ import React from 'react';
 import { SmoothScrollProvider } from '@/components/providers/smooth-scroll-provider';
 import ScrollProgress from '@/components/ui/scroll-progress';
 import { CursorGlow } from '@/components/ui/cursor-glow';
-import { LoadingScreen } from '@/components/ui/loading-screen';
 import { Navbar } from '@/components/navbar';
 import { AnnouncementBanner } from '@/components/announcement-banner';
 import { ChatBot } from '@/components/chat-bot';
@@ -14,6 +13,7 @@ import { BackToTop } from '@/components/ui/back-to-top';
 import { NotificationPermission } from '@/components/notification-permission';
 import { SwahiliSuggestion } from '@/components/ui/swahili-suggestion';
 import CookieConsent from '@/components/ui/cookie-consent';
+import { PageTransition } from '@/components/ui/page-transition';
 
 /**
  * ConditionalPublicLayout
@@ -36,7 +36,6 @@ export function ConditionalPublicLayout({ children }: { children: React.ReactNod
     <SmoothScrollProvider>
       <ScrollProgress />
       <CursorGlow />
-      <LoadingScreen />
       <Navbar />
       <AnnouncementBanner />
       <ChatBot />
@@ -45,7 +44,7 @@ export function ConditionalPublicLayout({ children }: { children: React.ReactNod
       <NotificationPermission />
       <SwahiliSuggestion />
       <CookieConsent />
-      {children}
+      <PageTransition>{children}</PageTransition>
     </SmoothScrollProvider>
   );
 }
