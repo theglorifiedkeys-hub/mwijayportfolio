@@ -230,4 +230,3 @@
     animation: shimmer 1.5s linear infinite;
   }
 }
-.route-loading{position:fixed;inset:0 0 auto;height:3px;z-index:999;background:#ff81492b;overflow:hidden;pointer-events:none}.route-loading:after{content:'';display:block;width:45%;height:100%;background:#ff8149;animation:route-progress 1.15s ease-in-out infinite}@keyframes route-progress{from{transform:translateX(-100%)}to{transform:translateX(325%)}}@media(prefers-reduced-motion:reduce){.route-loading:after{animation:none;width:100%}}

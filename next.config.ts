@@ -6,8 +6,6 @@ import type { NextConfig } from 'next';
  * Optimized for High-Performance (Lighthouse 100) and Industrial Security.
  */
 const nextConfig: NextConfig = {
-  allowedDevOrigins: ['*.e2b.app'],
-  devIndicators: false,
   // Suppress specific build warnings to maintain supersonic deployment speed
   typescript: {
     ignoreBuildErrors: true,
@@ -52,7 +50,10 @@ const nextConfig: NextConfig = {
             key: 'X-XSS-Protection',
             value: '1; mode=block',
           },
-          ...(process.env.NODE_ENV === 'production' ? [{ key: 'X-Frame-Options', value: 'DENY' }] : []),
+          {
+            key: 'X-Frame-Options',
+            value: 'DENY',
+          },
           {
             key: 'X-Content-Type-Options',
             value: 'nosniff',

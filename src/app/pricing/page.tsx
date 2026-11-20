@@ -28,7 +28,6 @@ import { useCollectionOnce, useFirestore, useMemoFirebase } from "@/firebase";
 import { collection, query, orderBy } from "firebase/firestore";
 import { cn } from "@/lib/utils";
 import SkeletonCard from "@/components/ui/skeleton-card";
-import {availableProducts,listingPrice} from '@/lib/public-catalog';
 import { SimpleProductCard } from "@/components/marketplace/simple-product-card";
 import { CheckoutDrawer } from "@/components/marketplace/checkout-drawer";
 
@@ -84,14 +83,14 @@ export default function PricingPage() {
 
   const productsQuery = useMemoFirebase(() => {
     if (!db) return null;
-    return availableProducts(db);
+    return query(collection(db, 'products'), orderBy('createdAt', 'desc'));
   }, [db]);
 
-  const { data: dbPackages, isLoading: isPkgLoading } = useCollectionOnce<Package>(packagesQuery,{enabled:!!packagesQuery});
-  const { data: rawProducts, isLoading: isProdLoading } = useCollectionOnce<any>(productsQuery,{enabled:!!productsQuery});
+  const { data: dbPackages, isLoading: isPkgLoading } = useCollectionOnce<Package>(packagesQuery);
+  const { data: rawProducts, isLoading: isProdLoading } = useCollectionOnce<any>(productsQuery);
 
   const displayPackages = (dbPackages || FALLBACK_PACKAGES).filter(p => p.isActive);
-  const displayProducts = (rawProducts || []).map(p=>({...p,price:listingPrice(p.price)})).filter(p=>p.price!==null);
+  const displayProducts = (rawProducts || []).filter((p: any) => p.isAvailable !== false);
 
   const formatPrice = (amount: number) => {
     return new Intl.NumberFormat('en-TZ', {
@@ -105,7 +104,6 @@ export default function PricingPage() {
     setSelectedProduct({
       id: product.id,
       name: product.title || product.name,
-      kind: product.title ? "product" : "service",
       price: product.price,
       description: product.description,
       image: product.imageUrl
@@ -200,7 +198,6 @@ export default function PricingPage() {
                 </div>
              </div>
 
-             <Link href="/market" className="inline-flex underline">Browse the full studio market ↗</Link>
              {isProdLoading ? (
                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                  {[1, 2, 3].map(i => <SkeletonCard key={i} variant="product" />) }
@@ -288,7 +285,7 @@ function InteractivePricingCalculator() {
     return "2m+";
   };
 
-  const bookingUrl = '/book?' + new URLSearchParams({services:selectedServices.join(','),projectName:'Custom Blueprint Build',description:`Estimated custom system. Services: ${selectedServices.join(', ')}. Features: ${Object.entries(features).filter(([,on])=>on).map(([key])=>key).join(', ') || 'standard'}. Estimated pages: ${pages}.`,budgetRange:getBudgetRange(finalTzs),timeline});
+  const bookingUrl = `/book?services=${selectedServices.join(',')}&projectName=Custom%20Blueprint%20Build&description=Estimated%20Custom%20System%20Blueprint%20Built.%20Details:%20Services%20[${selectedServices.join(', ')}].%20Features:%20${features.database ? 'Database, ' : ''}${features.auth ? 'User Auth/Portal, ' : ''}${features.ai ? 'AI Integration, ' : ''}${features.pdf ? 'PDF Generation, ' : ''}(Estimated%20pages:%20${pages})&budgetRange=${getBudgetRange(finalTzs)}&timeline=${timeline}`;
 
   return (
     <Card className="border-2 rounded-[2.5rem] bg-card/30 backdrop-blur-sm border-border/50 shadow-2xl relative overflow-hidden text-left p-6 md:p-10">

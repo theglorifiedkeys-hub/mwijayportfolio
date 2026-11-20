@@ -6,7 +6,7 @@ import { Timestamp } from 'firebase/firestore';
 
 export function generateOrderId(): string {
   const year = new Date().getFullYear();
-  const random = crypto.randomUUID().replaceAll('-', '');
+  const random = Math.floor(1000 + Math.random() * 9000);
   return `MWJ-${year}-${random}`;
 }
 

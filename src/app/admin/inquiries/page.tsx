@@ -25,8 +25,6 @@ import { Textarea } from '@/components/ui/textarea';
 import { format } from 'date-fns';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
-import { MessagesViewer } from '@/components/admin/messages-viewer';
-import { Tabs,TabsList,TabsTrigger,TabsContent } from '@/components/ui/tabs';
 import { InquiryStatus, ProjectInquiry } from '@/lib/order-utils';
 
 const STATUS_CONFIG: Record<InquiryStatus, { label: string, color: string, icon: any }> = {
@@ -39,8 +37,7 @@ const STATUS_CONFIG: Record<InquiryStatus, { label: string, color: string, icon:
   cancelled: { label: 'Cancelled', color: 'bg-red-500/10 text-red-500', icon: X },
 };
 
-export default function AdminInquiries(){return <Tabs defaultValue="briefs" className="space-y-6"><TabsList aria-label="Inquiry source"><TabsTrigger value="briefs">Project briefs</TabsTrigger><TabsTrigger value="contact">Contact messages</TabsTrigger></TabsList><TabsContent value="briefs"><ProjectBriefs/></TabsContent><TabsContent value="contact"><MessagesViewer/></TabsContent></Tabs>}
-function ProjectBriefs() {
+export default function AdminInquiries() {
   const db = useFirestore();
   const [search, setSearch] = useState('');
   const [selectedInquiry, setSelectedInquiry] = useState<ProjectInquiry | null>(null);
@@ -56,7 +53,7 @@ function ProjectBriefs() {
     return query(inquiriesRef, orderBy('createdAt', 'desc'));
   }, [inquiriesRef]);
 
-  const { data: inquiries, isLoading,error } = useCollection(inquiriesQuery,{enabled:!!inquiriesQuery});
+  const { data: inquiries, isLoading } = useCollection(inquiriesQuery);
 
   const filteredInquiries = useMemo(() => {
     if (!inquiries) return [];
@@ -81,7 +78,6 @@ function ProjectBriefs() {
     toast({ title: "Architecture Logs Updated" });
   };
 
-  if(!db || error)return <p role="alert">Project briefs could not be loaded.</p>;
   if (isLoading) return <div className="flex justify-center p-20"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div>;
 
   return (

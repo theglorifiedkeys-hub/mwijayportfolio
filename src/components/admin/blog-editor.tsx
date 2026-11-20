@@ -34,7 +34,6 @@ export function BlogEditor() {
 
   const { data: posts, isLoading } = useCollection(blogsQuery);
 
-  const [saving,setSaving]=useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     title: '',
@@ -139,16 +138,9 @@ export function BlogEditor() {
       return;
     }
 
-    if(saving||!firestore||!blogsRef)return;
-    const slug=formData.slug.trim().toLowerCase();
-    if(!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug)||posts?.some(p=>p.slug===slug&&p.id!==editingId)){
-      toast({variant:'destructive',title:'Choose a unique URL slug',description:'Use lowercase letters, numbers and hyphens.'});return;
-    }
-    setSaving(true);
     try {
       const payload = {
-        ...formData, slug,
-        ...(editingId && formData.isPublished && !posts?.find(p=>p.id===editingId)?.isPublished ? {publishedAt:serverTimestamp()} : {}),
+        ...formData,
         updatedAt: serverTimestamp(),
       };
 
@@ -160,12 +152,12 @@ export function BlogEditor() {
           ...payload,
           publishedAt: serverTimestamp(),
         });
-        toast({ title: formData.isPublished ? "Article published" : "Draft saved" });
+        toast({ title: "Insight Published" });
       }
       handleCancel();
     } catch (err: any) {
       toast({ variant: "destructive", title: "Sync Error", description: err.message });
-    } finally {setSaving(false)}
+    }
   };
 
   const handleDelete = (id: string) => {
@@ -326,9 +318,8 @@ export function BlogEditor() {
               </div>
 
               <div className="pt-6 border-t border-border/50">
-                 <label className="flex items-center gap-3 mb-4 text-sm"><input type="checkbox" checked={formData.isPublished} onChange={e=>setFormData(p=>({...p,isPublished:e.target.checked}))}/> Published — visible in the blog and client library</label>
-                 <Button disabled={saving || !!uploading} onClick={handleSave} className="w-full h-16 rounded-[2rem] font-black uppercase tracking-widest text-xs gap-3 shadow-2xl shadow-primary/20 bg-primary text-white">
-                    <Send className="h-5 w-5" /> {saving?'Saving…':formData.isPublished?'Save published article':'Save draft'}
+                 <Button onClick={handleSave} className="w-full h-16 rounded-[2rem] font-black uppercase tracking-widest text-xs gap-3 shadow-2xl shadow-primary/20 bg-primary text-white">
+                    <Send className="h-5 w-5" /> {editingId ? 'Update Registry' : 'Publish to Feed'}
                  </Button>
               </div>
             </CardContent>

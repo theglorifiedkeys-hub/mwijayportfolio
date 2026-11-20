@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import { ServiceEditions } from '@/components/service-editions';
 import { Footer } from "@/components/footer";
 import FadeContent from "@/components/ui/fade-content";
 import { Button } from "@/components/ui/button";
@@ -9,6 +8,8 @@ import Link from "next/link";
 import { Video, Music, Camera, Share2, CheckCircle2, ShieldCheck, Database, Layers, ArrowRight } from "lucide-react";
 import Image from "next/image";
 import { BlurFade } from "@/components/ui/blur-fade";
+import { TypewriterEffect } from "@/components/ui/typewriter-effect";
+import { StickyCards } from "@/components/ui/sticky-cards";
 
 const contentServices = [
   {
@@ -35,6 +36,12 @@ const contentServices = [
 ];
 
 export default function ContentPage() {
+  const words = [
+    { text: "Professional" },
+    { text: "Multimedia", className: "text-primary" },
+    { text: "Content", className: "text-primary" },
+  ];
+
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
       <main className="pt-32 pb-24">
@@ -44,27 +51,30 @@ export default function ContentPage() {
             <BlurFade>
               <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-pink-500/10 text-pink-600 text-[10px] font-black uppercase tracking-[0.3em] mb-4 border border-pink-500/20">
                 <Share2 className="h-4 w-4" />
-                Content services · Dar es Salaam
+                Strategic Multimedia Matrix
               </div>
             </BlurFade>
             
-            <h1 className="text-3xl sm:text-5xl md:text-8xl font-headline font-black tracking-tighter leading-[0.9] text-center text-foreground">Video, audio &amp; photography</h1>
+            <TypewriterEffect words={words} className="text-3xl sm:text-5xl md:text-8xl font-headline font-black tracking-tighter leading-[0.9] text-center text-foreground" />
             
             <BlurFade delay={0.5}>
               <p className="text-base md:text-xl text-muted-foreground font-medium leading-relaxed max-w-2xl mx-auto mt-6">
-                Video editing, original beats, sound design and product photography by Mwijay Davie in Dar es Salaam.
+                We don't just "create content." We architect high-fidelity visual and auditory experiences designed to scale your brand authority in the 2026 digital economy.
               </p>
             </BlurFade>
             
             <BlurFade delay={0.7}>
               <div className="flex flex-wrap justify-center gap-4 pt-8">
                 <Button size="lg" className="rounded-full h-12 md:h-16 px-10 bg-pink-600 hover:bg-pink-700 font-black uppercase tracking-widest text-xs md:text-sm text-white" asChild>
-                  <Link href="/book?services=content_production">Initialize Build <ArrowRight className="ml-2 h-5 w-5" /></Link>
+                  <Link href="/book">Initialize Build <ArrowRight className="ml-2 h-5 w-5" /></Link>
                 </Button>
               </div>
             </BlurFade>
           </section>
 
+          <section className="py-20">
+            <StickyCards />
+          </section>
 
           {/* Service Matrix */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pt-20 border-t border-border/50">
@@ -86,14 +96,12 @@ export default function ContentPage() {
                     ))}
                   </div>
                   <Button className="w-full rounded-2xl h-14 font-black uppercase tracking-widest text-[10px] bg-pink-600 hover:bg-pink-700 mt-auto shadow-lg shadow-pink-600/20 text-white" asChild>
-                    <Link href="/book?services=content_production">Select Asset Build</Link>
+                    <Link href="/book">Select Asset Build</Link>
                   </Button>
                 </div>
               </FadeContent>
             ))}
           </div>
-
-          <ServiceEditions category="content"/>
 
           {/* Bottom CTA */}
           <section className="bg-secondary/30 rounded-[3rem] p-12 md:p-24 text-center space-y-8 relative overflow-hidden shadow-2xl border-2 border-dashed">
@@ -102,7 +110,7 @@ export default function ContentPage() {
                 <p className="text-muted-foreground max-w-2xl mx-auto text-lg font-medium">Get a custom proposal and technical roadmap for your vision within 24 hours.</p>
                 <div className="pt-8">
                    <Button size="lg" className="rounded-full h-16 px-12 text-sm md:text-lg font-black uppercase tracking-widest bg-primary text-white shadow-xl shadow-primary/20" asChild>
-                      <Link href="/book?services=content_production">Initialize Build <ArrowRight className="ml-2" /></Link>
+                      <Link href="/book">Initialize Build <ArrowRight className="ml-2" /></Link>
                    </Button>
                 </div>
              </div>

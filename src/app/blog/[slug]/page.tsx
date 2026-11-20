@@ -3,7 +3,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useParams } from 'next/navigation';
 import { useCollection, useFirestore, useMemoFirebase } from '@/firebase';
-import { collection, query, where, limit, documentId } from 'firebase/firestore';
+import { collection, query, where, limit } from 'firebase/firestore';
 import { Footer } from '@/components/footer';
 import { Button } from '@/components/ui/button';
 import { 
@@ -277,18 +277,31 @@ function ContentRenderer({ content }: { content: string }) {
    MAIN PAGE
 ═══════════════════════════════════════════ */
 export default function BlogPostDetailPage() {
-  const {slug}=useParams<{slug:string}>();
-  return <PublishedArticle key={slug} slug={slug}/>;
-}
-function PublishedArticle({slug}:{slug:string}) {
-  const db=useFirestore();
-  const slugRef=useMemoFirebase(()=>db?query(collection(db,'blogs'),where('isPublished','==',true),where('slug','==',slug),limit(1)):null,[db,slug]);
-  const bySlug=useCollection(slugRef,{enabled:!!slugRef});
-  const idRef=useMemoFirebase(()=>db&&bySlug.data?.length===0?query(collection(db,'blogs'),where('isPublished','==',true),where(documentId(),'==',slug),limit(1)):null,[db,slug,bySlug.data]);
-  const byId=useCollection(idRef,{enabled:!!idRef});
-  const post=bySlug.data?.[0]||(idRef?byId.data?.[0]:null);
-  const isLoading=!!db&&(bySlug.isLoading||(!!idRef&&!byId.data&&!byId.error));
-  if(!db||bySlug.error||byId.error)return <div className="min-h-screen pt-40 text-center"><h1>Journal unavailable</h1><Link className="underline" href="/library">Return to the library</Link></div>;
+  const { slug } = useParams();
+  const db = useFirestore();
+
+  const blogQuerySlug = useMemoFirebase(() => {
+    if (!db || !slug) return null;
+    return query(collection(db, 'blogs'), where('slug', '==', slug), limit(1));
+  }, [db, slug]);
+
+  const { data: postsBySlug, isLoading: isLoadingSlug } = useCollection(blogQuerySlug);
+
+  const blogQueryId = useMemoFirebase(() => {
+    if (!db || !slug || (postsBySlug && postsBySlug.length > 0)) return null;
+    return collection(db, 'blogs');
+  }, [db, slug, postsBySlug]);
+
+  const { data: allPosts, isLoading: isLoadingAll } = useCollection(blogQueryId);
+
+  const post = React.useMemo(() => {
+    if (postsBySlug && postsBySlug.length > 0) return postsBySlug[0];
+    if (allPosts) return allPosts.find((p: any) => p.id === slug);
+    return null;
+  }, [postsBySlug, allPosts, slug]);
+
+  const isLoading = isLoadingSlug || (isLoadingAll && !postsBySlug?.length);
+
   /* ── LOADING ── */
   if (isLoading) return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-background gap-4">

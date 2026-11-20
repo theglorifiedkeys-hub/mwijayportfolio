@@ -10,7 +10,6 @@ interface ClientPortalContextType {
   project: ClientProject | null;
   isLoading: boolean;
   unreadCount: number;
-  projectError: boolean;
 }
 
 const ClientPortalContext = createContext<ClientPortalContextType | undefined>(undefined);
@@ -23,7 +22,6 @@ export function ClientPortalProvider({ children }: { children: ReactNode }) {
   const [project, setProject] = useState<ClientProject | null>(null);
   const [unreadCount, setUnreadCount] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
-  const [projectError, setProjectError] = useState(false);
 
   useEffect(() => {
     if (isUserLoading) return;
@@ -33,9 +31,6 @@ export function ClientPortalProvider({ children }: { children: ReactNode }) {
       return;
     }
 
-    setIsLoading(true);
-    setProjectError(false);
-    let stopUnread: (()=>void) | undefined;
     // Subscribe to client profile
     const clientRef = doc(db, 'clients', user.uid);
     const unsubscribeClient = onSnapshot(clientRef, (snap) => {
@@ -63,9 +58,6 @@ export function ClientPortalProvider({ children }: { children: ReactNode }) {
     const projectsRef = collection(db, 'client_projects');
     const projectQuery = query(projectsRef, where('clientId', '==', user.uid), limit(1));
     const unsubscribeProject = onSnapshot(projectQuery, (snap) => {
-      stopUnread?.();
-      setUnreadCount(0);
-      setProjectError(false);
       if (!snap.empty) {
         const projData = snap.docs[0].data() as ClientProject;
         const projId = snap.docs[0].id;
@@ -79,11 +71,11 @@ export function ClientPortalProvider({ children }: { children: ReactNode }) {
           where('isRead', '==', false)
         );
         
-        stopUnread = onSnapshot(unreadQuery, (unreadSnap) => {
+        const unsubscribeUnread = onSnapshot(unreadQuery, (unreadSnap) => {
           setUnreadCount(unreadSnap.size);
         });
 
-
+        return () => unsubscribeUnread();
       } else {
         // Admin Mock project for testing
         if (isAdmin) {
@@ -115,27 +107,20 @@ export function ClientPortalProvider({ children }: { children: ReactNode }) {
         }
       }
       setIsLoading(false);
-    }, () => {
-      stopUnread?.();
-      setProject(null);
-      setUnreadCount(0);
-      setProjectError(true);
-      setIsLoading(false);
     });
 
     return () => {
       unsubscribeClient();
       unsubscribeProject();
-      stopUnread?.();
     };
-  }, [user, isAdmin, isUserLoading, db]);
+  }, [user, isUserLoading, db]);
 
   const value = useMemo(() => ({
     client,
     project,
     isLoading,
-    unreadCount, projectError
-  }), [client, project, isLoading, unreadCount, projectError]);
+    unreadCount
+  }), [client, project, isLoading, unreadCount]);
 
   return (
     <ClientPortalContext.Provider value={value}>

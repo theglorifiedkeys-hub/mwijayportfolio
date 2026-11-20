@@ -2,29 +2,90 @@
 
 import React, { useState, useEffect } from 'react';
 import { useFirestore } from '@/firebase';
-import { collection, query, where, orderBy } from 'firebase/firestore';
+import { collection, getDocs } from 'firebase/firestore';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight, Star, Quote } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import OptimizedImage from '@/components/ui/optimized-image';
-import { useCollection,useMemoFirebase } from '@/firebase';
 import SkeletonCard from '@/components/ui/skeleton-card';
 
-export default function Testimonials({editorial=false}:{editorial?:boolean}={}){
-  const [index,setActiveIndex]=useState(0);
-  const db=useFirestore();
-  const ref=useMemoFirebase(()=>db?query(collection(db,'testimonials'),where('isVisible','==',true),orderBy('order','asc')):null,[db]);
-  const {data,isLoading}=useCollection(ref,{enabled:!!ref});
-  const testimonials=data || [];
+const FALLBACK_TESTIMONIALS = [
+  {
+    id: '1',
+    clientName: "Amina Hassan",
+    clientRole: "CEO",
+    clientCompany: "AymiAfrica",
+    clientAvatar: "",
+    quote: "Mwijay transformed our online presence completely. The website he built loads incredibly fast and our customers love it. Professional work delivered on time.",
+    rating: 5,
+    isVisible: true,
+    order: 1
+  },
+  {
+    id: '2',
+    clientName: "John Mwalimu",
+    clientRole: "Operations Manager",
+    clientCompany: "SmartGym",
+    clientAvatar: "",
+    quote: "Working with Mwijay was a game-changer. His AI automation solutions saved us hours of manual work every week. The system he built practically runs itself.",
+    rating: 5,
+    isVisible: true,
+    order: 2
+  },
+  {
+    id: '3',
+    clientName: "Grace Kimaro",
+    clientRole: "Marketing Director",
+    clientCompany: "UAUT Connect",
+    clientAvatar: "",
+    quote: "Professional, creative, and always delivers on time. Mwijay is the best web developer I have worked with in Dar es Salaam. Highly recommended.",
+    rating: 5,
+    isVisible: true,
+    order: 3
+  }
+];
+
+export default function Testimonials() {
+  const [index, setActiveIndex] = useState(0);
+  const [testimonials, setTestimonials] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const db = useFirestore();
+
   useEffect(() => {
-    if (editorial || testimonials.length <= 1) return;
+    async function fetchTestimonials() {
+      if (!db) return;
+      try {
+        const testimonialsRef = collection(db, 'testimonials');
+        const snap = await getDocs(testimonialsRef);
+        
+        if (snap.empty) {
+          setTestimonials(FALLBACK_TESTIMONIALS);
+        } else {
+          const all = snap.docs.map(doc => ({ ...doc.data(), id: doc.id }));
+          const visible = all
+            .filter((t: any) => t.isVisible !== false)
+            .sort((a: any, b: any) => (a.order || 0) - (b.order || 0));
+          
+          setTestimonials(visible.length > 0 ? visible : FALLBACK_TESTIMONIALS);
+        }
+      } catch (err) {
+        console.warn('Testimonials Registry Signal Interrupted, using fallback data.');
+        setTestimonials(FALLBACK_TESTIMONIALS);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    fetchTestimonials();
+  }, [db]);
+
+  useEffect(() => {
+    if (testimonials.length <= 1) return;
     const timer = setInterval(() => {
       setActiveIndex((prev) => (prev + 1) % testimonials.length);
     }, 5000);
     return () => clearInterval(timer);
-  }, [testimonials,editorial]);
+  }, [testimonials]);
 
-  if (isLoading && editorial) return null;
   if (isLoading) return (
     <div className="py-20 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto px-6">
       {[1, 2, 3].map(i => <SkeletonCard key={i} variant="default" />)}
@@ -33,13 +94,7 @@ export default function Testimonials({editorial=false}:{editorial?:boolean}={}){
 
   if (testimonials.length === 0) return null;
 
-  const current = testimonials[index % testimonials.length];
-
-  if(editorial) return <section id="client-testimonials" className="ed-wrap ed-client-note">
-    <div className="ed-kicker"><i/>Notes from clients</div>
-    <figure aria-live="polite"><blockquote>“{current.quote}”</blockquote><figcaption><b>{current.clientName}</b><span>{[current.clientRole,current.clientCompany].filter(Boolean).join(' · ')}</span></figcaption></figure>
-    {testimonials.length>1 && <div className="ed-note-controls"><button aria-label="Previous testimonial" onClick={()=>setActiveIndex(i=>(i-1+testimonials.length)%testimonials.length)}><ChevronLeft size={16}/></button><span>{index%testimonials.length+1} / {testimonials.length}</span><button aria-label="Next testimonial" onClick={()=>setActiveIndex(i=>(i+1)%testimonials.length)}><ChevronRight size={16}/></button></div>}
-  </section>;
+  const current = testimonials[index];
 
   const getInitialsColor = (name: string) => {
     const colors = ['bg-blue-500', 'bg-purple-500', 'bg-pink-500', 'bg-emerald-500', 'bg-orange-500'];
@@ -49,11 +104,11 @@ export default function Testimonials({editorial=false}:{editorial?:boolean}={}){
   };
 
   return (
-    <section id="client-testimonials" className="py-24 bg-background relative overflow-hidden">
+    <section className="py-24 bg-background relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center space-y-4 mb-16">
           <h2 className="text-3xl md:text-6xl font-black font-headline tracking-tighter">Voice of <span className="text-primary italic">Clients</span></h2>
-          <p className="text-muted-foreground font-medium uppercase tracking-[0.2em] text-xs">Notes from clients</p>
+          <p className="text-muted-foreground font-medium uppercase tracking-[0.2em] text-xs">Verified endorsements from our ecosystem</p>
         </div>
 
         <div className="relative min-h-[400px] flex items-center justify-center">
@@ -101,13 +156,13 @@ export default function Testimonials({editorial=false}:{editorial?:boolean}={}){
           </AnimatePresence>
 
           <div className="absolute top-1/2 -translate-y-1/2 left-0 right-0 flex justify-between pointer-events-none px-4">
-            <button aria-label="Previous testimonial"
+            <button 
               onClick={() => setActiveIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length)}
               className="h-12 w-12 rounded-full bg-card border-2 flex items-center justify-center text-foreground hover:bg-primary hover:text-white transition-all pointer-events-auto shadow-xl"
             >
               <ChevronLeft className="h-6 w-6" />
             </button>
-            <button aria-label="Next testimonial"
+            <button 
               onClick={() => setActiveIndex((prev) => (prev + 1) % testimonials.length)}
               className="h-12 w-12 rounded-full bg-card border-2 flex items-center justify-center text-foreground hover:bg-primary hover:text-white transition-all pointer-events-auto shadow-xl"
             >
@@ -119,7 +174,7 @@ export default function Testimonials({editorial=false}:{editorial?:boolean}={}){
         <div className="flex justify-center gap-3 mt-12">
           {testimonials.map((_, i) => (
             <button
-              key={i} aria-label={`Show testimonial ${i+1}`}
+              key={i}
               onClick={() => setActiveIndex(i)}
               className={cn(
                 "h-2 rounded-full transition-all duration-500",

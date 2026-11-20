@@ -17,7 +17,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { generateOrderId, formatTZS } from '@/lib/order-utils';
 import { doc, setDoc, serverTimestamp, onSnapshot } from 'firebase/firestore';
-import { useFirestore,useUser } from '@/firebase';
+import { useFirestore } from '@/firebase';
 import { trackEvent } from '@/lib/analytics';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
@@ -30,7 +30,6 @@ interface CheckoutDrawerProps {
   onClose: () => void;
   product: {
     id: string;
-    kind?: 'service'|'product';
     name: string;
     price: number;
     description: string;
@@ -44,7 +43,6 @@ interface CheckoutDrawerProps {
  */
 export function CheckoutDrawer({ isOpen, onClose, product }: CheckoutDrawerProps) {
   const db = useFirestore();
-  const {user,isUserLoading}=useUser();
   const [step, setStep] = useState(1);
   const [orderId, setOrderId] = useState('');
   const [formData, setFormData] = useState({ name: '', email: '', phone: '', refNo: '', paidFrom: '' });
@@ -60,7 +58,7 @@ export function CheckoutDrawer({ isOpen, onClose, product }: CheckoutDrawerProps
       setStep(1);
       setOrderStatus('PENDING_SUBMIT');
     }
-  }, [isOpen, product?.id]);
+  }, [isOpen, product]);
 
   useEffect(() => {
     if (orderStatus === 'PENDING_VERIFY' && orderId && orderId.length > 5 && db) {
@@ -96,12 +94,11 @@ export function CheckoutDrawer({ isOpen, onClose, product }: CheckoutDrawerProps
       // REGISTRY_LOGIC: Document ID matches Order ID for accessible guest tracking
       await setDoc(doc(db, 'orders', orderId), {
         orderId,
-        uid: user?.uid || 'anonymous',
-        productId: product.id,
+        uid: 'anonymous', 
         planName: product.name,
         amount: product.price,
         customerName: formData.name,
-        customerEmail: formData.email.trim().toLowerCase(),
+        customerEmail: formData.email.toLowerCase(),
         customerPhone: formData.paidFrom,
         referenceNumber: formData.refNo.toUpperCase(),
         screenshotUrl: url,
@@ -129,7 +126,7 @@ export function CheckoutDrawer({ isOpen, onClose, product }: CheckoutDrawerProps
 
   if (!product) return null;
 
-  const isServiceBuild = product.kind === 'service';
+  const isServiceBuild = product.price >= 50000;
 
   return (
     <Sheet open={isOpen} onOpenChange={(o) => !o && onClose()}>
@@ -255,12 +252,11 @@ export function CheckoutDrawer({ isOpen, onClose, product }: CheckoutDrawerProps
                 <div className="space-y-4">
                   <h3 className="text-3xl font-black font-headline tracking-tighter uppercase text-foreground">Audit in Progress</h3>
                   <p className="text-muted-foreground font-medium text-sm leading-relaxed max-w-xs mx-auto">
-                    Your payment reference <strong>{formData.refNo}</strong> was submitted for review. Save your order ID and use the checkout email to track it.
+                    Your signal <strong>{formData.refNo}</strong> is being audited. High-priority verification typically takes under 1 hour.
                   </p>
                 </div>
                 
                 <div className="w-full">
-                   <Link className="block mb-4 underline" href={`/track-order#${encodeURIComponent(orderId)}`}>Track this order ↗</Link>
                    <Button className="w-full h-16 rounded-[2rem] bg-green-600 hover:bg-green-700 text-white font-black uppercase tracking-widest text-xs gap-3 shadow-xl" asChild>
                       <a href={`https://wa.me/255620641695?text=Hi David, verifying payment signal for build ${orderId}. Ref: ${formData.refNo}.`}>
                         <MessageCircle size={20} /> Verify via WhatsApp
@@ -309,7 +305,7 @@ export function CheckoutDrawer({ isOpen, onClose, product }: CheckoutDrawerProps
                 ) : (
                   <Button 
                     onClick={handleUpload} 
-                    disabled={isUserLoading || loading || !formData.refNo || !formData.paidFrom}
+                    disabled={loading || !formData.refNo || !formData.paidFrom} 
                     className="flex-1 h-14 rounded-2xl bg-primary text-white font-black uppercase tracking-widest text-xs gap-3 shadow-xl shadow-primary/20"
                   >
                     {loading ? <Loader2 className="animate-spin h-5 w-5" /> : <>Log Payment Signal <ShieldCheck size={18} /></>}

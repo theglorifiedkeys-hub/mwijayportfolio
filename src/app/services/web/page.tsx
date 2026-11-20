@@ -235,7 +235,7 @@ function TemplateCard({ tpl, index }: { tpl: any; index: number }) {
             className="mt-auto w-full h-12 rounded-2xl font-black uppercase tracking-widest text-[10px] shadow-lg shadow-primary/10 gap-2"
             asChild
           >
-            <Link href="/book?services=web_development">
+            <Link href="/book">
               Select Foundation <ChevronRight size={14} />
             </Link>
           </Button>
@@ -261,11 +261,11 @@ export default function WebDevPage() {
     if (!db) return null;
     return collection(db, 'users', OWNER_ID, 'services');
   }, [db]);
-  const { data: services, isLoading: isTemplatesLoading } = useCollection(templatesRef,{enabled:!!templatesRef});
+  const { data: services, isLoading: isTemplatesLoading } = useCollection(templatesRef);
 
   const templates = React.useMemo(() => {
     if (!services) return [];
-    return services.filter((s: any) => !s.disabled && s.category === 'web');
+    return services.filter((s: any) => s.category === 'web');
   }, [services]);
 
   const words = [
@@ -328,7 +328,7 @@ export default function WebDevPage() {
                     className="rounded-full h-16 px-12 text-xs font-black uppercase tracking-widest shadow-2xl shadow-primary/20 hover:scale-105 transition-all gap-2"
                     asChild
                   >
-                    <Link href="/book?services=web_development">
+                    <Link href="/book">
                       Initialize Build <ArrowRight size={18} />
                     </Link>
                   </Button>
@@ -525,7 +525,7 @@ export default function WebDevPage() {
                       className="rounded-full h-16 px-12 bg-white text-primary hover:bg-white/90 font-black uppercase tracking-widest text-xs gap-3 shadow-2xl border-none hover:scale-105 transition-all"
                       asChild
                     >
-                      <Link href="/book?services=web_development">
+                      <Link href="/book">
                         Initialize Build <Zap size={18} />
                       </Link>
                     </Button>

@@ -29,9 +29,8 @@ function RecognitionsContent({ userId }: { userId: string }) {
     return collection(firestore, 'users', userId, 'recognitions');
   }, [firestore, userId]);
 
-  const { data: items, isLoading,error } = useCollection<Recognition>(recognitionsRef,{enabled:!!recognitionsRef});
+  const { data: items, isLoading } = useCollection<Recognition>(recognitionsRef as any);
 
-  if (!firestore || error) return <p className="p-6 text-center text-muted-foreground">Awards are unavailable right now.</p>;
   if (isLoading) return (
     <div className="flex justify-center p-12">
       <Loader2 className="h-8 w-8 animate-spin text-primary" />
@@ -41,7 +40,7 @@ function RecognitionsContent({ userId }: { userId: string }) {
   if (!items || items.length === 0) return (
     <div className="text-center p-20 border-2 border-dashed rounded-[3rem] opacity-30">
       <Award className="h-16 w-16 mx-auto mb-4 text-primary" />
-      <p className="font-bold uppercase tracking-widest text-sm">No awards have been published yet.</p>
+      <p className="font-bold uppercase tracking-widest text-sm">Registry empty • Ingest awards via Admin Console</p>
     </div>
   );
 

@@ -1,13 +1,19 @@
-import localFont from "next/font/local";
-export const inter = localFont({
-  src: "./fonts/inter.woff2",
-  weight: "100 900",
-  display: "swap",
-  variable: "--font-inter",
+/**
+ * @fileOverview High-performance font nodes.
+ * Automatically self-hosted by Next.js to eliminate render-blocking Google Font CSS.
+ */
+import { Inter, Space_Grotesk } from 'next/font/google';
+
+// Inter for body text - highly readable
+export const inter = Inter({
+  subsets: ['latin'],
+  display: 'swap', // Ensures text remains visible during font load
+  variable: '--font-inter',
 });
-export const spaceGrotesk = localFont({
-  src: "./fonts/space-grotesk.woff2",
-  weight: "300 700",
-  display: "swap",
-  variable: "--font-space-grotesk",
+
+// Space Grotesk for high-impact headlines
+export const spaceGrotesk = Space_Grotesk({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-space-grotesk',
 });
