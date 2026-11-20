@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { 
   Zap, 
-  Loader2, 
   Maximize2, 
   X,
   Globe,
@@ -38,18 +37,18 @@ export function Projects({ userId }: { userId: string }) {
     if (!firestore || !userId) return null;
     return collection(firestore, 'users', userId, 'projects');
   }, [firestore, userId]);
-  const { data: dbProjects, isLoading } = useCollectionOnce(projectsRef);
+  const { data: dbProjects } = useCollectionOnce(projectsRef);
 
-  if (isLoading) return (
-    <div className="py-20 flex justify-center">
-      <Loader2 className="h-8 w-8 animate-spin text-primary" />
-    </div>
-  );
-
-  // Fall back to the curated 2026 catalogue when Firestore is empty,
-  // so the public gallery always shows current builds.
-  const projectsToDisplay =
-    dbProjects && dbProjects.length > 0 ? dbProjects : PORTFOLIO_PROJECTS;
+  // Keep the current catalogue visible even when Firestore contains older
+  // entries, while retaining additional projects managed through the admin.
+  const knownNames = new Set(PORTFOLIO_PROJECTS.map((project) => project.name.toLowerCase()));
+  const knownIds = new Set(PORTFOLIO_PROJECTS.map((project) => project.id));
+  const projectsToDisplay = [
+    ...PORTFOLIO_PROJECTS,
+    ...(dbProjects || []).filter((project: any) =>
+      !knownIds.has(project.id) && !knownNames.has(String(project.name || '').toLowerCase())
+    ),
+  ];
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -134,7 +133,7 @@ function ProjectCard({ proj, idx }: { proj: any, idx: number }) {
                 </DialogTitle>
                 <div className="flex wrap gap-3 pt-2">
                    <Badge variant="outline" className="rounded-full border-border/50 text-muted-foreground font-black uppercase text-[8px] px-3">{proj.type}</Badge>
-                   <Badge variant="outline" className="rounded-full border-primary/20 text-primary font-black uppercase text-[8px] px-3 bg-primary/5">2026_ARCHITECTURE</Badge>
+                   {proj.year && <Badge variant="outline" className="rounded-full border-primary/20 text-primary font-black uppercase text-[8px] px-3 bg-primary/5">{proj.year}</Badge>}
                 </div>
               </div>
 

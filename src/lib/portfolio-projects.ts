@@ -7,14 +7,14 @@
  *  - https://altra-motion-lab.vercel.app/  (Altraware Motion Lab)
  *
  * Used as the public fallback when Firestore has no projects yet, and as
- * the canonical reference for the admin seed.
+ * alongside additional projects maintained through the admin.
  */
 
 export interface PortfolioProject {
   id: string;
   name: string;
   type: string;
-  status: 'Live' | 'In Progress' | 'Concept';
+  status?: 'Live' | 'In Progress' | 'Concept';
   year: string;
   description: string;
   thumbnailImageUrl: string;
@@ -111,23 +111,23 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
   },
   {
     id: 'caretrack-clinic',
-    name: 'CareTrack Clinic',
-    type: 'Health System · Altraware',
+    name: 'CareTrack',
+    type: 'Care Centre System · Altraware',
     status: 'Live',
     year: '2026',
     description:
-      'Clinic management for patient records, appointments and billing — built offline-first for care centres that cannot afford downtime.',
+      'Attendance, health and meal notes, fees and guardian updates for care centres, schools and NGOs — designed for weak networks and privacy.',
     thumbnailImageUrl:
       'https://images.pexels.com/photos/4386467/pexels-photo-4386467.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200',
+    liveUrl: 'https://caretrack-six.vercel.app/dashboard',
   },
   {
     id: 'zion-church-app',
     name: 'Zion Church App',
     type: 'Mobile App',
-    status: 'Live',
     year: '2026',
     description:
-      'A mobile-first app for the Zion Church community — events, sermons and giving, in Kiswahili first.',
+      'A mobile-first app for the Zion Church community, featured in Altraware’s systems showcase.',
     thumbnailImageUrl:
       'https://res.cloudinary.com/oc8018um/image/upload/v1791639306/Screenshot_2026-10-01_160124.png',
   },

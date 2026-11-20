@@ -2,10 +2,8 @@
 
 import React, { useState, useEffect, type ReactNode } from 'react';
 import { FirebaseProvider } from '@/firebase/provider';
-import dynamic from 'next/dynamic';
-
-const PwaInstallPrompt = dynamic(() => import('@/components/pwa-install-prompt').then(m => m.PwaInstallPrompt), { ssr: false });
-const LoadingScreen = dynamic(() => import('@/components/ui/loading-screen').then(m => m.LoadingScreen), { ssr: false });
+import { LoadingScreen } from '@/components/ui/loading-screen';
+import { PwaInstallPrompt } from '@/components/pwa-install-prompt';
 
 interface FirebaseClientProviderProps {
   children: ReactNode;
@@ -14,6 +12,13 @@ interface FirebaseClientProviderProps {
 /**
  * PERFORMANCE FIX: DEFERRING FIREBASE INITIALIZATION
  * Deferring heavy Firebase SDK loading until after first contentful paint (FCP).
+ *
+ * SSR FIX: LoadingScreen and PwaInstallPrompt used to be loaded through
+ * `next/dynamic` with `ssr: false`, which bailed the *entire page tree* out to
+ * client-side rendering (blank HTML for crawlers and a flash of empty page).
+ * Both components already guard their browser-only behaviour inside
+ * `useEffect`, so they are imported statically and render harmlessly on the
+ * server.
  */
 export function FirebaseClientProvider({ children }: FirebaseClientProviderProps) {
   const [services, setServices] = useState<{
@@ -27,7 +32,7 @@ export function FirebaseClientProvider({ children }: FirebaseClientProviderProps
       // Dynamic import to prevent main-thread blocking during initial load
       const { initializeFirebase } = await import('@/lib/firebase');
       const initialized = initializeFirebase();
-      
+
       setServices({
         firebaseApp: initialized.firebaseApp,
         auth: initialized.auth,
